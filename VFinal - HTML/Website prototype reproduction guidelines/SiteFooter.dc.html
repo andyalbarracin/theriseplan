@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Over+the+Rainbow&display=swap" rel="stylesheet">
+</helmet>
+<footer style="background:#0D0D0E;color:#b7b5ad;padding:clamp(48px,8vw,76px) clamp(22px,5vw,56px) 30px;font-family:'Inter',system-ui,sans-serif">
+  <div style="display:flex;justify-content:space-between;gap:clamp(28px,4vw,48px);flex-wrap:wrap">
+    <div style="max-width:300px">
+      <div style="font-family:'Playfair Display',serif;font-size:31px;color:#F4F2EF;letter-spacing:-.01em">andyalbarracin.com</div>
+      <p style="margin:20px 0 0;font-size:13.5px;line-height:1.6;color:#8f8d85;max-width:250px">Director creativo construyendo ideas, viajes y sistemas con intención.</p>
+      <p style="margin:22px 0 0;font-family:'Over the Rainbow',cursive;font-size:22px;line-height:1.35;color:#4f7ac2">gracias por estar aquí.<br><span style="margin-left:34px">— andy x</span></p>
+    </div>
+    <div style="width:320px;max-width:100%">
+      <div style="font-size:11px;letter-spacing:.18em;color:#8f8d85">RECIBE NOTAS DESDE EL CAMINO</div>
+      <form onSubmit="{{ onSubmit }}" style="position:relative;margin-top:20px">
+        <input type="email" placeholder="Tu email" style="width:100%;height:56px;border-radius:40px;border:1px solid rgba(244,242,239,.16);background:transparent;color:#F4F2EF;padding:0 62px 0 26px;font-family:'Inter',sans-serif;font-size:14px;outline:none">
+        <button type="submit" aria-label="Suscribir" style="position:absolute;right:7px;top:7px;width:42px;height:42px;border-radius:50%;border:none;background:#F4F2EF;color:#0D0D0E;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8594;</button>
+      </form>
+      <p style="margin:16px 0 0;font-size:12.5px;color:#77756e">No spam. Solo ideas, viajes y proyectos.</p>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;color:#77756e;margin-bottom:20px">NAVEGA</div>
+      <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:#b7b5ad">
+        <a href="Cuaderno.dc.html" style="width:fit-content;color:#b7b5ad;text-decoration:none">Cuaderno</a>
+        <a href="Proyectos.dc.html" style="width:fit-content;color:#b7b5ad;text-decoration:none">Proyectos</a>
+        <a href="Ahora.dc.html" style="width:fit-content;color:#b7b5ad;text-decoration:none">Ahora</a>
+        <a href="Sobre-mi.dc.html" style="width:fit-content;color:#b7b5ad;text-decoration:none">Sobre mí</a>
+        <a href="Hablemos.dc.html" style="width:fit-content;color:#b7b5ad;text-decoration:none">Hablemos</a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;color:#77756e;margin-bottom:20px">CONTACTO</div>
+      <div style="display:flex;flex-direction:column;gap:14px;font-size:14px;color:#b7b5ad;max-width:190px">
+        <span>hola@andyalbarracin.com</span>
+        <span>Buenos Aires</span>
+        <span style="line-height:1.5">Disponible para proyectos globales.</span>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:11px;letter-spacing:.18em;color:#77756e;margin-bottom:20px">CONECTA</div>
+      <div style="display:grid;grid-template-columns:repeat(2,42px);gap:16px;color:#b7b5ad">
+        <a href="Hablemos.dc.html" aria-label="Instagram" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b7b5ad"><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+        <a href="Hablemos.dc.html" aria-label="LinkedIn" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b7b5ad"><svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.4 8.65 21 10.9 21 14v7h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.6-2.38 3.27V21H9z"/></svg></a>
+        <a href="Hablemos.dc.html" aria-label="YouTube" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b7b5ad"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.2 9.3v5.4l4.6-2.7z" fill="currentColor" stroke="none"/></svg></a>
+        <a href="Hablemos.dc.html" aria-label="Behance" style="width:42px;height:42px;display:flex;align-items:center;justify-content:center;color:#b7b5ad"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="12" cy="12" r="8.5"/><path d="M8 15.4c2.6 0 3.6-.5 3.6-1.9 0-1-.7-1.5-1.9-1.5H8zm0-4.6h1.5c1 0 1.6-.4 1.6-1.3S10.6 8.3 9.6 8.3H8zM14.5 13.4c.15 1.1 1 1.7 2.1 1.6.7-.05 1.2-.35 1.45-.9M13.9 12.4c.1-1.7 1.05-2.7 2.6-2.7 1.5 0 2.35 1 2.35 2.7z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:60px;padding-top:22px;border-top:1px solid rgba(244,242,239,.1);display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#6f6d66;flex-wrap:wrap;gap:16px">
+    <span>© 2026 andyalbarracin.com — Todos los derechos reservados.</span>
+    <div style="display:flex;align-items:center;gap:60px">
+      <span>Diseñado y creado con intención.</span>
+      <span style="display:inline-flex;font-family:'Playfair Display',serif;font-size:22px;color:#c9c7c0"><span>A</span><span style="margin-left:-.34em">A</span></span>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){ return { onSubmit:(e)=>{ e.preventDefault(); } }; }
+}
+</script>
+</body>
+</html>

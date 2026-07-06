@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<div style="position:relative;width:100%;height:100%;overflow:hidden">
+  <img src="{{ src }}" alt="{{ alt }}" style="{{ imgStyle }}">
+  <div style="{{ toneStyle }}"></div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:320,&quot;height&quot;:520},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;images/portrait-andy.png&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Portrait&quot;},&quot;alt&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Retrato artístico&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Portrait&quot;},&quot;blend&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;luminosity&quot;,&quot;options&quot;:[&quot;normal&quot;,&quot;luminosity&quot;,&quot;screen&quot;,&quot;multiply&quot;,&quot;soft-light&quot;,&quot;overlay&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Treatment&quot;},&quot;opacity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.9,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.05,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Treatment&quot;},&quot;mask&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;bottom&quot;,&quot;options&quot;:[&quot;none&quot;,&quot;left&quot;,&quot;right&quot;,&quot;bottom&quot;,&quot;radial&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Treatment&quot;},&quot;position&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;center top&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Treatment&quot;},&quot;grayscale&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.5,&quot;min&quot;:0,&quot;max&quot;:1,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Treatment&quot;}}">
+class Component extends DCLogic {
+  renderVals(){
+    const p=this.props||{};
+    const masks={
+      none:'none',
+      left:'linear-gradient(90deg,transparent 0%,#000 52%)',
+      right:'linear-gradient(270deg,transparent 0%,#000 52%)',
+      bottom:'linear-gradient(0deg,#000 30%,rgba(0,0,0,0.4) 62%,transparent 100%)',
+      radial:'radial-gradient(72% 82% at 55% 42%,#000 40%,transparent 80%)'
+    };
+    const mask=masks[p.mask||'bottom']||'none';
+    const imgStyle={
+      position:'absolute', inset:0, width:'100%', height:'100%',
+      objectFit:'cover', objectPosition:p.position||'center top',
+      mixBlendMode:p.blend||'luminosity',
+      opacity:(p.opacity!=null?p.opacity:0.9),
+      filter:'grayscale('+(p.grayscale!=null?p.grayscale:0.5)+') contrast(1.06) brightness(1.02)',
+      WebkitMaskImage:mask, maskImage:mask, WebkitMaskSize:'cover', maskSize:'cover'
+    };
+    // subtle tone wash so the portrait sits in the paper/obsidian world
+    const toneStyle={
+      position:'absolute', inset:0, pointerEvents:'none',
+      background:'linear-gradient(180deg,rgba(20,18,14,0) 40%,rgba(12,11,8,0.35) 100%)',
+      mixBlendMode:'multiply'
+    };
+    return { src:p.image||'images/portrait-andy.png', alt:p.alt||'Retrato', imgStyle, toneStyle };
+  }
+}
+</script>
+</body>
+</html>

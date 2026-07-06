@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./responsive-fit.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Over+the+Rainbow&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#EDEAE3}a{text-decoration:none;color:inherit}::selection{background:#2F5DAA;color:#F4F2EF}</style>
+</helmet>
+<div data-fit-width="1440" style="width:1440px;margin:0 auto;position:relative;background:#F4F2EF;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#1B1D20;-webkit-font-smoothing:antialiased">
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:60;opacity:0.05;mix-blend-mode:multiply;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+
+  <dc-import name="SiteHeader" hint-size="100%,92px"></dc-import>
+
+  <main data-screen-label="Cuaderno" style="position:relative;padding:64px 56px 30px">
+    <div style="position:absolute;left:30px;top:0;bottom:0;width:0;border-left:1.5px dashed #cbc8bf"></div>
+
+    <!-- page head -->
+    <div style="display:flex;justify-content:space-between;align-items:flex-end">
+      <div style="max-width:640px">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.24em;color:#9a988f">01 / CUADERNO</div>
+        <h1 style="margin:18px 0 0;font-family:'Playfair Display',serif;font-weight:500;font-size:88px;line-height:.98;letter-spacing:-.02em;color:#1A1C1F">Cuaderno</h1>
+        <p style="margin:10px 0 0;font-family:'Over the Rainbow',cursive;font-size:32px;color:#2F5DAA">documentar lo importante.</p>
+        <p style="margin:26px 0 0;font-size:15.5px;line-height:1.62;color:#4a4c50;max-width:460px">Notas, ideas y reflexiones desde el camino. Un archivo personal, no lineal, en constante movimiento.</p>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;color:#a5a29a">ENTRADAS</div>
+        <div style="font-family:'Playfair Display',serif;font-size:56px;line-height:1;color:#1B1D20">18</div>
+      </div>
+    </div>
+
+    <!-- featured overlay card -->
+    <a href="#" style="display:block;position:relative;margin-top:52px;height:360px;overflow:hidden;background:linear-gradient(120deg,#5a5346 0%,#33302a 38%,#1a1812 72%,#100f0a 100%);box-shadow:0 30px 60px -30px rgba(20,18,14,.5)"><img src="images/article-aeropuerto.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+      <div style="position:absolute;right:0;top:0;bottom:0;width:52%;background:radial-gradient(80% 90% at 90% 30%,rgba(120,150,190,.18),transparent 60%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,9,6,.82) 0%,rgba(10,9,6,.3) 55%,rgba(10,9,6,.1) 100%)"></div>
+      <div style="position:absolute;left:56px;top:52px">
+        <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;color:#c8b78f">NOTA DESTACADA · 04 MAY 2026</span>
+      </div>
+      <div style="position:absolute;left:56px;bottom:52px;max-width:540px">
+        <h2 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:46px;line-height:1.04;color:#F4F2EF">Notas desde el aeropuerto</h2>
+        <p style="margin:16px 0 0;font-size:15px;line-height:1.6;color:#cdcabf;max-width:430px">Trabajar en tránsito me enseñó que las mejores ideas no siempre tienen destino fijo. Algunas solo ordenan la cabeza.</p>
+        <span style="display:inline-flex;align-items:center;gap:14px;margin-top:24px;font-size:14.5px;color:#F4F2EF;border-bottom:1px solid rgba(244,242,239,.6);padding-bottom:5px">Leer más <span style="font-size:16px">&#8594;</span></span>
+      </div>
+      <span style="position:absolute;right:24px;bottom:18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.26em;color:rgba(244,242,239,.32)">CDG · 35MM</span>
+    </a>
+
+    <!-- filter chips -->
+    <div style="display:flex;align-items:center;gap:12px;margin-top:44px;flex-wrap:wrap">
+      <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;color:#a5a29a;margin-right:6px">FILTRAR</span>
+      <span style="font-size:12px;letter-spacing:.06em;color:#F4F2EF;background:#1B1D20;border-radius:20px;padding:8px 16px;white-space:nowrap">Todo</span>
+      <span style="font-size:12px;letter-spacing:.06em;color:#55565a;border:1px solid #cbc7bc;border-radius:20px;padding:8px 16px;white-space:nowrap">Viajes</span>
+      <span style="font-size:12px;letter-spacing:.06em;color:#55565a;border:1px solid #cbc7bc;border-radius:20px;padding:8px 16px;white-space:nowrap">Sistemas</span>
+      <span style="font-size:12px;letter-spacing:.06em;color:#55565a;border:1px solid #cbc7bc;border-radius:20px;padding:8px 16px;white-space:nowrap">Notas</span>
+      <span style="font-size:12px;letter-spacing:.06em;color:#55565a;border:1px solid #cbc7bc;border-radius:20px;padding:8px 16px;white-space:nowrap">Movimiento</span>
+      <span style="font-size:12px;letter-spacing:.06em;color:#2F5DAA;border:1px solid #2F5DAA;border-radius:20px;padding:8px 16px;white-space:nowrap">En tránsito</span>
+    </div>
+
+    <!-- entries list -->
+    <div style="margin-top:20px">
+      <a href="#" style="display:grid;grid-template-columns:118px 150px 1fr 40px;gap:40px;align-items:start;padding:36px 0;border-top:1px solid #d9d5cc" style-hover="background:rgba(27,29,32,.02)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:#9a988f">N.01<br><span style="color:#c0bdb4">22 ABR 2026</span></div><div style="position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#15130e;border-radius:2px"><img src="images/boarding-area.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div>
+          <h3 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;color:#1B1D20">Aeropuertos como oficinas</h3>
+          <p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#55565a;max-width:620px">Trabajar en salas de espera cambió mi forma de crear. Una nota sobre foco, ruido y kilómetros.</p>
+          <div style="display:flex;gap:8px;margin-top:16px"><span style="font-size:10px;letter-spacing:.12em;color:#6b6c66;border:1px solid #d2cec3;border-radius:16px;padding:5px 11px">PROCESO</span><span style="font-size:10px;letter-spacing:.12em;color:#6b6c66;border:1px solid #d2cec3;border-radius:16px;padding:5px 11px">VIAJES</span></div>
+        </div>
+        <span style="font-size:19px;color:#1B1D20;justify-self:end">&#8594;</span>
+      </a>
+      <a href="#" style="display:grid;grid-template-columns:118px 150px 1fr 40px;gap:40px;align-items:start;padding:36px 0;border-top:1px solid #d9d5cc" style-hover="background:rgba(27,29,32,.02)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:#9a988f">N.02<br><span style="color:#c0bdb4">09 ABR 2026</span></div><div style="position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#15130e;border-radius:2px"><img src="images/coffee.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div>
+          <h3 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;color:#1B1D20">Crear con intención</h3>
+          <p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#55565a;max-width:620px">Menos, pero mejor. Editar la vida como se edita un proyecto: quitando lo que no aporta.</p>
+          <div style="display:flex;gap:8px;margin-top:16px"><span style="font-size:10px;letter-spacing:.12em;color:#6b6c66;border:1px solid #d2cec3;border-radius:16px;padding:5px 11px">REFLEXIÓN</span></div>
+        </div>
+        <span style="font-size:19px;color:#1B1D20;justify-self:end">&#8594;</span>
+      </a>
+      <a href="#" style="display:grid;grid-template-columns:118px 150px 1fr 40px;gap:40px;align-items:start;padding:36px 0;border-top:1px solid #d9d5cc" style-hover="background:rgba(27,29,32,.02)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:#9a988f">N.03<br><span style="color:#c0bdb4">28 MAR 2026</span></div><div style="position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#15130e;border-radius:2px"><img src="images/workspace.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div>
+          <h3 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;color:#1B1D20">Lo que no se ve</h3>
+          <p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#55565a;max-width:620px">Los sistemas invisibles detrás de cada proyecto. Estructura para que la creatividad respire.</p>
+          <div style="display:flex;gap:8px;margin-top:16px"><span style="font-size:10px;letter-spacing:.12em;color:#6b6c66;border:1px solid #d2cec3;border-radius:16px;padding:5px 11px">SISTEMAS</span></div>
+        </div>
+        <span style="font-size:19px;color:#1B1D20;justify-self:end">&#8594;</span>
+      </a>
+      <a href="#" style="display:grid;grid-template-columns:118px 150px 1fr 40px;gap:40px;align-items:start;padding:36px 0;border-top:1px solid #d9d5cc;border-bottom:1px solid #d9d5cc" style-hover="background:rgba(27,29,32,.02)">
+        <div style="font-family:'Space Mono',monospace;font-size:12px;line-height:1.7;color:#9a988f">N.04<br><span style="color:#c0bdb4">12 MAR 2026</span></div><div style="position:relative;width:100%;aspect-ratio:3/2;overflow:hidden;background:#15130e;border-radius:2px"><img src="images/notebook.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></div>
+        <div>
+          <h3 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;color:#1B1D20">Cuadernos que viajan</h3>
+          <p style="margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#55565a;max-width:620px">Papel, tinta y kilómetros. Por qué el archivo físico sigue importando en un mundo digital.</p>
+          <div style="display:flex;gap:8px;margin-top:16px"><span style="font-size:10px;letter-spacing:.12em;color:#6b6c66;border:1px solid #d2cec3;border-radius:16px;padding:5px 11px">ARCHIVO</span></div>
+        </div>
+        <span style="font-size:19px;color:#1B1D20;justify-self:end">&#8594;</span>
+      </a>
+    </div>
+  </main>
+
+  <dc-import name="SiteFooter" hint-size="100%,520px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

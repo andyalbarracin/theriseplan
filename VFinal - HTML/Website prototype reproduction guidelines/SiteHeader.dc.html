@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Over+the+Rainbow&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>@keyframes ovFadeH{from{opacity:0}to{opacity:1}}@keyframes ovRise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}</style>
+</helmet>
+<div style="position:relative;z-index:30;font-family:'Inter',system-ui,sans-serif">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:{{ hdrPad }};filter:{{ shadow }}">
+    <a href="Homepage.dc.html" aria-label="Inicio" style="display:inline-flex;align-items:baseline;font-family:'Playfair Display',serif;font-size:30px;line-height:1;letter-spacing:-.01em;color:{{ logoColor }};text-decoration:none">
+      <span>A</span><span style="margin-left:-.34em">A</span>
+    </a>
+    <nav style="display:{{ navDisplay }};position:absolute;left:50%;top:38px;transform:translateX(-50%);gap:36px;font-size:13px;letter-spacing:.01em;color:{{ navColor }}">
+      <a href="Homepage.dc.html" style="color:{{ navColor }};text-decoration:none">Inicio</a>
+      <a href="Cuaderno.dc.html" style="color:{{ navColor }};text-decoration:none">Cuaderno</a>
+      <a href="Proyectos.dc.html" style="color:{{ navColor }};text-decoration:none">Proyectos</a>
+      <a href="Ahora.dc.html" style="color:{{ navColor }};text-decoration:none">Ahora</a>
+      <a href="Sobre-mi.dc.html" style="color:{{ navColor }};text-decoration:none">Sobre mí</a>
+      <a href="Hablemos.dc.html" style="color:{{ navColor }};text-decoration:none">Hablemos</a>
+    </nav>
+    <button onClick="{{ toggleMenu }}" aria-label="Menú" style="display:{{ burgerDisplay }};flex-direction:column;gap:6px;width:38px;padding:0;background:none;border:none;cursor:pointer">
+      <span style="height:2.5px;width:100%;background:{{ barBg }};border-radius:2px"></span>
+      <span style="height:2.5px;width:100%;background:{{ barBg }};border-radius:2px"></span>
+      <span style="height:2.5px;width:100%;background:{{ barBg }};border-radius:2px"></span>
+    </button>
+  </header>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:2000;background:#0D0D0E;color:#F4F2EF;display:flex;flex-direction:column;padding:26px 24px 30px;animation:ovFadeH .26s ease;font-family:'Inter',sans-serif;overflow-y:auto">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-family:'Playfair Display',serif;font-size:30px;color:#F4F2EF"><span>A</span><span style="margin-left:-.34em">A</span></span>
+        <button onClick="{{ closeMenu }}" aria-label="Cerrar" style="width:44px;height:44px;background:none;border:none;color:#F4F2EF;font-size:30px;font-weight:300;cursor:pointer;line-height:1">&#215;</button>
+      </div>
+      <nav style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:2px;animation:ovRise .4s ease">
+        <a href="Homepage.dc.html" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:20px;padding:7px 0;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#5f6b7c">01</span><span style="font-family:'Playfair Display',serif;font-size:{{ itemSize }};line-height:1.06;color:#F4F2EF">Inicio</span></a>
+        <a href="Cuaderno.dc.html" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:20px;padding:7px 0;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#5f6b7c">02</span><span style="font-family:'Playfair Display',serif;font-size:{{ itemSize }};line-height:1.06;color:#F4F2EF">Cuaderno</span></a>
+        <a href="Proyectos.dc.html" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:20px;padding:7px 0;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#5f6b7c">03</span><span style="font-family:'Playfair Display',serif;font-size:{{ itemSize }};line-height:1.06;color:#F4F2EF">Proyectos</span></a>
+        <a href="Ahora.dc.html" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:20px;padding:7px 0;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#5f6b7c">04</span><span style="font-family:'Playfair Display',serif;font-size:{{ itemSize }};line-height:1.06;color:#F4F2EF">Ahora</span></a>
+        <a href="Sobre-mi.dc.html" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:20px;padding:7px 0;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#5f6b7c">05</span><span style="font-family:'Playfair Display',serif;font-size:{{ itemSize }};line-height:1.06;color:#F4F2EF">Sobre mí</span></a>
+        <a href="Hablemos.dc.html" onClick="{{ closeMenu }}" style="display:flex;align-items:baseline;gap:20px;padding:7px 0;text-decoration:none"><span style="font-family:'Space Mono',monospace;font-size:11px;color:#5f6b7c">06</span><span style="font-family:'Playfair Display',serif;font-size:{{ itemSize }};line-height:1.06;color:#F4F2EF">Hablemos</span></a>
+      </nav>
+      <div style="border-top:1px solid rgba(244,242,239,.14);padding-top:20px;margin-top:8px">
+        <p style="margin:0 0 14px;font-family:'Over the Rainbow',cursive;font-size:22px;color:#4f7ac2">Ideas en tránsito.</p>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <span style="font-size:12px;letter-spacing:.06em;color:#77756e"><span style="color:#F4F2EF">ES</span> · EN</span>
+          <span style="font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.08em;color:#6f6d66">© 2026 andyalbarracin.com — Todos los derechos reservados.</span>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;tone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;dark&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { menuOpen:false, vw: (typeof window!=='undefined'? window.innerWidth : 1440) };
+  componentDidMount(){
+    this._onResize = () => {
+      const w = window.innerWidth;
+      this.setState(s => ({ vw:w, menuOpen: w>860 ? false : s.menuOpen }));
+    };
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount(){ if(this._onResize) window.removeEventListener('resize', this._onResize); }
+  renderVals(){
+    const light = this.props.tone === 'light';
+    const w = this.state.vw || 1440;
+    const isMobile = w <= 860;          // burger + overlay only on mobile / small tablets
+    const itemSize = w<=400 ? '32px' : w<=520 ? '40px' : '50px';
+    return {
+      menuOpen: this.state.menuOpen && isMobile,
+      isMobile,
+      navDisplay: isMobile ? 'none' : 'flex',
+      burgerDisplay: isMobile ? 'flex' : 'none',
+      hdrPad: isMobile ? '22px 22px 0' : '32px 56px 0',
+      itemSize,
+      toggleMenu:()=>this.setState(s=>({menuOpen:!s.menuOpen})),
+      closeMenu:()=>this.setState({menuOpen:false}),
+      logoColor: light ? '#F7F5EF' : '#1B1D20',
+      navColor: light ? 'rgba(244,242,239,.9)' : '#33352f',
+      barBg: light ? '#F4F2EF' : '#1B1D20',
+      shadow: light ? 'drop-shadow(0 1px 10px rgba(8,7,4,.4))' : 'none'
+    };
+  }
+}
+</script>
+</body>
+</html>

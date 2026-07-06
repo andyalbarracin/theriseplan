@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   Design tokens — extracted from the Claude Design prototype (data.js `theme`
+   + inline styles). Exposed both as Tailwind theme vars (utilities like
+   `bg-paper`, `text-ink`, `font-serif`) and as the raw custom-property names the
+   ported inline styles reference (`--font-serif`, `--accent`, `--h-scale`, …).
+   ============================================================================= */
+@theme {
+  --color-paper: #f4f2ef;
+  --color-bone: #edeae3;
+  --color-panel: #eae6dd;
+  --color-obsidian: #0d0d0e;
+  --color-ink: #1b1d20;
+  --color-ink-strong: #1a1c1f;
+  --color-accent: #2f5daa;
+  --color-accent-soft: #4f7ac2;
+  --color-hero-accent: #9db8ec;
+  --color-slate: #6e7c8b;
+  --color-tape: #dcceb6;
+  --color-muted: #55565a;
+  --color-muted-2: #6b6c66;
+  --color-label: #9a988f;
+
+  /* next/font injects the *-src variables on <body>; these compose the family
+     names the design uses verbatim in inline styles. */
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-hand: var(--font-otr), "Over the Rainbow", cursive;
+  --font-mono: var(--font-space-mono), "Space Mono", ui-monospace, monospace;
+  --font-cormorant: var(--font-cormorant-src), "Cormorant Garamond", serif;
+  --font-baskerville: var(--font-baskerville-src), "Libre Baskerville", serif;
+  --font-worksans: var(--font-worksans-src), "Work Sans", sans-serif;
+  --font-caveat: var(--font-caveat-src), "Caveat", cursive;
+}
+
+/* Raw custom properties the prototype's inline styles read directly. Kept on
+   :root so ported styles resolve, and so the dashboard theme editor can override
+   them at runtime (document.documentElement.style.setProperty). */
+:root {
+  --accent: #2f5daa;
+  --hero-accent: #9db8ec;
+  --h-scale: 1;
+  --hero-fade-top-color: rgba(11, 13, 16, 0.82);
+  --hero-fade-top-h: 240px;
+  --hero-fade-side-color: rgba(9, 11, 15, 0.6);
+  --hero-fade-side-w: 62%;
+  --hero-fade-bottom-color: #f4f2ef;
+  --hero-fade-bottom-h: 440px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-bone);
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: #f4f2ef;
+}
+
+/* Card / film-frame lift on hover (ported from Homepage.dc.html). */
+.hcard,
+.flmfrm {
+  transition: transform 0.3s ease;
+}
+.hcard:hover,
+.flmfrm:hover {
+  transform: translateY(-4px);
+}
+
+/* Mobile menu overlay animations (ported from SiteHeader.dc.html). */
+@keyframes ovFadeH {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes ovRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Thin cross-browser scrollbars inside the admin. */
+.thin-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: #d2cec3;
+  border-radius: 8px;
+}

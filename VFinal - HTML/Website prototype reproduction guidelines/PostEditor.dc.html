@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&family=Over+the+Rainbow&display=swap" rel="stylesheet">
+</helmet>
+<div style="width:100%;min-width:0;font-family:'Inter',system-ui,sans-serif;color:#1B1D20">
+  <!-- top bar -->
+  <header style="position:sticky;top:0;z-index:20;background:rgba(244,242,239,.92);backdrop-filter:blur(8px);border-bottom:1px solid #e0dcd2;padding:18px 40px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:16px;min-width:0">
+      <a href="Dashboard-Cuaderno.dc.html" style="width:40px;height:40px;border:1px solid #cbc7bc;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none">←</a>
+      <div style="min-width:0">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">{{ eyebrow }}</div>
+        <div style="margin-top:3px;font-family:'Playfair Display',serif;font-size:22px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:460px">{{ titlePreview }}</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="{{ dirtyStyle }}">{{ dirtyLabel }}</span>
+      <a href="{{ viewHref }}" target="_blank" style="height:44px;display:flex;align-items:center;padding:0 18px;border:1px solid #cbc7bc;border-radius:3px;font-size:13.5px">↗ Ver</a>
+      <button onClick="{{ save }}" style="height:44px;padding:0 22px;background:#0D0D0E;border:none;border-radius:3px;color:#F4F2EF;font-size:13.5px;cursor:pointer">{{ saveLabel }}</button>
+    </div>
+  </header>
+
+  <!-- tabs -->
+  <div style="display:flex;gap:2px;padding:0 40px;border-bottom:1px solid #e0dcd2;background:#F4F2EF;position:sticky;top:77px;z-index:15">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="5">
+      <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+    </sc-for>
+  </div>
+
+  <main style="padding:32px 40px 72px;max-width:1000px">
+    <!-- CONTENT -->
+    <sc-if value="{{ tabContent }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div style="display:grid;grid-template-columns:1fr;gap:8px">
+          <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">TÍTULO</label>
+          <input value="{{ f.title }}" onInput="{{ setTitle }}" style="height:60px;border:1px solid #cbc7bc;border-radius:5px;padding:0 18px;font-family:'Playfair Display',serif;font-size:28px;background:#fff;outline:none">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SLUG</label><input value="{{ f.slug }}" onInput="{{ setSlug }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-family:'Space Mono',monospace;font-size:13px;background:#fff;outline:none"></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SUBTÍTULO</label><input value="{{ f.subtitle }}" onInput="{{ setSubtitle }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">EXTRACTO</label><textarea value="{{ f.excerpt }}" onInput="{{ setExcerpt }}" style="height:76px;border:1px solid #cbc7bc;border-radius:5px;padding:12px 14px;font-size:14px;background:#fff;outline:none;resize:none"></textarea></div>
+
+        <div style="margin-top:8px;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-family:'Playfair Display',serif;font-size:20px">Cuerpo del artículo</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:#a5a29a">{{ blockCount }} BLOQUES</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e1d7;border-radius:8px;background:#fff;padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:#2F5DAA;background:rgba(47,93,170,.09);border-radius:12px;padding:4px 10px;text-transform:uppercase">{{ b.type }}</span>
+                <div style="display:flex;gap:4px">
+                  <button onClick="{{ b.up }}" style="width:28px;height:28px;border:1px solid #e0dcd2;border-radius:4px;background:#F4F2EF;cursor:pointer;font-size:12px">↑</button>
+                  <button onClick="{{ b.down }}" style="width:28px;height:28px;border:1px solid #e0dcd2;border-radius:4px;background:#F4F2EF;cursor:pointer;font-size:12px">↓</button>
+                  <button onClick="{{ b.remove }}" style="width:28px;height:28px;border:1px solid #e8d4d4;border-radius:4px;background:#fbf4f4;color:#a23b3b;cursor:pointer;font-size:13px">×</button>
+                </div>
+              </div>
+              <textarea value="{{ b.text }}" onInput="{{ b.setText }}" placeholder="{{ b.placeholder }}" style="{{ b.inputStyle }}"></textarea>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          <sc-for list="{{ addButtons }}" as="a" hint-placeholder-count="6">
+            <button onClick="{{ a.onClick }}" style="height:38px;padding:0 14px;border:1px dashed #cbc7bc;border-radius:20px;background:transparent;font-size:12.5px;color:#55565a;cursor:pointer">＋ {{ a.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- MEDIA -->
+    <sc-if value="{{ tabMedia }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div>
+          <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">IMAGEN PRINCIPAL (HERO)</label>
+          <div style="display:flex;gap:18px;margin-top:12px;align-items:flex-start">
+            <div style="position:relative;width:320px;height:200px;border-radius:6px;overflow:hidden;background:#15130e;flex:none;border:1px solid #e0dcd2"><img src="{{ f.heroImage }}" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+            <div>
+              <button onClick="{{ openPicker }}" style="height:44px;padding:0 18px;border:1px solid #cbc7bc;border-radius:4px;background:#fff;font-size:13.5px;cursor:pointer">Cambiar imagen</button>
+              <p style="margin:12px 0 0;font-size:12.5px;color:#8a887f;max-width:260px;line-height:1.5">Selecciona desde la biblioteca de Media. Se usa como portada y como imagen social (OG) por defecto.</p>
+            </div>
+          </div>
+        </div>
+        <div>
+          <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">GALERÍA ({{ galleryCount }})</label>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px">
+            <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="3">
+              <div style="position:relative;aspect-ratio:4/3;border-radius:5px;overflow:hidden;background:#15130e;border:1px solid #e0dcd2"><img src="{{ g.url }}" alt="" style="width:100%;height:100%;object-fit:cover"><button onClick="{{ g.remove }}" style="position:absolute;right:6px;top:6px;width:24px;height:24px;border:none;border-radius:50%;background:rgba(13,13,14,.7);color:#fff;cursor:pointer;font-size:13px">×</button></div>
+            </sc-for>
+            <button onClick="{{ openPickerGallery }}" style="aspect-ratio:4/3;border:1.5px dashed #cbc7bc;border-radius:5px;background:transparent;color:#8a887f;font-size:24px;cursor:pointer">＋</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- METADATA -->
+    <sc-if value="{{ tabMeta }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:720px">
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">CATEGORÍA</label><input value="{{ f.category }}" onInput="{{ setCategory }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">TIPO</label><select value="{{ f.type }}" onChange="{{ setType }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"><option value="cronica">Crónica</option><option value="ensayo">Ensayo</option><option value="video">Video</option><option value="reflexion">Reflexión</option><option value="proyecto">Proyecto</option></select></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">FECHA DE PUBLICACIÓN</label><input value="{{ f.publishedAt }}" onInput="{{ setPublishedAt }}" placeholder="2026-05-04" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-family:'Space Mono',monospace;font-size:13px;background:#fff;outline:none"></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">TIEMPO DE LECTURA (MIN)</label><input value="{{ f.readingTime }}" onInput="{{ setReadingTime }}" type="number" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        <div style="grid-column:1/3;display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">UBICACIÓN (OPCIONAL)</label><input value="{{ f.locName }}" onInput="{{ setLocName }}" placeholder="Ciudad, País" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+      </div>
+    </sc-if>
+
+    <!-- SEO -->
+    <sc-if value="{{ tabSeo }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:720px">
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SEO · TÍTULO <span style="{{ seoTitleWarn }}">{{ seoTitleHint }}</span></label><input value="{{ f.seoTitle }}" onInput="{{ setSeoTitle }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SEO · DESCRIPCIÓN <span style="{{ seoDescWarn }}">{{ seoDescHint }}</span></label><textarea value="{{ f.seoDesc }}" onInput="{{ setSeoDesc }}" style="height:88px;border:1px solid #cbc7bc;border-radius:5px;padding:12px 14px;font-size:14px;background:#fff;outline:none;resize:none"></textarea></div>
+        <!-- google preview -->
+        <div style="border:1px solid #e5e1d7;border-radius:8px;background:#fff;padding:18px 20px">
+          <div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:#a5a29a;margin-bottom:12px">VISTA PREVIA EN BUSCADORES</div>
+          <div style="font-size:12px;color:#1a7d3a">andyalbarracin.com › cuaderno › {{ f.slug }}</div>
+          <div style="margin-top:3px;font-size:19px;color:#1a4fb0;line-height:1.2">{{ seoTitlePreview }}</div>
+          <div style="margin-top:4px;font-size:13.5px;color:#4d5156;line-height:1.5">{{ seoDescPreview }}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- VISIBILITY -->
+    <sc-if value="{{ tabVis }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:24px;max-width:640px">
+        <div>
+          <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">ESTADO</label>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for>
+          </div>
+        </div>
+        <div>
+          <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">VISIBILIDAD</label>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <sc-for list="{{ visOptions }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for>
+          </div>
+          <p style="margin:10px 0 0;font-size:12.5px;color:#8a887f;line-height:1.5">{{ visHint }}</p>
+        </div>
+        <label style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid #e5e1d7;border-radius:8px;background:#fff;cursor:pointer">
+          <button onClick="{{ toggleFeatured }}" style="{{ featuredToggle }}"><span style="{{ featuredKnob }}"></span></button>
+          <div><div style="font-size:14.5px">Destacar en portada</div><div style="margin-top:2px;font-size:12.5px;color:#8a887f">Aparece en los módulos destacados de la home.</div></div>
+        </label>
+        <div style="border-top:1px solid #eee9df;padding-top:20px">
+          <button onClick="{{ del }}" style="height:44px;padding:0 18px;border:1px solid #d8b4b4;border-radius:4px;background:#fbf4f4;color:#a23b3b;font-size:13.5px;cursor:pointer">Eliminar artículo</button>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- media picker overlay -->
+  <sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:60;background:rgba(13,13,14,.55);display:flex;align-items:center;justify-content:center;padding:40px" onClick="{{ closePicker }}">
+      <div style="width:820px;max-height:82vh;background:#F4F2EF;border-radius:10px;overflow:hidden;display:flex;flex-direction:column" onClick="{{ stop }}">
+        <div style="padding:20px 26px;border-bottom:1px solid #e0dcd2;display:flex;align-items:center;justify-content:space-between">
+          <div style="font-family:'Playfair Display',serif;font-size:22px">Biblioteca de Media</div>
+          <button onClick="{{ closePicker }}" style="width:36px;height:36px;border:none;background:none;font-size:24px;cursor:pointer;color:#55565a">×</button>
+        </div>
+        <div style="padding:22px 26px;overflow:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          <sc-for list="{{ pickerItems }}" as="m" hint-placeholder-count="8">
+            <button onClick="{{ m.pick }}" style="border:1px solid #e5e1d7;border-radius:7px;overflow:hidden;background:#fff;cursor:pointer;padding:0"><div style="aspect-ratio:4/3;background:#15130e"><img src="{{ m.url }}" alt="" style="width:100%;height:100%;object-fit:cover"></div><div style="padding:8px 10px;font-size:11px;color:#55565a;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.filename }}</div></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;edit&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { loaded:false, post:null, tab:'content', dirty:false, saved:false, picker:null };
+  blank(){ return { id:'', title:'', slug:'', subtitle:'', excerpt:'', category:'Reflexiones', type:'cronica', status:'draft', visibility:'public', featured:false, heroImage:'images/notebook.png', gallery:[], bodyBlocks:[{type:'paragraph',text:''}], readingTime:4, publishedAt:'', location:null, related:[], seo:{title:'',description:'',ogImage:''} }; }
+  async componentDidMount(){
+    try{
+      this.db=await import('./data.js');
+      this.media=this.db.getMediaAssets();
+      let post;
+      const isNew=(this.props.mode==='new');
+      const id=new URLSearchParams(location.search).get('id');
+      if(!isNew && id){ post=this.db.getPostById(id); }
+      if(!post){ post=this.blank(); }
+      this.setState({loaded:true, post});
+    }catch(e){ console.error(e); this.setState({loaded:true, post:this.blank()}); }
+  }
+  up(patch){ this.setState(s=>({ post:{...s.post, ...patch}, dirty:true, saved:false })); }
+  upSeo(patch){ this.setState(s=>({ post:{...s.post, seo:{...s.post.seo, ...patch}}, dirty:true, saved:false })); }
+  setBlocks(fn){ this.setState(s=>({ post:{...s.post, bodyBlocks:fn(s.post.bodyBlocks.slice())}, dirty:true, saved:false })); }
+  renderVals(){
+    const s=this.state; const p=s.post||this.blank();
+    const tabDef=[['content','Contenido'],['media','Media'],['meta','Metadatos'],['seo','SEO'],['vis','Visibilidad']];
+    const tabStyle=(k)=>({height:'50px',padding:'0 20px',border:'none',background:'none',cursor:'pointer',fontFamily:"'Inter',sans-serif",fontSize:'14px',
+      color:s.tab===k?'#1B1D20':'#8a887f',borderBottom:s.tab===k?'2px solid #2F5DAA':'2px solid transparent',fontWeight:s.tab===k?'500':'400'});
+    const tabs=tabDef.map(([k,l])=>({label:l,onClick:()=>this.setState({tab:k}),style:tabStyle(k)}));
+    const phFor=(t)=>({heading:'Texto del encabezado',quote:'Texto de la cita',image:'URL de la imagen (images/…)',callout:'Texto destacado',route:'CDG → MEX · metadatos',handwritten:'Nota manuscrita',video:'URL / descripción del video'}[t]||'Escribe el párrafo…');
+    const blocks=(p.bodyBlocks||[]).map((b,i)=>({ type:b.type, text:b.text||b.url||'', placeholder:phFor(b.type),
+      inputStyle:{width:'100%',minHeight:b.type==='paragraph'?'80px':'48px',border:'1px solid #e5e1d7',borderRadius:'5px',padding:'10px 12px',fontSize:'14px',lineHeight:'1.55',resize:'vertical',outline:'none',fontFamily:b.type==='quote'||b.type==='handwritten'?"'Playfair Display',serif":"'Inter',sans-serif",background:'#fff'},
+      setText:(e)=>this.setBlocks(a=>{const v=e.target.value; a[i]=(b.type==='image')?{...a[i],url:v}:{...a[i],text:v}; return a;}),
+      up:()=>this.setBlocks(a=>{if(i>0){const t=a[i-1];a[i-1]=a[i];a[i]=t;}return a;}),
+      down:()=>this.setBlocks(a=>{if(i<a.length-1){const t=a[i+1];a[i+1]=a[i];a[i]=t;}return a;}),
+      remove:()=>this.setBlocks(a=>{a.splice(i,1);return a;}) }));
+    const addDef=[['paragraph','Párrafo'],['heading','Encabezado'],['quote','Cita'],['image','Imagen'],['callout','Destacado'],['route','Ticket'],['handwritten','Manuscrito']];
+    const addButtons=addDef.map(([t,l])=>({label:l,onClick:()=>this.setBlocks(a=>{a.push(t==='image'?{type:'image',url:'images/mountains.png',caption:''}:{type:t,text:''});return a;})}));
+    const segStyle=(active)=>({height:'44px',padding:'0 18px',borderRadius:'4px',cursor:'pointer',fontSize:'13.5px',fontFamily:"'Inter',sans-serif",border:active?'1px solid #1B1D20':'1px solid #cbc7bc',background:active?'#1B1D20':'transparent',color:active?'#F4F2EF':'#55565a'});
+    const statusOptions=[['draft','Borrador'],['published','Publicado'],['archived','Archivado']].map(([k,l])=>({label:l,onClick:()=>this.up({status:k}),style:segStyle(p.status===k)}));
+    const visOptions=[['public','Público'],['private','Privado'],['hidden','Oculto']].map(([k,l])=>({label:l,onClick:()=>this.up({visibility:k}),style:segStyle(p.visibility===k)}));
+    const visHint={public:'Visible para todos en el sitio público.',private:'Solo accesible con enlace directo; no listado.',hidden:'Nunca aparece en el sitio público.'}[p.visibility];
+    const toggleOn=p.featured;
+    const featuredToggle={width:'46px',height:'26px',borderRadius:'20px',border:'none',cursor:'pointer',position:'relative',background:toggleOn?'#2F5DAA':'#cdc9bf',flex:'none',padding:0};
+    const featuredKnob={position:'absolute',top:'3px',left:toggleOn?'23px':'3px',width:'20px',height:'20px',borderRadius:'50%',background:'#fff',transition:'left .15s'};
+    const warn=(bad)=>({fontFamily:"'Space Mono',monospace",fontSize:'9px',letterSpacing:'.06em',marginLeft:'8px',color:bad?'#b07a1e':'#1f8a5b'});
+    const media=(this.media||[]);
+    const pk=(cb)=>media.map(m=>({url:m.url,filename:m.filename,pick:()=>{cb(m.url);this.setState({picker:null});}}));
+    let pickerItems=[];
+    if(s.picker==='hero') pickerItems=pk((url)=>this.up({heroImage:url}));
+    else if(s.picker==='gallery') pickerItems=pk((url)=>this.setState(st=>({post:{...st.post,gallery:[...(st.post.gallery||[]),url]},dirty:true})));
+    const gallery=(p.gallery||[]).map((url,i)=>({url,remove:()=>this.setState(st=>{const g=(st.post.gallery||[]).slice();g.splice(i,1);return {post:{...st.post,gallery:g},dirty:true};})}));
+    return {
+      eyebrow: this.props.mode==='new' ? 'NUEVO ARTÍCULO' : 'EDITAR ARTÍCULO · CUADERNO',
+      titlePreview: p.title || 'Sin título',
+      viewHref: p.slug ? ('Articulo.dc.html?slug='+p.slug) : 'Cuaderno.dc.html',
+      dirtyLabel: s.saved ? '✓ Guardado' : (s.dirty ? 'Cambios sin guardar' : 'Sin cambios'),
+      dirtyStyle: {fontFamily:"'Space Mono',monospace",fontSize:'10px',letterSpacing:'.1em',color:s.saved?'#1f8a5b':(s.dirty?'#b07a1e':'#a5a29a')},
+      saveLabel: s.saved ? '✓ Guardado' : 'Guardar',
+      save:()=>{ if(this.db){ const post={...p}; if(!post.id) post.id='p'+Date.now(); if(!post.slug) post.slug=(post.title||'articulo').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); this.db.upsertPost(post); this.setState({post,saved:true,dirty:false}); } },
+      tabs, tabContent:s.tab==='content', tabMedia:s.tab==='media', tabMeta:s.tab==='meta', tabSeo:s.tab==='seo', tabVis:s.tab==='vis',
+      f:{ title:p.title, slug:p.slug, subtitle:p.subtitle, excerpt:p.excerpt, category:p.category, type:p.type, publishedAt:p.publishedAt, readingTime:p.readingTime, heroImage:p.heroImage, locName:(p.location&&p.location.name)||'', seoTitle:p.seo.title, seoDesc:p.seo.description },
+      setTitle:(e)=>this.up({title:e.target.value}), setSlug:(e)=>this.up({slug:e.target.value}), setSubtitle:(e)=>this.up({subtitle:e.target.value}), setExcerpt:(e)=>this.up({excerpt:e.target.value}),
+      setCategory:(e)=>this.up({category:e.target.value}), setType:(e)=>this.up({type:e.target.value}), setPublishedAt:(e)=>this.up({publishedAt:e.target.value}), setReadingTime:(e)=>this.up({readingTime:+e.target.value||0}),
+      setLocName:(e)=>this.up({location:{...(p.location||{}),name:e.target.value}}),
+      setSeoTitle:(e)=>this.upSeo({title:e.target.value}), setSeoDesc:(e)=>this.upSeo({description:e.target.value}),
+      blockCount:blocks.length, blocks, addButtons,
+      galleryCount:gallery.length, gallery,
+      openPicker:()=>this.setState({picker:'hero'}), openPickerGallery:()=>this.setState({picker:'gallery'}),
+      pickerOpen:!!s.picker, pickerItems, closePicker:()=>this.setState({picker:null}), stop:(e)=>e.stopPropagation(),
+      statusOptions, visOptions, visHint, toggleFeatured:()=>this.up({featured:!p.featured}), featuredToggle, featuredKnob,
+      seoTitleWarn:warn(!p.seo.title), seoTitleHint:p.seo.title?'✓':'· falta', seoDescWarn:warn(!p.seo.description), seoDescHint:p.seo.description?'✓':'· falta',
+      seoTitlePreview:p.seo.title||p.title||'Título del artículo', seoDescPreview:p.seo.description||p.excerpt||'Descripción para buscadores…',
+      del:()=>{ if(this.db&&p.id){ this.db.deletePost(p.id); } location.href='Dashboard-Cuaderno.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

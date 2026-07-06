@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#EDEAE3}a{text-decoration:none;color:inherit}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#d2cec3;border-radius:6px}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:#F4F2EF;font-family:'Inter',system-ui,sans-serif;color:#1B1D20">
+  <dc-import name="AdminSidebar" active="media" hint-size="248px,100vh"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header style="position:sticky;top:0;z-index:10;background:rgba(244,242,239,.9);backdrop-filter:blur(8px);border-bottom:1px solid #e0dcd2;padding:22px 40px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;line-height:1;color:#1A1C1F">Media</h1>
+        <div style="margin-top:6px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;color:#9a988f">BIBLIOTECA · {{ count }} ARCHIVOS</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="position:relative">
+          <input value="{{ query }}" onInput="{{ onSearch }}" placeholder="Buscar por nombre o alt…" style="height:44px;width:260px;border:1px solid #cbc7bc;border-radius:3px;background:#fff;padding:0 16px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none">
+        </div>
+        <button onClick="{{ triggerUpload }}" style="height:44px;display:flex;align-items:center;gap:10px;padding:0 20px;background:#0D0D0E;border:none;border-radius:3px;color:#F4F2EF;font-size:13.5px;cursor:pointer">⬆ Subir archivo</button>
+      </div>
+    </header>
+
+    <div style="flex:1;display:flex;min-height:0">
+      <!-- grid column -->
+      <main style="flex:1;min-width:0;padding:28px 32px 56px;overflow:auto">
+        <!-- dropzone -->
+        <label style="{{ dropStyle }}" onDragOver="{{ onDragOver }}" onDragLeave="{{ onDragLeave }}" onDrop="{{ onDrop }}">
+          <input type="file" style="display:none" onChange="{{ onPick }}">
+          <div style="font-size:26px">⬆</div>
+          <div style="margin-top:8px;font-size:14px;color:#4a4c50">Arrastra imágenes aquí o <span style="color:#2F5DAA;border-bottom:1px solid #2F5DAA">selecciona archivos</span></div>
+          <div style="margin-top:6px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">PNG · JPG · WEBP · SVG — HASTA 10MB</div>
+        </label>
+
+        <!-- filter chips -->
+        <div style="display:flex;align-items:center;gap:10px;margin:22px 0 18px">
+          <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#a5a29a;margin-right:4px">FILTRAR</span>
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="3">
+            <button onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+          </sc-for>
+        </div>
+
+        <!-- grid -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <sc-for list="{{ items }}" as="m" hint-placeholder-count="12">
+            <button onClick="{{ m.onClick }}" style="{{ m.cardStyle }}">
+              <div style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:#15130e">
+                <img src="{{ m.url }}" alt="{{ m.alt }}" style="width:100%;height:100%;object-fit:cover">
+                <span style="position:absolute;left:8px;top:8px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.1em;color:#F4F2EF;background:rgba(13,13,14,.6);border-radius:12px;padding:4px 9px;text-transform:uppercase">{{ m.type }}</span>
+              </div>
+              <div style="padding:10px 12px 12px;text-align:left">
+                <div style="font-size:12.5px;color:#1B1D20;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.filename }}</div>
+                <div style="margin-top:3px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.06em;color:#a5a29a">{{ m.size }} KB</div>
+              </div>
+            </button>
+          </sc-for>
+        </div>
+      </main>
+
+      <!-- detail panel -->
+      <aside style="width:352px;min-width:352px;border-left:1px solid #e0dcd2;background:#fff;padding:26px 26px 40px;overflow:auto">
+        <sc-if value="{{ hasSelection }}" hint-placeholder-val="{{ true }}">
+          <div style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:5px;background:#15130e">
+            <img src="{{ sel.url }}" alt="{{ sel.alt }}" style="width:100%;height:100%;object-fit:cover">
+          </div>
+          <div style="margin-top:16px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">ARCHIVO</div>
+          <div style="margin-top:6px;font-size:15px;color:#1B1D20;word-break:break-all">{{ sel.filename }}</div>
+
+          <div style="display:flex;gap:8px;margin-top:18px">
+            <div style="flex:1;background:#F4F2EF;border-radius:5px;padding:10px 12px"><div style="font-family:'Space Mono',monospace;font-size:9px;color:#a5a29a">TIPO</div><div style="margin-top:3px;font-size:13px;text-transform:capitalize">{{ sel.type }}</div></div>
+            <div style="flex:1;background:#F4F2EF;border-radius:5px;padding:10px 12px"><div style="font-family:'Space Mono',monospace;font-size:9px;color:#a5a29a">PESO</div><div style="margin-top:3px;font-size:13px">{{ sel.size }} KB</div></div>
+          </div>
+
+          <div style="margin-top:20px">
+            <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">TEXTO ALT</label>
+            <textarea value="{{ sel.alt }}" onInput="{{ setAlt }}" style="display:block;width:100%;margin-top:8px;height:64px;border:1px solid #cbc7bc;border-radius:4px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:13px;resize:none;outline:none"></textarea>
+          </div>
+          <div style="margin-top:16px">
+            <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">LEYENDA</label>
+            <input value="{{ sel.caption }}" onInput="{{ setCaption }}" style="display:block;width:100%;margin-top:8px;height:44px;border:1px solid #cbc7bc;border-radius:4px;padding:0 12px;font-family:'Inter',sans-serif;font-size:13px;outline:none">
+          </div>
+
+          <div style="margin-top:20px">
+            <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">URL</label>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <input value="{{ sel.url }}" readonly style="flex:1;min-width:0;height:44px;border:1px solid #e0dcd2;border-radius:4px;padding:0 12px;font-family:'Space Mono',monospace;font-size:11px;color:#6b6c66;background:#F4F2EF;outline:none">
+              <button onClick="{{ copyUrl }}" style="height:44px;padding:0 14px;border:1px solid #cbc7bc;border-radius:4px;background:#fff;font-size:12px;cursor:pointer;white-space:nowrap">{{ copyLabel }}</button>
+            </div>
+          </div>
+
+          <div style="margin-top:20px">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">EN USO ({{ sel.usedCount }})</div>
+            <div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:10px">
+              <sc-for list="{{ sel.usedIn }}" as="u" hint-placeholder-count="2">
+                <span style="font-size:10px;letter-spacing:.06em;color:#2F5DAA;background:rgba(47,93,170,.09);border-radius:14px;padding:5px 11px">{{ u }}</span>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:26px;padding-top:20px;border-top:1px solid #eee9df">
+            <button onClick="{{ save }}" style="flex:1;height:46px;background:#0D0D0E;border:none;border-radius:4px;color:#F4F2EF;font-size:13.5px;cursor:pointer">{{ saveLabel }}</button>
+            <button onClick="{{ remove }}" style="height:46px;padding:0 16px;background:#fff;border:1px solid #d8b4b4;border-radius:4px;color:#a23b3b;font-size:13.5px;cursor:pointer">Eliminar</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noSelection }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;color:#a5a29a">
+            <div style="font-size:32px">🗂</div>
+            <p style="margin:14px 0 0;font-size:13.5px;max-width:220px;line-height:1.5">Selecciona un archivo para ver y editar sus detalles.</p>
+          </div>
+        </sc-if>
+      </aside>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { loaded:false, media:[], query:'', filter:'all', selId:null, dragging:false, copied:false, saved:false };
+  async componentDidMount(){
+    try{ this.db = await import('./data.js'); const media=this.db.getMediaAssets(); this.setState({ loaded:true, media, selId: media[0] ? media[0].id : null }); }
+    catch(e){ console.error(e); }
+  }
+  renderVals(){
+    const s=this.state;
+    const q=s.query.trim().toLowerCase();
+    let items=s.media.filter(m=>s.filter==='all'?true:m.type===s.filter);
+    if(q) items=items.filter(m=>(m.filename+' '+m.alt+' '+m.caption).toLowerCase().includes(q));
+    const chip=(active)=>({height:'34px',padding:'0 15px',borderRadius:'20px',fontSize:'12px',letterSpacing:'.04em',cursor:'pointer',fontFamily:"'Inter',sans-serif",
+      border:active?'1px solid #1B1D20':'1px solid #cbc7bc',background:active?'#1B1D20':'transparent',color:active?'#F4F2EF':'#55565a'});
+    const mkFilter=(key,label)=>({label,onClick:()=>this.setState({filter:key}),style:chip(s.filter===key)});
+    const filters=[mkFilter('all','Todo'),mkFilter('landscape','Horizontal'),mkFilter('portrait','Vertical')];
+    const cardBase={border:'1px solid #e5e1d7',borderRadius:'8px',overflow:'hidden',background:'#fff',cursor:'pointer',padding:0,textAlign:'left',fontFamily:"'Inter',sans-serif"};
+    const mapped=items.map(m=>({ ...m, onClick:()=>this.setState({selId:m.id,copied:false,saved:false}),
+      cardStyle: s.selId===m.id ? {...cardBase,border:'2px solid #2F5DAA',boxShadow:'0 6px 18px -8px rgba(47,93,170,.4)'} : cardBase }));
+    const sel=s.media.find(m=>m.id===s.selId)||null;
+    const dropBase={display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'34px',borderRadius:'10px',cursor:'pointer',textAlign:'center',transition:'all .15s',
+      border:'1.5px dashed '+(s.dragging?'#2F5DAA':'#cbc7bc'), background:s.dragging?'rgba(47,93,170,.06)':'#faf8f3'};
+    return {
+      count:s.media.length, query:s.query, items:mapped, filters,
+      onSearch:(e)=>this.setState({query:e.target.value}),
+      triggerUpload:()=>{}, onPick:()=>{}, dropStyle:dropBase,
+      onDragOver:(e)=>{e.preventDefault();if(!s.dragging)this.setState({dragging:true});},
+      onDragLeave:()=>this.setState({dragging:false}),
+      onDrop:(e)=>{e.preventDefault();this.setState({dragging:false});},
+      hasSelection:!!sel, noSelection:!sel, sel: sel ? {...sel, usedCount:(sel.usedIn||[]).length} : {usedIn:[]},
+      setAlt:(e)=>this._patch({alt:e.target.value}),
+      setCaption:(e)=>this._patch({caption:e.target.value}),
+      copyLabel:s.copied?'✓ Copiado':'Copiar',
+      copyUrl:()=>{ try{navigator.clipboard&&navigator.clipboard.writeText(sel.url);}catch(e){} this.setState({copied:true}); },
+      saveLabel:s.saved?'✓ Guardado':'Guardar cambios',
+      save:()=>{ if(this.db&&sel){ this.db.upsertMedia(sel); } this.setState({saved:true}); },
+      remove:()=>{ if(this.db&&sel){ this.db.deleteMedia(sel.id); } const nm=s.media.filter(m=>m.id!==s.selId); this.setState({media:nm,selId:nm[0]?nm[0].id:null}); },
+    };
+  }
+  _patch(patch){ this.setState(st=>({ media: st.media.map(m=>m.id===st.selId?{...m,...patch}:m), saved:false })); }
+}
+</script>
+</body>
+</html>

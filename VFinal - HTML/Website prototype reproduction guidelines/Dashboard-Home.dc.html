@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Cormorant+Garamond:wght@500;600&family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600&family=Work+Sans:wght@300;400;500;600&family=Over+the+Rainbow&family=Caveat:wght@500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#EDEAE3}a{text-decoration:none;color:inherit}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-thumb{background:#d2cec3;border-radius:6px}input:focus,select:focus{border-color:#2F5DAA!important}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:#F4F2EF;font-family:'Inter',system-ui,sans-serif;color:#1B1D20">
+  <dc-import name="AdminSidebar" active="home" hint-size="248px,100vh"></dc-import>
+
+  <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+    <header style="position:sticky;top:0;z-index:10;background:rgba(244,242,239,.9);backdrop-filter:blur(8px);border-bottom:1px solid #e0dcd2;padding:22px clamp(20px,4vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;line-height:1;color:#1A1C1F">Inicio · Home</h1>
+        <div style="margin-top:6px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;color:#9a988f">HERO · {{ count }} DESTINOS EN EL SLIDER</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="Homepage.dc.html" style="height:44px;display:flex;align-items:center;padding:0 18px;border:1px solid #cbc7bc;border-radius:3px;font-size:13.5px;color:#1B1D20">↗ Ver sitio</a>
+        <button onClick="{{ save }}" style="height:44px;display:flex;align-items:center;gap:10px;padding:0 22px;background:#0D0D0E;border:none;border-radius:3px;color:#F4F2EF;font-size:13.5px;cursor:pointer">{{ saveLabel }}</button>
+      </div>
+    </header>
+
+    <main style="flex:1;min-width:0;padding:28px clamp(20px,4vw,40px) 64px;overflow:auto">
+
+      <!-- intro note -->
+      <div style="display:flex;align-items:flex-start;gap:12px;background:rgba(47,93,170,.06);border:1px solid rgba(47,93,170,.18);border-radius:8px;padding:16px 18px;max-width:900px">
+        <span style="font-size:16px">✈</span>
+        <p style="margin:0;font-size:13.5px;line-height:1.55;color:#3f5a86">El fondo del hero es un <strong>slider vertical</strong> que se controla desde la barra a la derecha del ticket. Cada destino define su imagen de fondo, la tarjeta de embarque (BUE → destino) y las coordenadas. El origen es siempre <strong>Buenos Aires (BUE)</strong>.</p>
+      </div>
+
+      <!-- ORIGIN -->
+      <div style="margin-top:28px;max-width:900px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;color:#9a988f;margin-bottom:12px">ORIGEN (FIJO)</div>
+        <div style="display:flex;flex-wrap:wrap;gap:16px;background:#fff;border:1px solid #e5e1d7;border-radius:10px;padding:18px 20px">
+          <div style="flex:1;min-width:110px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:#a5a29a">CÓDIGO</label><input value="{{ origin.code }}" onInput="{{ onOriginCode }}" style="display:block;width:100%;margin-top:7px;height:42px;border:1px solid #cbc7bc;border-radius:4px;padding:0 12px;font-family:'Inter',sans-serif;font-size:14px;outline:none"></div>
+          <div style="flex:2;min-width:180px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:#a5a29a">CIUDAD</label><input value="{{ origin.city }}" onInput="{{ onOriginCity }}" style="display:block;width:100%;margin-top:7px;height:42px;border:1px solid #cbc7bc;border-radius:4px;padding:0 12px;font-family:'Inter',sans-serif;font-size:14px;outline:none"></div>
+          <div style="flex:1;min-width:110px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:#a5a29a">AEROPUERTO</label><input value="{{ origin.airport }}" onInput="{{ onOriginAirport }}" style="display:block;width:100%;margin-top:7px;height:42px;border:1px solid #cbc7bc;border-radius:4px;padding:0 12px;font-family:'Inter',sans-serif;font-size:14px;outline:none"></div>
+        </div>
+      </div>
+
+      <!-- DESTINATIONS -->
+      <div style="margin-top:30px;display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:900px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;color:#9a988f">DESTINOS DEL SLIDER</div>
+        <button onClick="{{ addDest }}" style="height:38px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#fff;border:1px solid #cbc7bc;border-radius:4px;font-size:13px;color:#1B1D20;cursor:pointer">＋ Agregar destino</button>
+      </div>
+
+      <div style="margin-top:14px;display:flex;flex-direction:column;gap:16px;max-width:900px">
+        <sc-for list="{{ dests }}" as="d" hint-placeholder-count="3">
+          <div style="background:#fff;border:1px solid #e5e1d7;border-radius:10px;overflow:hidden">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;background:#faf8f3;border-bottom:1px solid #eee9df">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span style="font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.1em;color:#2F5DAA">{{ d.badge }}</span>
+                <span style="font-family:'Playfair Display',serif;font-size:19px;color:#1B1D20">BUE → {{ d.code }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <button onClick="{{ d.up }}" aria-label="Subir" style="width:34px;height:34px;border:1px solid #cbc7bc;border-radius:4px;background:#fff;color:#55565a;font-size:14px;cursor:pointer">↑</button>
+                <button onClick="{{ d.down }}" aria-label="Bajar" style="width:34px;height:34px;border:1px solid #cbc7bc;border-radius:4px;background:#fff;color:#55565a;font-size:14px;cursor:pointer">↓</button>
+                <button onClick="{{ d.remove }}" aria-label="Eliminar" style="width:34px;height:34px;border:1px solid #d8b4b4;border-radius:4px;background:#fff;color:#a23b3b;font-size:15px;cursor:pointer">✕</button>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:20px;padding:18px 20px">
+              <div style="width:200px;flex:none;max-width:100%">
+                <div style="position:relative;width:100%;aspect-ratio:16/11;border-radius:6px;overflow:hidden;background:#15130e;box-shadow:inset 0 0 40px rgba(6,7,4,.5)">
+                  <img src="{{ d.image }}" alt="" style="width:100%;height:100%;object-fit:cover">
+                  <span style="position:absolute;left:10px;bottom:8px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.12em;color:#F4F2EF;background:rgba(13,13,14,.55);border-radius:12px;padding:4px 9px">{{ d.code }}</span>
+                </div>
+                <label style="display:block;margin-top:10px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:#a5a29a">IMAGEN DE FONDO</label>
+                <select value="{{ d.image }}" onChange="{{ d.onImage }}" style="display:block;width:100%;margin-top:7px;height:42px;border:1px solid #cbc7bc;border-radius:4px;padding:0 10px;font-family:'Inter',sans-serif;font-size:13px;background:#fff;outline:none;cursor:pointer">
+                  <sc-for list="{{ mediaOpts }}" as="m" hint-placeholder-count="6">
+                    <option value="{{ m.url }}">{{ m.filename }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <div style="flex:1;min-width:240px;display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px;align-content:start">
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">CÓDIGO</label><input value="{{ d.code }}" onInput="{{ d.onCode }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div style="grid-column:span 2"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">CIUDAD</label><input value="{{ d.city }}" onInput="{{ d.onCity }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">VUELO</label><input value="{{ d.flight }}" onInput="{{ d.onFlight }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">FECHA</label><input value="{{ d.date }}" onInput="{{ d.onDate }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">GATE</label><input value="{{ d.gate }}" onInput="{{ d.onGate }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ASIENTO</label><input value="{{ d.seat }}" onInput="{{ d.onSeat }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">BOARDING</label><input value="{{ d.boarding }}" onInput="{{ d.onBoarding }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ZONA</label><input value="{{ d.zone }}" onInput="{{ d.onZone }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none"></div>
+                <div style="grid-column:1 / -1"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">COORDENADAS</label><input value="{{ d.coords }}" onInput="{{ d.onCoords }}" style="display:block;width:100%;margin-top:6px;height:40px;border:1px solid #cbc7bc;border-radius:4px;padding:0 11px;font-family:'Space Mono',monospace;font-size:12.5px;color:#55565a;outline:none"></div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- HERO FADES -->
+      <div style="margin-top:34px;max-width:900px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;color:#9a988f;margin-bottom:12px">FUNDIDOS DEL HERO · SE APLICAN SOBRE CUALQUIER IMAGEN</div>
+        <div style="background:#fff;border:1px solid #e5e1d7;border-radius:10px;overflow:hidden">
+          <div style="position:relative;height:158px;background:#2a2820;overflow:hidden">
+            <img src="{{ fadePreviewImg }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <div style="position:absolute;left:0;right:0;top:0;height:{{ fadeTopPreviewH }};background:{{ fadeTopPreview }}"></div>
+            <div style="position:absolute;left:0;right:0;bottom:0;height:{{ fadeBottomPreviewH }};background:{{ fadeBottomPreview }}"></div>
+            <span style="position:absolute;left:14px;top:11px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.18em;color:#F4F2EF;opacity:.85">VISTA PREVIA</span>
+          </div>
+          <div style="padding:20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:20px">
+            <div>
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">OSCURIDAD SUPERIOR · HACIA EL HEADER</label>
+              <div style="display:flex;gap:8px;margin-top:9px"><sc-for list="{{ topPresets }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+            </div>
+            <div>
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ALTURA SUPERIOR · {{ fade.topHeight }}px</label>
+              <input type="range" min="100" max="480" value="{{ fade.topHeight }}" onInput="{{ onTopHeight }}" style="display:block;width:100%;margin-top:16px;accent-color:#2F5DAA">
+            </div>
+            <div>
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ANCHO DEL LATERAL · {{ fade.sideWidth }}%</label>
+              <input type="range" min="0" max="80" value="{{ fade.sideWidth }}" onInput="{{ onSideWidth }}" style="display:block;width:100%;margin-top:16px;accent-color:#2F5DAA">
+            </div>
+            <div>
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">COLOR INFERIOR · HACIA LA SECCIÓN</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:9px"><sc-for list="{{ bottomPresets }}" as="p" hint-placeholder-count="4"><button onClick="{{ p.onClick }}" style="{{ p.style }}"><span style="{{ p.dot }}"></span>{{ p.label }}</button></sc-for></div>
+            </div>
+            <div>
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ALTURA INFERIOR · {{ fade.bottomHeight }}px</label>
+              <input type="range" min="200" max="680" value="{{ fade.bottomHeight }}" onInput="{{ onBottomHeight }}" style="display:block;width:100%;margin-top:16px;accent-color:#2F5DAA">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPOGRAPHY & COLOR -->
+      <div style="margin-top:30px;max-width:900px">
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.16em;color:#9a988f;margin-bottom:12px">TIPOGRAFÍA Y COLOR · TÍTULOS Y TEXTOS</div>
+        <div style="background:#fff;border:1px solid #e5e1d7;border-radius:10px;overflow:hidden">
+          <div style="padding:18px 20px;background:#faf8f3;border-bottom:1px solid #eee9df">
+            <div style="font-family:{{ previewSerif }};font-size:34px;font-weight:500;color:#1B1D20;line-height:1.05">Ideas en tránsito.</div>
+            <div style="font-family:{{ previewHand }};font-size:21px;color:{{ previewHeroAccent }};margin-top:3px">crear desde el movimiento.</div>
+            <div style="font-family:{{ previewSans }};font-size:12.5px;color:#6b6c66;margin-top:8px">Texto de sección · <span style="color:{{ previewAccent }}">enlace de acento</span></div>
+          </div>
+          <div style="padding:20px;display:flex;flex-direction:column;gap:20px">
+            <div>
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">TIPOGRAFÍA DE TÍTULOS</label>
+              <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:9px"><sc-for list="{{ serifChips }}" as="p" hint-placeholder-count="3"><button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">TIPOGRAFÍA DE TEXTO</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:9px"><sc-for list="{{ sansChips }}" as="p" hint-placeholder-count="2"><button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+              </div>
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">MANUSCRITA</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:9px"><sc-for list="{{ handChips }}" as="p" hint-placeholder-count="2"><button onClick="{{ p.onClick }}" style="{{ p.style }}">{{ p.label }}</button></sc-for></div>
+              </div>
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ESCALA DE TÍTULOS · {{ scaleLabel }}×</label>
+                <input type="range" min="0.8" max="1.25" step="0.05" value="{{ theme.headingScale }}" onInput="{{ onScale }}" style="display:block;width:100%;margin-top:16px;accent-color:#2F5DAA">
+              </div>
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">COLOR DE ACENTO</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:9px"><sc-for list="{{ accentOpts }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.onClick }}" aria-label="color" style="{{ c.style }}"></button></sc-for></div>
+              </div>
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">ACENTO DEL HERO</label>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:9px"><sc-for list="{{ heroAccentOpts }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.onClick }}" aria-label="color" style="{{ c.style }}"></button></sc-for></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px;max-width:900px;display:flex;justify-content:flex-end">
+        <button onClick="{{ save }}" style="height:46px;display:flex;align-items:center;gap:10px;padding:0 26px;background:#0D0D0E;border:none;border-radius:4px;color:#F4F2EF;font-size:14px;cursor:pointer">{{ saveLabel }}</button>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { loaded:false, origin:{code:'BUE',city:'Buenos Aires',airport:'EZE'}, dests:[], media:[], saved:false,
+    fade:{ topColor:'rgba(11,13,16,0.82)', topHeight:240, sideColor:'rgba(9,11,15,0.60)', sideWidth:62, bottomColor:'#F4F2EF', bottomHeight:440 },
+    theme:{ fontSerif:'Playfair Display', fontSans:'Inter', fontHand:'Over the Rainbow', blue:'#2F5DAA', heroAccent:'#9db8ec', headingScale:1 } };
+  async componentDidMount(){
+    try{
+      this.db = await import('./data.js');
+      const home = this.db.getHomeSettings();
+      const site = this.db.getSiteSettings();
+      const media = this.db.getMediaAssets();
+      this.setState(st=>({
+        loaded:true,
+        origin: home.heroOrigin || st.origin,
+        dests: (home.heroDestinations||[]).map(d=>({ ...d })),
+        media,
+        fade: { ...st.fade, ...(home.heroFade||{}) },
+        theme: { ...st.theme, ...((site&&site.theme)||{}) }
+      }));
+    }catch(e){ console.error(e); }
+  }
+  _setFade(key,val){ this.setState(s=>({ fade:{...s.fade,[key]:val}, saved:false })); }
+  _setTheme(key,val){ this.setState(s=>({ theme:{...s.theme,[key]:val}, saved:false })); }
+  _setDest(idx, patch){ this.setState(s=>({ dests: s.dests.map((d,i)=> i===idx ? {...d, ...patch} : d), saved:false })); }
+  _move(idx, dir){
+    this.setState(s=>{
+      const a = s.dests.slice(); const j = idx+dir;
+      if(j<0 || j>=a.length) return {};
+      const t=a[idx]; a[idx]=a[j]; a[j]=t; return { dests:a, saved:false };
+    });
+  }
+  renderVals(){
+    const s=this.state;
+    const mediaOpts = s.media.map(m=>({ url:m.url, filename:m.filename }));
+    const pad = x=>String(x).padStart(2,'0');
+    const fade = s.fade, theme = s.theme;
+    const chip=(active)=>({height:'34px',padding:'0 13px',borderRadius:'20px',fontSize:'12px',cursor:'pointer',fontFamily:"'Inter',sans-serif",whiteSpace:'nowrap',border:active?'1px solid #1B1D20':'1px solid #cbc7bc',background:active?'#1B1D20':'#fff',color:active?'#F4F2EF':'#55565a'});
+    const swtch=(active,bg)=>({width:'32px',height:'32px',borderRadius:'6px',cursor:'pointer',padding:0,background:bg,border:active?'2px solid #1B1D20':'1px solid #d8d4c9',boxShadow:active?'inset 0 0 0 2px #fff':'none'});
+    const topPresets=[['Suave','rgba(11,13,16,0.55)'],['Media','rgba(11,13,16,0.82)'],['Fuerte','rgba(6,8,10,0.95)']].map(([label,c])=>({label,onClick:()=>this._setFade('topColor',c),style:chip(fade.topColor===c)}));
+    const bottomPresets=[['Papel','#F4F2EF'],['Hueso','#EDEAE3'],['Blanco','#FFFFFF'],['Negro','#0D0D0E']].map(([label,c])=>({label,onClick:()=>this._setFade('bottomColor',c),style:{...chip(fade.bottomColor===c),display:'inline-flex',alignItems:'center',gap:'7px'},dot:{display:'inline-block',width:'12px',height:'12px',borderRadius:'3px',background:c,border:'1px solid rgba(0,0,0,.18)'}}));
+    const accentOpts=['#2F5DAA','#1F6F5C','#9A3B3B','#6E4AA6','#B4622A'].map(c=>({onClick:()=>this._setTheme('blue',c),style:swtch(theme.blue===c,c)}));
+    const heroAccentOpts=['#9db8ec','#E7C9A0','#A9C2F0','#C9B08C','#8FB6A6'].map(c=>({onClick:()=>this._setTheme('heroAccent',c),style:swtch(theme.heroAccent===c,c)}));
+    const mkChips=(list,key)=>list.map(f=>({label:f,onClick:()=>this._setTheme(key,f),style:chip(theme[key]===f)}));
+    const serifChips=mkChips(['Playfair Display','Cormorant Garamond','Libre Baskerville'],'fontSerif');
+    const sansChips=mkChips(['Inter','Work Sans'],'fontSans');
+    const handChips=mkChips(['Over the Rainbow','Caveat'],'fontHand');
+    const dests = s.dests.map((d,idx)=>({
+      ...d,
+      badge:'0'+(idx+1),
+      onImage:(e)=>this._setDest(idx,{image:e.target.value}),
+      onCode:(e)=>this._setDest(idx,{code:e.target.value.toUpperCase()}),
+      onCity:(e)=>this._setDest(idx,{city:e.target.value}),
+      onFlight:(e)=>this._setDest(idx,{flight:e.target.value}),
+      onDate:(e)=>this._setDest(idx,{date:e.target.value}),
+      onGate:(e)=>this._setDest(idx,{gate:e.target.value}),
+      onSeat:(e)=>this._setDest(idx,{seat:e.target.value}),
+      onBoarding:(e)=>this._setDest(idx,{boarding:e.target.value}),
+      onZone:(e)=>this._setDest(idx,{zone:e.target.value}),
+      onCoords:(e)=>this._setDest(idx,{coords:e.target.value}),
+      up:()=>this._move(idx,-1),
+      down:()=>this._move(idx,1),
+      remove:()=>this.setState(st=>({ dests: st.dests.filter((_,i)=>i!==idx), saved:false })),
+    }));
+    return {
+      count: pad(s.dests.length),
+      origin: s.origin,
+      onOriginCode:(e)=>this.setState({origin:{...s.origin,code:e.target.value.toUpperCase()},saved:false}),
+      onOriginCity:(e)=>this.setState({origin:{...s.origin,city:e.target.value},saved:false}),
+      onOriginAirport:(e)=>this.setState({origin:{...s.origin,airport:e.target.value.toUpperCase()},saved:false}),
+      dests, mediaOpts,
+      fade, theme,
+      topPresets, bottomPresets, accentOpts, heroAccentOpts, serifChips, sansChips, handChips,
+      onTopHeight:(e)=>this._setFade('topHeight',parseInt(e.target.value,10)),
+      onSideWidth:(e)=>this._setFade('sideWidth',parseInt(e.target.value,10)),
+      onBottomHeight:(e)=>this._setFade('bottomHeight',parseInt(e.target.value,10)),
+      onScale:(e)=>this._setTheme('headingScale',parseFloat(e.target.value)),
+      scaleLabel:Number(theme.headingScale||1).toFixed(2),
+      previewSerif:"'"+theme.fontSerif+"',serif", previewHand:"'"+theme.fontHand+"',cursive", previewSans:"'"+theme.fontSans+"',system-ui,sans-serif",
+      previewAccent:theme.blue, previewHeroAccent:theme.heroAccent,
+      fadeTopPreview:'linear-gradient(180deg,'+fade.topColor+' 0%,transparent 100%)',
+      fadeBottomPreview:'linear-gradient(180deg,transparent 0%,'+fade.bottomColor+' 100%)',
+      fadeTopPreviewH:Math.round(Math.min(85,(fade.topHeight||0)*0.38))+'px',
+      fadeBottomPreviewH:Math.round(Math.min(112,(fade.bottomHeight||0)*0.3))+'px',
+      fadePreviewImg:(s.dests[0]&&s.dests[0].image)||'images/airport-hero.png',
+      addDest:()=>this.setState(st=>({ dests:[...st.dests, {code:'NEW',city:'Nuevo destino',flight:'AR 000',date:'ENE 01',gate:'A1',seat:'1A',boarding:'12:00',zone:'1',image:(st.media[0]&&st.media[0].url)||'images/airport-hero.png',coords:'0.0000° N   0.0000° W'}], saved:false })),
+      saveLabel: s.saved ? '✓ Guardado' : 'Guardar cambios',
+      save:()=>{
+        if(this.db){
+          this.db.updateHomeSettings({ heroOrigin:s.origin, heroDestinations:s.dests, heroFade:s.fade });
+          const curTheme = (this.db.getSiteSettings().theme)||{};
+          this.db.updateSiteSettings({ theme:{ ...curTheme, ...s.theme } });
+        }
+        this.setState({saved:true});
+        clearTimeout(this._t); this._t=setTimeout(()=>this.setState({saved:false}), 2200);
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

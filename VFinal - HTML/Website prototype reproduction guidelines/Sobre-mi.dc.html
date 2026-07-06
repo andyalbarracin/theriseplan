@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./responsive-fit.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Over+the+Rainbow&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#EDEAE3}a{text-decoration:none;color:inherit}::selection{background:#2F5DAA;color:#F4F2EF}</style>
+</helmet>
+<div data-fit-width="1440" style="width:1440px;margin:0 auto;position:relative;background:#F4F2EF;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#1B1D20;-webkit-font-smoothing:antialiased">
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:60;opacity:0.05;mix-blend-mode:multiply;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+
+  <dc-import name="SiteHeader" hint-size="100%,92px"></dc-import>
+
+  <main data-screen-label="Sobre mí" style="position:relative;padding:64px 56px 40px">
+    <div style="max-width:640px">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.24em;color:#9a988f">04 / SOBRE MÍ</div>
+      <h1 style="margin:18px 0 0;font-family:'Playfair Display',serif;font-weight:500;font-size:88px;line-height:.98;letter-spacing:-.02em;color:#1A1C1F">Sobre mí</h1>
+      <p style="margin:10px 0 0;font-family:'Over the Rainbow',cursive;font-size:32px;color:#2F5DAA">creo, viajo, construyo.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:440px 1fr;gap:64px;margin-top:52px;align-items:start">
+      <!-- portrait -->
+      <div style="position:relative;width:100%;height:560px;overflow:hidden;background:linear-gradient(168deg,#9ba0a2 0%,#5f6461 34%,#33352f 66%,#151610 100%);box-shadow:0 30px 58px -28px rgba(20,18,14,.5)"><img src="images/portrait-andy.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+        <div style="position:absolute;left:26%;top:14%;width:48%;height:60%;background:radial-gradient(50% 44% at 50% 22%,rgba(10,11,8,.85),transparent 72%);border-radius:50% 50% 12px 12px"></div>
+        <div style="position:absolute;inset:0;box-shadow:inset 0 0 120px rgba(8,7,4,.55);background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(8,7,4,.45))"></div>
+        <span style="position:absolute;left:16px;bottom:12px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.26em;color:rgba(244,242,239,.34)">RETRATO · BUE</span>
+      </div>
+
+      <div>
+        <p style="margin:0;font-family:'Playfair Display',serif;font-size:27px;line-height:1.42;color:#1B1D20">Soy Andy Albarracín, director creativo. Construyo ideas, viajo y creo sistemas con intención.</p>
+        <p style="margin:24px 0 0;font-size:15.5px;line-height:1.66;color:#4a4c50;max-width:560px">Mi trabajo vive entre la dirección creativa, el documental y el diseño de sistemas — siempre en movimiento. Documento lo importante y diseño lo que importa. Creo que las mejores ideas nacen en tránsito, entre un lugar y otro.</p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 40px;margin-top:40px;border-top:1px solid #d9d5cc;padding-top:8px">
+          <div style="padding:22px 0;border-bottom:1px solid #e3e0d7"><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">01</div><p style="margin:8px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Claridad sobre el ruido.</p></div>
+          <div style="padding:22px 0;border-bottom:1px solid #e3e0d7"><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">02</div><p style="margin:8px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Movimiento sobre destino.</p></div>
+          <div style="padding:22px 0;border-bottom:1px solid #e3e0d7"><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">03</div><p style="margin:8px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Detalles sobre decoración.</p></div>
+          <div style="padding:22px 0;border-bottom:1px solid #e3e0d7"><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">04</div><p style="margin:8px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Humano, no llamativo.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- handwritten quote -->
+    <div style="margin-top:64px;padding:56px 0;border-top:1px solid #d9d5cc;display:flex;justify-content:center;text-align:center">
+      <div style="max-width:760px">
+        <p style="margin:0;font-family:'Over the Rainbow',cursive;font-size:40px;line-height:1.4;color:#2F5DAA">No se trata de llegar primero,<br>sino de ver más en el camino.</p>
+        <div style="width:120px;height:1.5px;background:#2F5DAA;margin:18px auto 0"></div>
+        <p style="margin:16px 0 0;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.2em;color:#9a988f">— ANDY ALBARRACÍN</p>
+      </div>
+    </div>
+  </main>
+
+  <dc-import name="SiteFooter" hint-size="100%,520px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

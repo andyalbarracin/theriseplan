@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#EDEAE3}a{text-decoration:none;color:inherit}</style>
+</helmet>
+<div style="display:flex;min-height:100vh;background:#F4F2EF;font-family:'Inter',system-ui,sans-serif;color:#1B1D20">
+  <dc-import name="AdminSidebar" active="dashboard" hint-size="248px,100vh"></dc-import>
+
+  <div style="flex:1;min-width:0">
+    <!-- topbar -->
+    <header style="position:sticky;top:0;z-index:10;background:rgba(244,242,239,.9);backdrop-filter:blur(8px);border-bottom:1px solid #e0dcd2;padding:22px 40px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <h1 style="margin:0;font-family:'Playfair Display',serif;font-weight:500;font-size:30px;line-height:1;color:#1A1C1F">Panel</h1>
+        <div style="margin-top:6px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.12em;color:#9a988f">RESUMEN DEL SISTEMA · ANDYALBARRACIN.COM</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <a href="Homepage.dc.html" style="height:44px;display:flex;align-items:center;padding:0 18px;border:1px solid #cbc7bc;border-radius:3px;font-size:13.5px;color:#1B1D20">↗ Ver sitio</a>
+        <a href="Dashboard-Cuaderno-new.dc.html" style="height:44px;display:flex;align-items:center;gap:12px;padding:0 20px;background:#0D0D0E;border-radius:3px;color:#F4F2EF;font-size:13.5px">＋ Nuevo artículo</a>
+      </div>
+    </header>
+
+    <main style="padding:34px 40px 56px">
+      <!-- stat cards -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+        <sc-for list="{{ cards }}" as="c" hint-placeholder-count="8">
+          <a href="{{ c.href }}" style="background:#fff;border:1px solid #e5e1d7;border-radius:9px;padding:22px 22px 20px;position:relative;display:block">
+            <div style="{{ c.bar }}"></div>
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">{{ c.label }}</div>
+            <div style="margin-top:14px;font-family:'Playfair Display',serif;font-size:44px;line-height:1;color:#1A1C1F">{{ c.value }}</div>
+            <div style="margin-top:8px;font-size:12px;color:#8a887f">{{ c.hint }}</div>
+          </a>
+        </sc-for>
+      </div>
+
+      <!-- quick actions -->
+      <div style="margin-top:30px;background:#fff;border:1px solid #e5e1d7;border-radius:9px;padding:24px 26px">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">ACCIONES RÁPIDAS</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:16px">
+          <sc-for list="{{ actions }}" as="a" hint-placeholder-count="6">
+            <a href="{{ a.href }}" style="{{ a.style }}">{{ a.label }}</a>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- recent -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:30px">
+        <div style="background:#fff;border:1px solid #e5e1d7;border-radius:9px;padding:24px 26px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Últimas entradas</div>
+            <a href="Dashboard-Cuaderno.dc.html" style="font-size:12.5px;color:#2F5DAA">Ver todo →</a>
+          </div>
+          <div style="margin-top:14px;display:flex;flex-direction:column">
+            <sc-for list="{{ posts }}" as="p" hint-placeholder-count="5">
+              <a href="{{ p.href }}" style="display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid #eee9df">
+                <img src="{{ p.thumb }}" alt="" style="width:56px;height:40px;object-fit:cover;border-radius:3px;flex:none;background:#15130e">
+                <div style="min-width:0;flex:1">
+                  <div style="font-size:14.5px;color:#1B1D20;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.title }}</div>
+                  <div style="margin-top:4px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">{{ p.meta }}</div>
+                </div>
+                <span style="{{ p.badgeStyle }}">{{ p.badge }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e5e1d7;border-radius:9px;padding:24px 26px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Proyectos</div>
+            <a href="Dashboard-Proyectos.dc.html" style="font-size:12.5px;color:#2F5DAA">Ver todo →</a>
+          </div>
+          <div style="margin-top:14px;display:flex;flex-direction:column">
+            <sc-for list="{{ projects }}" as="pr" hint-placeholder-count="6">
+              <a href="{{ pr.href }}" style="display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid #eee9df">
+                <img src="{{ pr.thumb }}" alt="" style="width:56px;height:40px;object-fit:cover;border-radius:3px;flex:none;background:#15130e">
+                <div style="min-width:0;flex:1">
+                  <div style="font-size:14.5px;color:#1B1D20;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ pr.title }}</div>
+                  <div style="margin-top:4px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;color:#a5a29a">{{ pr.meta }}</div>
+                </div>
+                <span style="{{ pr.badgeStyle }}">{{ pr.badge }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { loaded:false, stats:null, posts:[], projects:[] };
+  async componentDidMount(){
+    try{
+      const db = await import('./data.js');
+      this.setState({ loaded:true, stats:db.getStats(), posts:db.getPosts({includeAll:true}), projects:db.getProjects({includeAll:true}) });
+    }catch(e){ console.error('data load failed', e); }
+  }
+  renderVals(){
+    const s=this.state, st=s.stats||{};
+    const v=x=>(x==null?'—':String(x));
+    const bar=(c)=>({position:'absolute',left:0,top:14,bottom:14,width:'3px',borderRadius:'3px',background:c});
+    const cards=[
+      {label:'CUADERNO · PUBLICADOS',value:v(st.postsPublished),hint:'entradas visibles',href:'Dashboard-Cuaderno.dc.html',bar:bar('#2F5DAA')},
+      {label:'BORRADORES',value:v(st.postsDrafts),hint:'sin publicar',href:'Dashboard-Cuaderno.dc.html',bar:bar('#b07a1e')},
+      {label:'DESTACADOS',value:v(st.postsFeatured),hint:'en portada',href:'Dashboard-Cuaderno.dc.html',bar:bar('#1f8a5b')},
+      {label:'PROYECTOS · PÚBLICOS',value:v(st.projectsPublished),hint:'visibles',href:'Dashboard-Proyectos.dc.html',bar:bar('#2F5DAA')},
+      {label:'PRIVADOS · OCULTOS',value:v(st.projectsHidden),hint:'no visibles',href:'Dashboard-Proyectos.dc.html',bar:bar('#a23b3b')},
+      {label:'MEDIA',value:v(st.media),hint:'archivos',href:'Dashboard-Media.dc.html',bar:bar('#6E7C8B')},
+      {label:'MÓDULOS DE HOME',value:v(st.homeModules),hint:'editables',href:'Dashboard-Home.dc.html',bar:bar('#2F5DAA')},
+      {label:'ALERTAS SEO',value:v(st.seoWarnings),hint:'campos faltantes',href:'Dashboard-SEO.dc.html',bar:bar(st.seoWarnings>0?'#b07a1e':'#1f8a5b')},
+    ];
+    const primary={height:'46px',display:'flex',alignItems:'center',padding:'0 20px',borderRadius:'3px',background:'#0D0D0E',color:'#F4F2EF',fontSize:'13.5px'};
+    const ghost={height:'46px',display:'flex',alignItems:'center',padding:'0 20px',borderRadius:'3px',border:'1px solid #cbc7bc',color:'#1B1D20',fontSize:'13.5px'};
+    const actions=[
+      {label:'＋ Nuevo artículo',href:'Dashboard-Cuaderno-new.dc.html',style:primary},
+      {label:'＋ Nuevo proyecto',href:'Dashboard-Proyectos-new.dc.html',style:ghost},
+      {label:'⬆ Subir media',href:'Dashboard-Media.dc.html',style:ghost},
+      {label:'Editar Home',href:'Dashboard-Home.dc.html',style:ghost},
+      {label:'Editar SEO',href:'Dashboard-SEO.dc.html',style:ghost},
+      {label:'Ajustes',href:'Dashboard-Ajustes.dc.html',style:ghost},
+    ];
+    const badge=(c,bg,label)=>({fontSize:'10px',letterSpacing:'.1em',color:c,background:bg,borderRadius:'20px',padding:'5px 11px',whiteSpace:'nowrap',flex:'none'});
+    const postBadge=(st2)=>({published:badge('#2F5DAA','rgba(47,93,170,.1)'),draft:badge('#b07a1e','rgba(176,122,30,.13)'),archived:badge('#6b6c66','rgba(107,108,102,.14)')}[st2]||badge('#6b6c66','rgba(107,108,102,.14)'));
+    const postLabel=(st2)=>({published:'Publicado',draft:'Borrador',archived:'Archivado'}[st2]||st2);
+    const posts=(s.posts||[]).slice(0,5).map(p=>({title:p.title,meta:(p.category+' · '+(p.publishedAt||'sin fecha')).toUpperCase(),badge:postLabel(p.status),badgeStyle:postBadge(p.status),thumb:p.heroImage,href:'Dashboard-Cuaderno-edit.dc.html?id='+p.id}));
+    const projMeta=(pr)=>{
+      if(pr.visibility!=='public'||pr.sensitive) return {badge:'Privado',badgeStyle:badge('#a23b3b','rgba(162,59,59,.12)')};
+      const m={active:['Activo','#1f8a5b','rgba(31,138,91,.12)'],building:['Construyendo','#2F5DAA','rgba(47,93,170,.1)'],paused:['En pausa','#b07a1e','rgba(176,122,30,.13)'],archived:['Archivado','#6b6c66','rgba(107,108,102,.14)'],draft:['Borrador','#6b6c66','rgba(107,108,102,.14)']}[pr.status]||['—','#6b6c66','rgba(107,108,102,.14)'];
+      return {badge:m[0],badgeStyle:badge(m[1],m[2])};
+    };
+    const projects=(s.projects||[]).slice(0,6).map(pr=>{const b=projMeta(pr);return {title:pr.title,meta:(pr.type||'').toUpperCase(),badge:b.badge,badgeStyle:b.badgeStyle,thumb:pr.heroImage,href:'Dashboard-Proyectos-edit.dc.html?id='+pr.id};});
+    return { cards, actions, posts, projects };
+  }
+}
+</script>
+</body>
+</html>

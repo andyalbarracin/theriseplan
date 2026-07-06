@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+<script src="./responsive-fit.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Over+the+Rainbow&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}html,body{margin:0;padding:0;background:#EDEAE3}a{text-decoration:none;color:inherit}::selection{background:#2F5DAA;color:#F4F2EF}input::placeholder,textarea::placeholder{color:#a8a59d}</style>
+</helmet>
+<div data-fit-width="1440" style="width:1440px;margin:0 auto;position:relative;background:#F4F2EF;overflow:hidden;font-family:'Inter',system-ui,sans-serif;color:#1B1D20;-webkit-font-smoothing:antialiased">
+  <div style="position:absolute;inset:0;pointer-events:none;z-index:60;opacity:0.05;mix-blend-mode:multiply;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+
+  <dc-import name="SiteHeader" hint-size="100%,92px"></dc-import>
+
+  <main data-screen-label="Hablemos" style="position:relative;padding:64px 56px 60px">
+    <div style="max-width:700px">
+      <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.24em;color:#9a988f">05 / HABLEMOS</div>
+      <h1 style="margin:18px 0 0;font-family:'Playfair Display',serif;font-weight:500;font-size:88px;line-height:.98;letter-spacing:-.02em;color:#1A1C1F">Hablemos</h1>
+      <p style="margin:10px 0 0;font-family:'Over the Rainbow',cursive;font-size:32px;color:#2F5DAA">cuéntame tu idea.</p>
+      <p style="margin:26px 0 0;font-size:15.5px;line-height:1.62;color:#4a4c50;max-width:500px">¿Tienes un proyecto, una historia o una idea en tránsito? Escríbeme. Respondo personalmente.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 400px;gap:80px;margin-top:56px;align-items:start">
+      <!-- form -->
+      <div>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="border:1px solid #cbc7bc;background:#EAE6DD;padding:56px 48px;text-align:center">
+            <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.2em;color:#2F5DAA">MENSAJE ENVIADO</div>
+            <h2 style="margin:20px 0 0;font-family:'Playfair Display',serif;font-weight:500;font-size:40px;color:#1B1D20">Gracias por escribir.</h2>
+            <p style="margin:14px 0 0;font-size:15px;line-height:1.6;color:#4a4c50">Te responderé pronto, personalmente. Mientras tanto, buen viaje.</p>
+            <button onClick="{{ reset }}" style="margin-top:28px;background:none;border:none;border-bottom:1px solid #1B1D20;padding:0 0 5px;font-family:'Inter',sans-serif;font-size:14px;color:#1B1D20;cursor:pointer">Enviar otro mensaje</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <form onSubmit="{{ submit }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px">
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">NOMBRE</label>
+                <input value="{{ name }}" onChange="{{ setName }}" placeholder="Escribe tu nombre" style="display:block;width:100%;margin-top:10px;height:52px;background:transparent;border:1px solid #cbc7bc;border-radius:2px;padding:0 16px;font-family:'Inter',sans-serif;font-size:14.5px;color:#1B1D20;outline:none">
+              </div>
+              <div>
+                <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">EMAIL</label>
+                <input value="{{ email }}" onChange="{{ setEmail }}" type="email" placeholder="tu@correo.com" style="display:block;width:100%;margin-top:10px;height:52px;background:transparent;border:1px solid #cbc7bc;border-radius:2px;padding:0 16px;font-family:'Inter',sans-serif;font-size:14.5px;color:#1B1D20;outline:none">
+              </div>
+            </div>
+            <div style="margin-top:26px">
+              <label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:#9a988f">MENSAJE</label>
+              <textarea value="{{ msg }}" onChange="{{ setMsg }}" placeholder="Cuéntame sobre tu proyecto..." style="display:block;width:100%;margin-top:10px;height:170px;background:transparent;border:1px solid #cbc7bc;border-radius:2px;padding:16px;font-family:'Inter',sans-serif;font-size:14.5px;color:#1B1D20;outline:none;resize:none"></textarea>
+            </div>
+            <button type="submit" style="display:inline-flex;align-items:center;gap:44px;margin-top:28px;background:#0D0D0E;border:none;border-radius:3px;padding:0 30px;height:58px;color:#F4F2EF;font-family:'Inter',sans-serif;font-size:14.5px;letter-spacing:.02em;cursor:pointer">Enviar mensaje <span style="font-size:16px">&#8594;</span></button>
+          </form>
+        </sc-if>
+      </div>
+
+      <!-- info -->
+      <div>
+        <div style="display:flex;flex-direction:column;gap:32px">
+          <div style="border-top:1px solid #d9d5cc;padding-top:18px">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;color:#9a988f">ESCRÍBEME</div>
+            <p style="margin:12px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">hola@andyalbarracin.com</p>
+          </div>
+          <div style="border-top:1px solid #d9d5cc;padding-top:18px">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;color:#9a988f">UBICACIÓN</div>
+            <p style="margin:12px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Buenos Aires</p>
+          </div>
+          <div style="border-top:1px solid #d9d5cc;padding-top:18px">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.18em;color:#9a988f">DISPONIBILIDAD</div>
+            <p style="margin:12px 0 0;font-family:'Playfair Display',serif;font-size:22px;color:#1B1D20">Proyectos globales · 2026</p>
+          </div>
+        </div>
+        <div style="display:flex;gap:14px;margin-top:34px;color:#55565a">
+          <a href="#" aria-label="Instagram" style="width:44px;height:44px;border:1px solid #cbc7bc;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#55565a"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="#" aria-label="LinkedIn" style="width:44px;height:44px;border:1px solid #cbc7bc;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#55565a"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 0 5 8.5a2.5 2.5 0 0 0-.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05C20.4 8.65 21 10.9 21 14v7h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.6-2.38 3.27V21H9z"/></svg></a>
+          <a href="#" aria-label="YouTube" style="width:44px;height:44px;border:1px solid #cbc7bc;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#55565a"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.2 9.3v5.4l4.6-2.7z" fill="currentColor" stroke="none"/></svg></a>
+        </div>
+        <p style="margin:34px 0 0;font-family:'Over the Rainbow',cursive;font-size:24px;line-height:1.4;color:#2F5DAA">respondo<br>personalmente.</p>
+      </div>
+    </div>
+  </main>
+
+  <dc-import name="SiteFooter" hint-size="100%,520px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { name:'', email:'', msg:'', sent:false };
+  renderVals(){
+    const s=this.state;
+    return {
+      name:s.name, email:s.email, msg:s.msg, sent:s.sent, notSent:!s.sent,
+      setName:(e)=>this.setState({name:e.target.value}),
+      setEmail:(e)=>this.setState({email:e.target.value}),
+      setMsg:(e)=>this.setState({msg:e.target.value}),
+      submit:(e)=>{ e.preventDefault(); this.setState({sent:true}); },
+      reset:()=>this.setState({sent:false,name:'',email:'',msg:''})
+    };
+  }
+}
+</script>
+</body>
+</html>

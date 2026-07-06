@@ -1,0 +1,18 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{margin:0;font-family:monospace;background:#111;color:#fff}.row{display:flex;flex-wrap:wrap;gap:8px;padding:8px}figure{margin:0;width:230px}img{width:230px;height:150px;object-fit:cover;background:#333;display:block}figcaption{font-size:10px;padding:4px}</style></head>
+<body>
+<div class="row">
+  <figure><img id="i1" src="https://picsum.photos/id/1018/460/300"><figcaption id="c1">picsum id/1018</figcaption></figure>
+  <figure><img id="i2" src="https://picsum.photos/seed/andy/460/300"><figcaption id="c2">picsum seed</figcaption></figure>
+  <figure><img id="i3" src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=460&q=80"><figcaption id="c3">unsplash</figcaption></figure>
+  <figure><img id="i4" src="https://images.pexels.com/photos/33545/sunrise-phu-quoc-island-ocean.jpg?auto=compress&w=460"><figcaption id="c4">pexels</figcaption></figure>
+  <figure><img id="i5" src="https://fastly.picsum.photos/id/10/460/300.jpg?hmac=uQnw2N8xL"><figcaption id="c5">fastly picsum</figcaption></figure>
+  <figure><img id="i6" src="https://source.unsplash.com/460x300/?mountain"><figcaption id="c6">source.unsplash</figcaption></figure>
+</div>
+<script>
+window.addEventListener('load',()=>{
+  for(let i=1;i<=6;i++){const im=document.getElementById('i'+i),cap=document.getElementById('c'+i);
+    setTimeout(()=>{cap.textContent+= im.naturalWidth>0? ('  OK '+im.naturalWidth+'x'+im.naturalHeight):'  FAIL/pending';cap.style.color=im.naturalWidth>0?'#6f6':'#f66';},3500);
+  }
+});
+</script>
+</body></html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cormorant+Garamond:wght@500;600&family=Libre+Baskerville:wght@400;700&family=Inter:wght@300;400;500;600&family=Work+Sans:wght@300;400;500;600&family=Over+the+Rainbow&family=Caveat:wght@500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#EDEAE3}
+  a{text-decoration:none;color:inherit}
+  ::selection{background:var(--accent,#2F5DAA);color:#F4F2EF}
+  .flmfrm{transition:transform .3s ease}
+  .flmfrm:hover{transform:translateY(-4px)}
+  .hcard{transition:transform .3s ease}
+  .hcard:hover{transform:translateY(-4px)}
+</style>
+</helmet>
+<div style="position:relative;width:100%;min-height:100vh;background:#F4F2EF;overflow-x:hidden;font-family:var(--font-sans,'Inter',system-ui,sans-serif);color:#1B1D20;-webkit-font-smoothing:antialiased">
+
+  <!-- paper grain -->
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:70;opacity:0.045;mix-blend-mode:multiply;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+
+  <!-- ==================== DESKTOP (scaled collage) ==================== -->
+  <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+  <div style="position:relative;width:100%;height:{{ stageHeight }};overflow:hidden">
+  <div id="homeStage" style="position:absolute;top:0;left:{{ stageLeft }};width:1440px;transform:{{ stageTransform }};transform-origin:top left;background:#F4F2EF">
+
+    <!-- FULL-BLEED HERO BACKGROUND (vertical slider) -->
+    <div style="position:absolute;left:0;right:0;top:0;height:1960px;z-index:0;overflow:hidden;pointer-events:none">
+      <sc-for list="{{ slideLayers }}" as="layer" hint-placeholder-count="0">
+        <img src="{{ layer.src }}" alt="" style="{{ layer.style }}">
+      </sc-for>
+      <!-- FIXED fades (customizable from dashboard). Any hero image blends: dark -> header (top), paper -> next section (bottom). -->
+      <div style="position:absolute;left:0;right:0;top:0;height:var(--hero-fade-top-h,240px);background:linear-gradient(180deg,var(--hero-fade-top-color,rgba(11,13,16,.82)) 0%,transparent 100%)"></div>
+      <div style="position:absolute;left:0;top:0;bottom:0;width:var(--hero-fade-side-w,62%);background:linear-gradient(90deg,var(--hero-fade-side-color,rgba(9,11,15,.6)) 0%,transparent 100%)"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,11,14,.12) 0%,rgba(10,11,14,.02) 32%,rgba(11,12,15,.28) 80%,rgba(11,12,15,.38) 100%)"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:var(--hero-fade-bottom-h,440px);background:linear-gradient(180deg,transparent 0%,color-mix(in srgb,var(--hero-fade-bottom-color,#F4F2EF) 3%,transparent) 24%,color-mix(in srgb,var(--hero-fade-bottom-color,#F4F2EF) 12%,transparent) 46%,color-mix(in srgb,var(--hero-fade-bottom-color,#F4F2EF) 34%,transparent) 66%,color-mix(in srgb,var(--hero-fade-bottom-color,#F4F2EF) 72%,transparent) 84%,var(--hero-fade-bottom-color,#F4F2EF) 100%)"></div>
+    </div>
+
+    <dc-import name="SiteHeader" tone="light" style="position:relative;z-index:30;display:block" hint-size="100%,92px"></dc-import>
+
+    <!-- ============ HERO ============ -->
+    <section aria-label="Hero" data-screen-label="Hero" style="position:relative;height:1140px;z-index:2">
+
+      <div style="position:absolute;left:56px;top:150px;width:660px;z-index:5">
+        <h1 style="margin:0;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:calc(94px*var(--h-scale,1));line-height:.96;letter-spacing:-.022em;color:#F7F5EF;white-space:nowrap;text-shadow:0 2px 34px rgba(8,7,4,.55)">Ideas<br>en tránsito.</h1>
+        <p style="margin:16px 0 0;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:38px;line-height:1;color:var(--hero-accent,#9db8ec);text-shadow:0 2px 20px rgba(8,7,4,.45)">crear desde <span style="border-bottom:2px solid var(--hero-accent,#9db8ec);padding-bottom:4px">el movimiento.</span></p>
+        <p style="margin:34px 0 0;font-size:15px;line-height:1.6;color:rgba(244,242,239,.88);max-width:310px;text-shadow:0 1px 12px rgba(8,7,4,.55)">Archivo personal de un director creativo que construye, viaja y crea en movimiento.</p>
+        <a href="Cuaderno.dc.html" style="display:inline-flex;align-items:center;gap:16px;margin-top:30px;font-size:15px;color:#F4F2EF;border-bottom:1px solid rgba(244,242,239,.7);padding-bottom:5px">Explorar archivo <span style="font-size:17px">&#8594;</span></a>
+      </div>
+
+      <!-- (sticky note / taped photo removed per request) -->
+
+      <!-- VERTICAL ROUTE SLIDER (right) -->
+      <div style="position:absolute;left:1300px;top:146px;height:600px;display:flex;flex-direction:column;align-items:center;gap:12px;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.24em;color:rgba(244,242,239,.72);z-index:6">
+        <button onClick="{{ prev }}" aria-label="Anterior destino" style="width:26px;height:26px;border-radius:50%;border:1px solid rgba(244,242,239,.45);background:rgba(13,13,14,.28);color:#F7F5EF;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">&#8593;</button>
+        <span style="writing-mode:vertical-rl;color:#F7F5EF;font-weight:700">{{ originCode }}</span>
+        <span style="writing-mode:vertical-rl;font-size:9px;opacity:.75">{{ originCity }}</span>
+        <span style="flex:1;width:1px;background:linear-gradient(rgba(244,242,239,.55),rgba(244,242,239,.12))"></span>
+        <span style="font-size:15px;color:#F7F5EF;letter-spacing:0;text-shadow:0 1px 8px rgba(8,7,4,.5)">&#9992;</span>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:9px;padding:4px 0">
+          <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+            <button onClick="{{ d.onClick }}" aria-label="Ir al destino" style="{{ d.style }}"></button>
+          </sc-for>
+        </div>
+        <span style="flex:1;width:1px;background:linear-gradient(rgba(244,242,239,.12),rgba(244,242,239,.55))"></span>
+        <span style="writing-mode:vertical-rl;color:#F7F5EF;font-weight:700">{{ destCode }}</span>
+        <span style="writing-mode:vertical-rl;font-size:9px;opacity:.75">{{ destCity }}</span>
+        <button onClick="{{ next }}" aria-label="Siguiente destino" style="width:26px;height:26px;border-radius:50%;border:none;background:#F4F2EF;color:#1B1D20;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">&#8595;</button>
+      </div>
+
+      <!-- handwritten note bottom-left -->
+      <p style="position:absolute;left:66px;top:700px;margin:0;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:23px;line-height:1.5;color:#a9c2f0;text-shadow:0 2px 16px rgba(8,7,4,.5);z-index:5">No todo viaje<br>merece una foto.<br>Algunos solo<br>ordenan la cabeza.
+        <span style="display:block;width:70px;height:1px;background:#a9c2f0;margin-top:8px;transform:rotate(-3deg)"></span>
+      </p>
+
+      <!-- ghost paper scrap behind boarding pass -->
+      <div style="position:absolute;left:352px;top:648px;width:170px;height:210px;transform:rotate(-4deg);background:linear-gradient(150deg,#efece4,#e2ded3);box-shadow:0 8px 20px -8px rgba(0,0,0,.18);opacity:.85;z-index:3">
+        <div style="position:absolute;inset:14px;background:repeating-linear-gradient(0deg,rgba(120,116,108,.16) 0 1px,transparent 1px 9px)"></div>
+      </div>
+
+      <!-- BOARDING PASS (interactive · BUE → destino) -->
+      <div style="position:absolute;left:322px;top:592px;width:648px;transform:rotate(-1.1deg);display:flex;box-shadow:0 26px 50px -22px rgba(20,18,14,.5);z-index:5">
+        <div style="flex:1;background:linear-gradient(160deg,#faf8f3,#eeebe2);position:relative;padding:24px 30px 22px">
+          <div style="position:absolute;left:-6px;top:0;bottom:0;width:12px;background:radial-gradient(circle at left,transparent 0 5px,#faf8f3 5px);background-size:12px 16px;background-repeat:repeat-y"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:26px;font-weight:600;letter-spacing:.02em;color:#1B1D20">{{ pass.code }}</div>
+              <div style="font-size:10px;letter-spacing:.22em;color:#8a887f;margin-top:3px">BOARDING PASS</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;font-size:26px;font-weight:600;color:#1B1D20">
+              <span>{{ pass.from }}</span>
+              <span style="font-size:16px;color:#6E7C8B">&#8594;</span>
+              <button onClick="{{ prev }}" aria-label="Destino anterior" style="width:26px;height:26px;border-radius:50%;border:1px solid #cfcabd;background:#fff;color:#1B1D20;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">&#8249;</button>
+              <span style="min-width:74px;text-align:center">{{ pass.to }}</span>
+              <button onClick="{{ next }}" aria-label="Destino siguiente" style="width:26px;height:26px;border-radius:50%;border:none;background:#1B1D20;color:#F4F2EF;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">&#8250;</button>
+              <span style="font-size:20px">&#9992;</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:3px;justify-content:flex-end">
+            <span style="font-size:9px;letter-spacing:.14em;color:#a09e95;text-align:left">{{ pass.fromCity }}</span>
+            <span style="font-size:9px;letter-spacing:.14em;color:#8a887f">&#183;</span>
+            <span style="font-size:9px;letter-spacing:.14em;color:#a09e95">{{ pass.toCity }}</span>
+          </div>
+          <div style="height:1px;background:repeating-linear-gradient(90deg,#cfccc2 0 6px,transparent 6px 12px);margin:15px 0 13px"></div>
+          <div style="display:flex;align-items:flex-end;justify-content:space-between">
+            <div style="height:44px;flex:1;background-image:repeating-linear-gradient(90deg,#1B1D20 0 1px,transparent 1px 2px,#1B1D20 2px 4px,transparent 4px 7px,#1B1D20 7px 9px,transparent 9px 12px);max-width:210px"></div>
+            <div style="display:flex;gap:24px;text-align:left">
+              <div><div style="font-size:8px;letter-spacing:.16em;color:#a09e95">FLIGHT</div><div style="font-size:14px;font-weight:600;margin-top:3px">{{ pass.flight }}</div></div>
+              <div><div style="font-size:8px;letter-spacing:.16em;color:#a09e95">DATE</div><div style="font-size:14px;font-weight:600;margin-top:3px">{{ pass.date }}</div></div>
+              <div><div style="font-size:8px;letter-spacing:.16em;color:#a09e95">GATE</div><div style="font-size:14px;font-weight:600;margin-top:3px">{{ pass.gate }}</div></div>
+              <div><div style="font-size:8px;letter-spacing:.16em;color:#a09e95">SEAT</div><div style="font-size:14px;font-weight:600;margin-top:3px">{{ pass.seat }}</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="width:150px;background:linear-gradient(160deg,#f7f5f0,#eceadf);padding:24px 22px;border-left:1px dashed #cbc8be">
+          <div style="font-size:8px;letter-spacing:.16em;color:#a09e95">BOARDING</div>
+          <div style="font-size:20px;font-weight:600;margin-top:3px">{{ pass.boarding }}</div>
+          <div style="font-size:8px;letter-spacing:.16em;color:#a09e95;margin-top:14px">ZONE</div>
+          <div style="font-size:16px;font-weight:600;margin-top:3px">{{ pass.zone }}</div>
+          <div style="font-size:8px;letter-spacing:.16em;color:#a09e95;margin-top:14px">DESTINO</div>
+          <div style="font-size:13px;font-weight:600;margin-top:3px;font-family:'Space Mono',monospace">{{ slideCounter }}</div>
+        </div>
+        <div style="width:56px;background:#0D0D0E;display:flex;align-items:center;justify-content:center">
+          <span style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;letter-spacing:.34em;color:#f4f2ef">PRIORITY</span>
+        </div>
+      </div>
+
+      <!-- stamp seal -->
+      <div style="position:absolute;left:1150px;top:770px;width:132px;height:132px;border-radius:50%;border:1.5px solid var(--accent,#2F5DAA);display:flex;align-items:center;justify-content:center;color:#bcd0f2;opacity:.95;z-index:5">
+        <div style="position:absolute;inset:9px;border-radius:50%;border:1px solid var(--accent,#2F5DAA)"></div>
+        <span style="font-family:var(--font-serif,'Playfair Display',serif);font-size:30px">AA</span>
+        <div style="position:absolute;inset:0;font-family:'Space Mono',monospace">
+          <svg viewBox="0 0 132 132" style="width:100%;height:100%"><defs><path id="cir" d="M66,66 m-48,0 a48,48 0 1,1 96,0 a48,48 0 1,1 -96,0"/></defs><text style="font-size:9px;letter-spacing:.18em;fill:var(--accent,#2F5DAA)"><textPath href="#cir" startOffset="0%">· IDEAS EN TRÁNSITO · ARCHIVO PERSONAL </textPath></text></svg>
+        </div>
+      </div>
+
+      <!-- coordinates (dynamic) -->
+      <div style="position:absolute;left:1150px;top:1020px;display:flex;align-items:center;gap:12px;z-index:5">
+        <span style="font-size:22px;color:rgba(244,242,239,.72);font-weight:300">+</span>
+        <div style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.06em;line-height:1.6;color:rgba(244,242,239,.82);text-shadow:0 1px 10px rgba(8,7,4,.5);max-width:150px">{{ curCoords }}</div>
+      </div>
+    </section>
+
+    <!-- ============ CARDS ============ -->
+    <section data-screen-label="Archivo · categorías" style="position:relative;z-index:2;padding:20px 56px 70px">
+      <div style="position:absolute;left:30px;top:-40px;bottom:-40px;width:0;border-left:1.5px dashed rgba(244,242,239,.3)"></div>
+      <div style="position:absolute;left:22px;top:118px;color:rgba(157,184,236,.85);font-size:24px;font-weight:300;line-height:1">+</div>
+      <div style="display:flex;gap:36px;align-items:flex-start">
+
+        <a href="Cuaderno.dc.html" class="hcard" style="flex:1;max-width:212px;display:flex;flex-direction:column">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;color:rgba(244,242,239,.62)">01</span>
+          <h3 style="margin:9px 0 15px;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:calc(25px*var(--h-scale,1));line-height:1;color:#F7F5EF">Cuaderno</h3>
+          <div style="position:relative;width:100%;aspect-ratio:212/302;overflow:hidden;background:#241f18;box-shadow:inset 0 0 70px rgba(8,7,4,.55)"><img src="images/notebook.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(8,7,4,.5))"></div>
+            <span style="position:absolute;left:12px;bottom:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.26em;color:rgba(244,242,239,.32)">CUADERNO · 35MM</span>
+          </div>
+          <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:rgba(244,242,239,.82)">Notas. Ideas.<br>Reflexiones.</p>
+          <span style="margin-top:16px;font-size:19px;color:#F7F5EF">&#8594;</span>
+        </a>
+
+        <a href="Cuaderno.dc.html" class="hcard" style="flex:1;max-width:212px;display:flex;flex-direction:column">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;color:rgba(244,242,239,.62)">02</span>
+          <h3 style="margin:9px 0 15px;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:calc(25px*var(--h-scale,1));line-height:1;color:#F7F5EF">Gente que viaja</h3>
+          <div style="position:relative;width:100%;aspect-ratio:212/302;overflow:hidden;background:#2b2f2c;box-shadow:inset 0 0 70px rgba(8,7,4,.55)"><img src="images/boarding-area.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+            <div style="position:absolute;inset:0;background:radial-gradient(80% 60% at 62% 92%,rgba(6,7,5,.8),transparent 60%),linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(8,8,5,.5))"></div>
+            <span style="position:absolute;left:12px;bottom:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.26em;color:rgba(244,242,239,.32)">GATE · A16</span>
+          </div>
+          <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:rgba(244,242,239,.82)">Conversaciones<br>que inspiran.</p>
+          <span style="margin-top:16px;font-size:19px;color:#F7F5EF">&#8594;</span>
+        </a>
+
+        <a href="Proyectos.dc.html" class="hcard" style="flex:1;max-width:212px;display:flex;flex-direction:column">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;color:rgba(244,242,239,.62)">03</span>
+          <h3 style="margin:9px 0 15px;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:calc(25px*var(--h-scale,1));line-height:1;color:#F7F5EF">The Rise Plan</h3>
+          <div style="position:relative;width:100%;aspect-ratio:212/302;overflow:hidden;background:#20252b;box-shadow:inset 0 0 70px rgba(8,7,4,.55)"><img src="images/mountains.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(8,9,12,.55))"></div>
+            <span style="position:absolute;left:12px;bottom:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.26em;color:rgba(244,242,239,.34)">ANDES · 4200M</span>
+          </div>
+          <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:rgba(244,242,239,.82)">Disciplina.<br>Dirección.<br>Destino.</p>
+          <span style="margin-top:16px;font-size:19px;color:#F7F5EF">&#8594;</span>
+        </a>
+
+        <a href="Proyectos.dc.html" class="hcard" style="flex:1;max-width:212px;display:flex;flex-direction:column">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;color:rgba(244,242,239,.62)">04</span>
+          <h3 style="margin:9px 0 15px;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:calc(25px*var(--h-scale,1));line-height:1;color:#F7F5EF">Proyectos</h3>
+          <div style="position:relative;width:100%;aspect-ratio:212/302;overflow:hidden;background:#141922;box-shadow:inset 0 0 70px rgba(4,5,9,.6)"><img src="images/workspace.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(4,5,9,.55))"></div>
+            <span style="position:absolute;left:12px;bottom:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.26em;color:rgba(244,242,239,.34)">STUDIO · 02:14</span>
+          </div>
+          <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:rgba(244,242,239,.82)">Historias que<br>estoy creando.</p>
+          <span style="margin-top:16px;font-size:19px;color:#F7F5EF">&#8594;</span>
+        </a>
+
+        <a href="Ahora.dc.html" class="hcard" style="flex:1;max-width:212px;display:flex;flex-direction:column">
+          <span style="font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.14em;color:rgba(244,242,239,.62)">05</span>
+          <h3 style="margin:9px 0 15px;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:calc(25px*var(--h-scale,1));line-height:1;color:#F7F5EF">Ahora</h3>
+          <div style="position:relative;width:100%;aspect-ratio:212/302;overflow:hidden;background:#191a26;box-shadow:inset 0 0 70px rgba(6,6,10,.55)"><img src="images/city-window.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(6,6,10,.5))"></div>
+            <span style="position:absolute;left:12px;bottom:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.26em;color:rgba(244,242,239,.34)">CIUDAD · 18:40</span>
+          </div>
+          <p style="margin:18px 0 0;font-size:13.5px;line-height:1.5;color:rgba(244,242,239,.82)">Lo que estoy<br>pensando.<br>Haciendo.</p>
+          <span style="margin-top:16px;font-size:19px;color:#F7F5EF">&#8594;</span>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ============ ARCHIVE BAND (film + map + zaire) ============ -->
+    <section data-screen-label="Archivo visual · Zaire" style="position:relative;height:872px;margin-top:104px">
+
+      <!-- archive tag -->
+      <div style="position:absolute;left:56px;top:70px;width:158px;height:298px;transform:rotate(-1.5deg);background:linear-gradient(160deg,#f3f0e8,#e6e2d7);box-shadow:0 14px 30px -14px rgba(0,0,0,.22)">
+        <div style="position:absolute;left:36px;top:-12px;width:96px;height:26px;transform:rotate(-3deg);background:linear-gradient(180deg,rgba(220,206,182,.9),rgba(203,188,160,.8));opacity:.85"></div>
+        <div style="padding:34px 20px">
+          <div style="font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.12em;color:#3b3a34">ARCHIVO<br><span style="font-size:15px;font-weight:700">35MM</span></div>
+          <div style="margin-top:26px;display:flex;flex-direction:column;gap:16px;font-family:'Space Mono',monospace">
+            <div><div style="font-size:8px;letter-spacing:.16em;color:#a29f95">CABIN</div><div style="font-size:13px;font-weight:700;color:#28271f">Y</div></div>
+            <div><div style="font-size:8px;letter-spacing:.16em;color:#a29f95">DATE</div><div style="font-size:13px;font-weight:700;color:#28271f">28MAY</div></div>
+            <div><div style="font-size:8px;letter-spacing:.16em;color:#a29f95">ORIG</div><div style="font-size:13px;font-weight:700;color:#28271f">ARG</div></div>
+            <div><div style="font-size:8px;letter-spacing:.16em;color:#a29f95">SEQ.</div><div style="font-size:13px;font-weight:700;color:#28271f">0126</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILM STRIP (each frame = a post) -->
+      <div style="position:absolute;left:150px;top:150px;width:772px;height:212px;transform:rotate(-1deg);background:#0b0b0a;box-shadow:0 24px 44px -20px rgba(0,0,0,.6)">
+        <div style="position:absolute;left:8px;right:8px;top:7px;height:11px;background:repeating-linear-gradient(90deg,#d6d3ca 0 11px,#0b0b0a 11px 23px)"></div>
+        <div style="position:absolute;left:8px;right:8px;bottom:7px;height:11px;background:repeating-linear-gradient(90deg,#d6d3ca 0 11px,#0b0b0a 11px 23px)"></div>
+        <div style="position:absolute;left:10px;right:10px;top:26px;bottom:26px;display:flex;gap:7px">
+          <!-- departures board (control cell) -->
+          <div style="flex:1.02;position:relative;overflow:hidden;background:#080808;padding:12px 10px">
+            <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.08em;color:#e0a53a">DEPARTURES</div>
+            <div style="margin-top:8px;display:flex;flex-direction:column;gap:3px;font-family:'Space Mono',monospace;font-size:8px;line-height:1.1">
+              <div style="display:flex;justify-content:space-between;color:#d8b46a"><span>07:15 MADRID</span><span style="color:#e0a53a">BRDG</span></div>
+              <div style="display:flex;justify-content:space-between;color:#d8b46a"><span>08:40 MIAMI</span><span style="color:#7fae7f">ON TIME</span></div>
+              <div style="display:flex;justify-content:space-between;color:#d8b46a"><span>09:10 BOGOTÁ</span><span style="color:#7fae7f">ON TIME</span></div>
+              <div style="display:flex;justify-content:space-between;color:#d8b46a"><span>10:35 SANTIAGO</span><span style="color:#c98a3a">DELAYED</span></div>
+              <div style="display:flex;justify-content:space-between;color:#d8b46a"><span>11:25 LIMA</span><span style="color:#7fae7f">ON TIME</span></div>
+              <div style="display:flex;justify-content:space-between;color:#d8b46a"><span>12:45 SÃO PAULO</span><span style="color:#c0574a">CANCEL</span></div>
+            </div>
+          </div>
+          <sc-for list="{{ films }}" as="f" hint-placeholder-count="0">
+            <a href="{{ f.url }}" class="flmfrm" style="flex:1;position:relative;overflow:hidden;background:#101010;display:block;text-decoration:none">
+              <img src="{{ f.img }}" alt="{{ f.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover" />
+              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 42%,rgba(6,7,6,.78))"></div>
+              <sc-if value="{{ f.isVideo }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:rgba(13,13,14,.5);border:1px solid rgba(244,242,239,.8);display:flex;align-items:center;justify-content:center"><span style="margin-left:2px;border-left:9px solid #F4F2EF;border-top:6px solid transparent;border-bottom:6px solid transparent"></span></div>
+              </sc-if>
+              <span style="position:absolute;left:7px;bottom:7px;right:6px;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:.14em;color:rgba(244,242,239,.82);line-height:1.2">{{ f.label }}</span>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- world map (dotted) -->
+      <div style="position:absolute;left:602px;top:176px;width:562px;height:248px;opacity:.5;background-image:radial-gradient(circle,#8b97a0 1.1px,transparent 1.5px);background-size:10px 10px;-webkit-mask-image:radial-gradient(125% 100% at 42% 46%,#000 38%,transparent 80%);mask-image:radial-gradient(125% 100% at 42% 46%,#000 38%,transparent 80%)"></div>
+
+      <!-- route line + plane + circles -->
+      <div style="position:absolute;left:470px;top:22px;width:712px;height:300px;pointer-events:none">
+        <svg viewBox="0 0 712 300" style="width:100%;height:100%">
+          <path d="M 70,168 C 190,84 300,196 432,132 S 592,52 664,58" fill="none" stroke="#3a3a36" stroke-width="1.4" stroke-dasharray="2 6" stroke-linecap="round"/>
+          <path d="M 664,120 C 610,168 520,150 470,186 S 360,214 300,206" fill="none" stroke="#3a3a36" stroke-width="1.4" stroke-dasharray="2 6" stroke-linecap="round"/>
+          <ellipse cx="316" cy="206" rx="15" ry="8" transform="rotate(-14 316 206)" fill="none" stroke="var(--accent,#2F5DAA)" stroke-width="1.4"/>
+          <ellipse cx="470" cy="186" rx="13" ry="7" transform="rotate(-10 470 186)" fill="none" stroke="var(--accent,#2F5DAA)" stroke-width="1.4"/>
+          <ellipse cx="612" cy="150" rx="12" ry="7" transform="rotate(8 612 150)" fill="none" stroke="var(--accent,#2F5DAA)" stroke-width="1.4"/>
+        </svg>
+        <span style="position:absolute;right:36px;top:24px;font-size:22px;color:#1B1D20;transform:rotate(-8deg)">&#9992;</span>
+      </div>
+
+      <!-- Walter Mitty quote -->
+      <div style="position:absolute;left:588px;top:22px;width:392px;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:21px;line-height:1.5;color:var(--accent,#2F5DAA)">
+        <p style="margin:0">Ver el mundo, afrontar peligros,<br>traspasar muros, acercarse a los demás,<br>encontrarse y sentir.<br>Ese es el propósito de la vida.</p>
+        <div style="width:64px;height:1px;background:var(--accent,#2F5DAA);margin:4px 0 0 84px"></div>
+        <p style="margin:10px 0 0;text-align:right;font-size:20px">— Walter Mitty.</p>
+      </div>
+
+      <!-- POLAROID (pushed down for breathing room) -->
+      <div style="position:absolute;left:56px;top:456px;width:366px;height:322px;transform:rotate(-3deg);background:#f6f3ec;padding:14px 14px 0;box-shadow:0 26px 46px -22px rgba(0,0,0,.4)">
+        <div style="position:absolute;left:-14px;top:64px;width:92px;height:30px;transform:rotate(-64deg);background:linear-gradient(180deg,rgba(220,206,182,.92),rgba(200,185,157,.8));opacity:.82"></div>
+        <div style="position:relative;width:100%;height:236px;overflow:hidden;background:#1d2016"><img src="images/workspace.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0" />
+          <div style="position:absolute;inset:0;box-shadow:inset 0 0 60px rgba(6,7,4,.6)"></div>
+          <span style="position:absolute;left:12px;bottom:10px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.26em;color:rgba(244,242,239,.34)">STUDIO · BUE</span>
+        </div>
+        <p style="margin:0;height:72px;display:flex;align-items:center;justify-content:center;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:24px;color:var(--accent,#2F5DAA)">enfocado en lo que <span style="border-bottom:2px solid var(--accent,#2F5DAA);padding-bottom:2px;margin-left:6px">importa.</span></p>
+      </div>
+
+      <!-- ZAIRE block (pushed down for breathing room) -->
+      <div style="position:absolute;left:470px;top:494px;width:352px">
+        <h2 style="margin:0;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:52px;letter-spacing:.06em;color:#1B1D20">ZAIRE</h2>
+        <div style="display:flex;gap:10px;margin:20px 0 0">
+          <span style="font-size:10px;letter-spacing:.14em;color:#6b6c66;border:1px solid #cbc7bc;border-radius:20px;padding:6px 13px">DOCUMENTAL</span>
+          <span style="font-size:10px;letter-spacing:.14em;color:#6b6c66;border:1px solid #cbc7bc;border-radius:20px;padding:6px 13px">ÁFRICA</span>
+          <span style="font-size:10px;letter-spacing:.14em;color:#6b6c66;border:1px solid #cbc7bc;border-radius:20px;padding:6px 13px">HISTORIA REAL</span>
+        </div>
+        <p style="margin:22px 0 0;font-size:14.5px;line-height:1.62;color:#4a4c50">Documental en desarrollo.<br>Un viaje a lo profundo de África Central para contar historias de resiliencia, naturaleza y humanidad.</p>
+        <a href="Proyectos.dc.html" style="display:inline-flex;align-items:center;gap:16px;margin-top:26px;font-size:14.5px;color:#1B1D20;border-bottom:1px solid #1B1D20;padding-bottom:5px">Ver proyecto <span style="font-size:16px">&#8594;</span></a>
+      </div>
+
+      <!-- carousel (pushed down for breathing room) -->
+      <div style="position:absolute;left:1024px;top:462px;width:216px;height:322px">
+        <div style="position:relative;width:100%;height:100%;overflow:hidden;background:#12140f;box-shadow:0 22px 44px -22px rgba(0,0,0,.5)">
+          <div style="position:absolute;inset:0;background:{{ galBg }};transition:background .5s ease"></div>
+          <div style="position:absolute;inset:0;box-shadow:inset 0 0 70px rgba(6,8,6,.6);background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(6,8,6,.5))"></div>
+          <div style="position:absolute;left:22px;top:44%;font-family:var(--font-serif,'Playfair Display',serif);font-size:26px;line-height:1.1;color:#f4f2ef">{{ galNum }}<br><span style="opacity:.5">/</span><br>{{ galTotal }}</div>
+        </div>
+        <div style="position:absolute;left:-22px;bottom:-20px;display:flex;gap:10px">
+          <button onClick="{{ galPrev }}" aria-label="Anterior" style="width:44px;height:44px;border-radius:50%;border:1px solid #b9b6ad;background:#F4F2EF;color:#1B1D20;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8592;</button>
+          <button onClick="{{ galNext }}" aria-label="Siguiente" style="width:44px;height:44px;border-radius:50%;border:none;background:#1B1D20;color:#F4F2EF;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center">&#8594;</button>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  </div>
+  </sc-if>
+
+  <!-- ==================== MOBILE (stacked) ==================== -->
+  <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+  <div style="width:100%;position:relative">
+    <div style="position:absolute;top:0;left:0;right:0;z-index:40">
+      <dc-import name="SiteHeader" tone="light" hint-size="100%,72px"></dc-import>
+    </div>
+
+    <!-- hero -->
+    <section data-screen-label="Hero (móvil)" style="position:relative;min-height:648px;overflow:hidden;background:#0D0D0E;display:flex">
+      <sc-for list="{{ slideLayers }}" as="layer" hint-placeholder-count="0">
+        <img src="{{ layer.src }}" alt="" style="{{ layer.style }}">
+      </sc-for>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(9,11,15,.6) 0%,rgba(9,11,15,.18) 34%,rgba(9,11,15,.62) 100%)"></div>
+      <div style="position:relative;z-index:2;width:100%;padding:104px 22px 30px;display:flex;flex-direction:column;min-height:648px">
+        <h1 style="margin:0;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:46px;line-height:.98;letter-spacing:-.02em;color:#F7F5EF;text-shadow:0 2px 24px rgba(8,7,4,.5)">Ideas<br>en tránsito.</h1>
+        <p style="margin:12px 0 0;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:27px;line-height:1;color:var(--hero-accent,#9db8ec)">crear desde el movimiento.</p>
+        <p style="margin:18px 0 0;font-size:14px;line-height:1.6;color:rgba(244,242,239,.9);max-width:320px">Archivo personal de un director creativo que construye, viaja y crea en movimiento.</p>
+        <a href="Cuaderno.dc.html" style="display:inline-flex;align-items:center;gap:12px;margin-top:20px;font-size:14px;color:#F4F2EF;border-bottom:1px solid rgba(244,242,239,.7);padding-bottom:5px;width:fit-content">Explorar archivo <span style="font-size:16px">&#8594;</span></a>
+
+        <div style="flex:1;min-height:24px"></div>
+
+        <!-- mini boarding pass -->
+        <div style="background:linear-gradient(160deg,#faf8f3,#eeebe2);border-radius:6px;box-shadow:0 20px 40px -20px rgba(12,11,8,.7);padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:18px;font-weight:700;color:#1B1D20">{{ pass.code }}</div>
+            <div style="font-size:9px;letter-spacing:.2em;color:#8a887f">BOARDING PASS</div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:#1B1D20">
+              <span>{{ pass.from }}</span><span style="font-size:14px;color:#6E7C8B">&#8594;</span><span style="min-width:56px;text-align:center">{{ pass.to }}</span>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button onClick="{{ prev }}" aria-label="Anterior" style="width:38px;height:38px;border-radius:50%;border:1px solid #cfcabd;background:#fff;color:#1B1D20;font-size:16px;cursor:pointer">&#8249;</button>
+              <button onClick="{{ next }}" aria-label="Siguiente" style="width:38px;height:38px;border-radius:50%;border:none;background:#1B1D20;color:#F4F2EF;font-size:16px;cursor:pointer">&#8250;</button>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:9px;letter-spacing:.1em;color:#8a887f">
+            <span>{{ pass.fromCity }}</span><span>{{ pass.toCity }}</span>
+          </div>
+          <div style="height:1px;background:repeating-linear-gradient(90deg,#cfccc2 0 6px,transparent 6px 12px)"></div>
+          <div style="display:flex;justify-content:space-between;text-align:center">
+            <div><div style="font-size:8px;letter-spacing:.14em;color:#a09e95">FLIGHT</div><div style="font-size:12px;font-weight:600;margin-top:2px">{{ pass.flight }}</div></div>
+            <div><div style="font-size:8px;letter-spacing:.14em;color:#a09e95">DATE</div><div style="font-size:12px;font-weight:600;margin-top:2px">{{ pass.date }}</div></div>
+            <div><div style="font-size:8px;letter-spacing:.14em;color:#a09e95">GATE</div><div style="font-size:12px;font-weight:600;margin-top:2px">{{ pass.gate }}</div></div>
+            <div><div style="font-size:8px;letter-spacing:.14em;color:#a09e95">SEAT</div><div style="font-size:12px;font-weight:600;margin-top:2px">{{ pass.seat }}</div></div>
+          </div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px">
+          <div style="display:flex;gap:9px">
+            <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+              <button onClick="{{ d.onClick }}" aria-label="Destino" style="{{ d.style }}"></button>
+            </sc-for>
+          </div>
+          <p style="margin:0;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:17px;color:#a9c2f0">No todo viaje merece una foto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- category cards -->
+    <section data-screen-label="Archivo (móvil)" style="padding:40px 20px 8px;background:#F4F2EF">
+      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:22px">
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:#a5a29a">01 — 05</span>
+        <h2 style="margin:0;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:26px;color:#1B1D20">El archivo</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="0">
+          <a href="{{ c.url }}" style="display:flex;flex-direction:column;text-decoration:none">
+            <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#a5a29a">{{ c.n }}</span>
+            <h3 style="margin:6px 0 10px;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:19px;line-height:1.05;color:#1B1D20">{{ c.title }}</h3>
+            <div style="position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#1d2016">
+              <img src="{{ c.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+              <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,rgba(8,7,4,.4))"></div>
+            </div>
+            <p style="margin:10px 0 0;font-size:12.5px;line-height:1.45;color:#55565a">{{ c.cap }}</p>
+          </a>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- archive visual + zaire -->
+    <section data-screen-label="Visual · Zaire (móvil)" style="padding:34px 0 44px;background:#F4F2EF">
+      <div style="padding:0 20px;display:flex;align-items:center;gap:12px;margin-bottom:16px">
+        <span style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.2em;color:#a5a29a">35MM</span>
+        <h2 style="margin:0;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:24px;color:#1B1D20">Archivo visual</h2>
+      </div>
+      <!-- film rail (horizontal scroll, each frame a post) -->
+      <div style="display:flex;gap:10px;overflow-x:auto;padding:6px 20px 14px;-webkit-overflow-scrolling:touch">
+        <sc-for list="{{ films }}" as="f" hint-placeholder-count="0">
+          <a href="{{ f.url }}" style="flex:0 0 148px;position:relative;height:186px;border-radius:4px;overflow:hidden;background:#101010;text-decoration:none;display:block">
+            <img src="{{ f.img }}" alt="{{ f.title }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(6,7,6,.82))"></div>
+            <sc-if value="{{ f.isVideo }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;background:rgba(13,13,14,.5);border:1px solid rgba(244,242,239,.85);display:flex;align-items:center;justify-content:center"><span style="margin-left:3px;border-left:11px solid #F4F2EF;border-top:7px solid transparent;border-bottom:7px solid transparent"></span></div>
+            </sc-if>
+            <div style="position:absolute;left:10px;right:10px;bottom:10px">
+              <div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.14em;color:rgba(244,242,239,.7)">{{ f.label }}</div>
+              <div style="margin-top:3px;font-family:var(--font-serif,'Playfair Display',serif);font-size:13px;line-height:1.15;color:#F4F2EF">{{ f.title }}</div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+
+      <!-- ZAIRE (generous space above) -->
+      <div style="padding:0 20px;margin-top:40px">
+        <p style="margin:0 0 20px;font-family:var(--font-hand,'Over the Rainbow',cursive);font-size:21px;line-height:1.5;color:var(--accent,#2F5DAA)">Ver el mundo, acercarse a los demás, encontrarse y sentir. Ese es el propósito de la vida. <span style="font-size:16px">— Walter Mitty.</span></p>
+        <div style="position:relative;width:100%;aspect-ratio:16/10;overflow:hidden;border-radius:4px;background:#12140f;margin-bottom:22px">
+          <div style="position:absolute;inset:0;background:{{ galBg }};transition:background .5s ease"></div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(6,8,6,.5))"></div>
+          <div style="position:absolute;left:16px;bottom:14px;font-family:var(--font-serif,'Playfair Display',serif);font-size:22px;color:#f4f2ef">{{ galNum }} <span style="opacity:.5">/ {{ galTotal }}</span></div>
+          <div style="position:absolute;right:12px;bottom:12px;display:flex;gap:8px">
+            <button onClick="{{ galPrev }}" aria-label="Anterior" style="width:38px;height:38px;border-radius:50%;border:1px solid rgba(244,242,239,.5);background:rgba(13,13,14,.4);color:#F4F2EF;font-size:15px;cursor:pointer">&#8592;</button>
+            <button onClick="{{ galNext }}" aria-label="Siguiente" style="width:38px;height:38px;border-radius:50%;border:none;background:#F4F2EF;color:#1B1D20;font-size:15px;cursor:pointer">&#8594;</button>
+          </div>
+        </div>
+        <h2 style="margin:0;font-family:var(--font-serif,'Playfair Display',serif);font-weight:500;font-size:44px;letter-spacing:.05em;color:#1B1D20">ZAIRE</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0">
+          <span style="font-size:10px;letter-spacing:.14em;color:#6b6c66;border:1px solid #cbc7bc;border-radius:20px;padding:6px 13px">DOCUMENTAL</span>
+          <span style="font-size:10px;letter-spacing:.14em;color:#6b6c66;border:1px solid #cbc7bc;border-radius:20px;padding:6px 13px">ÁFRICA</span>
+          <span style="font-size:10px;letter-spacing:.14em;color:#6b6c66;border:1px solid #cbc7bc;border-radius:20px;padding:6px 13px">HISTORIA REAL</span>
+        </div>
+        <p style="margin:18px 0 0;font-size:14.5px;line-height:1.62;color:#4a4c50">Documental en desarrollo. Un viaje a lo profundo de África Central para contar historias de resiliencia, naturaleza y humanidad.</p>
+        <a href="Proyectos.dc.html" style="display:inline-flex;align-items:center;gap:14px;margin-top:22px;font-size:14.5px;color:#1B1D20;border-bottom:1px solid #1B1D20;padding-bottom:5px">Ver proyecto <span style="font-size:16px">&#8594;</span></a>
+      </div>
+    </section>
+  </div>
+  </sc-if>
+
+  <!-- ============ FOOTER ============ -->
+  <dc-import name="SiteFooter" hint-size="100%,520px"></dc-import>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    slide:0, gal:2,
+    vw:(typeof document!=='undefined' ? (document.documentElement.clientWidth||window.innerWidth) : 1440),
+    natH:2760,
+    dests:null, origin:null, films:null, cats:null
+  };
+  async componentDidMount(){
+    try{
+      const db = await import('./data.js');
+      const home = db.getHomeSettings();
+      const posts = db.getPosts();
+      const bySlug = {}; posts.forEach(p=>bySlug[p.id]=p);
+      const pick = ['p5','p7','p1','p3','p2'].map(id=>bySlug[id]).filter(Boolean);
+      const src = pick.length>=4 ? pick : posts.slice(0,5);
+      const films = src.map(p=>({ title:p.title, img:p.heroImage, type:p.type, cat:p.category, url:'Cuaderno.dc.html' }));
+      const frags = home.fragments||[];
+      const cats = frags.length ? frags.map(f=>({ n:f.n, title:f.title, cap:f.caption, img:f.image, url:f.url })) : null;
+      const site = db.getSiteSettings();
+      this._applyTheme(site && site.theme, home && home.heroFade);
+      this.setState({ dests: home.heroDestinations||null, origin: home.heroOrigin||null, films, cats });
+    }catch(e){ /* fall back to inline defaults */ }
+    this._measure();
+    this._onResize = ()=>{ this.setState({ vw:(document.documentElement.clientWidth||window.innerWidth) }); this._measure(); };
+    window.addEventListener('resize', this._onResize);
+    setTimeout(()=>this._measure(), 400);
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>this._measure());
+  }
+  componentDidUpdate(){ this._measure(); }
+  componentWillUnmount(){ if(this._onResize) window.removeEventListener('resize', this._onResize); }
+  _measure(){
+    const el = document.getElementById('homeStage');
+    if(el){ const h = el.scrollHeight; if(h && Math.abs(h-this.state.natH)>6) this.setState({natH:h}); }
+  }
+  _applyTheme(theme, fade){
+    try{
+      const r = document.documentElement.style;
+      if(theme){
+        if(theme.fontSerif) r.setProperty('--font-serif', "'"+theme.fontSerif+"',serif");
+        if(theme.fontSans) r.setProperty('--font-sans', "'"+theme.fontSans+"',system-ui,sans-serif");
+        if(theme.fontHand) r.setProperty('--font-hand', "'"+theme.fontHand+"',cursive");
+        if(theme.blue) r.setProperty('--accent', theme.blue);
+        if(theme.heroAccent) r.setProperty('--hero-accent', theme.heroAccent);
+        if(theme.headingScale!=null) r.setProperty('--h-scale', String(theme.headingScale));
+      }
+      if(fade){
+        if(fade.topColor) r.setProperty('--hero-fade-top-color', fade.topColor);
+        if(fade.topHeight!=null) r.setProperty('--hero-fade-top-h', fade.topHeight+'px');
+        if(fade.sideColor) r.setProperty('--hero-fade-side-color', fade.sideColor);
+        if(fade.sideWidth!=null) r.setProperty('--hero-fade-side-w', fade.sideWidth+'%');
+        if(fade.bottomColor) r.setProperty('--hero-fade-bottom-color', fade.bottomColor);
+        if(fade.bottomHeight!=null) r.setProperty('--hero-fade-bottom-h', fade.bottomHeight+'px');
+      }
+    }catch(e){}
+  }
+  _defaults(){
+    return {
+      origin:{ code:'BUE', city:'Buenos Aires', airport:'EZE' },
+      dests:[
+        {code:'MEX',city:'Ciudad de México',flight:'AR 1380',date:'MAY 28',gate:'A16',seat:'24A',boarding:'18:40',zone:'1',image:'images/airport-hero.png',coords:'19.4326° N   99.1332° W'},
+        {code:'CDG',city:'París',flight:'AF 0417',date:'JUN 12',gate:'K22',seat:'9C',boarding:'07:05',zone:'2',image:'images/mountains.png',coords:'48.8566° N   2.3522° E'},
+        {code:'CPT',city:'Ciudad del Cabo',flight:'ET 0809',date:'JUL 03',gate:'B04',seat:'31K',boarding:'22:40',zone:'1',image:'images/project-zaire.png',coords:'33.9249° S   18.4241° E'},
+      ],
+      films:[
+        {title:'Notas desde el aeropuerto', img:'images/article-aeropuerto.png', type:'cronica', cat:'Reflexiones', url:'Cuaderno.dc.html'},
+        {title:'Grabar el camino', img:'images/film-still.png', type:'video', cat:'Videos', url:'Cuaderno.dc.html'},
+        {title:'Lecciones desde el silencio', img:'images/article-silencio.png', type:'cronica', cat:'Gente que viaja', url:'Cuaderno.dc.html'},
+        {title:'Caminar para mirar mejor', img:'images/article-caminar.png', type:'cronica', cat:'Gente que viaja', url:'Cuaderno.dc.html'},
+        {title:'Rutinas que construyen carácter', img:'images/article-rutinas.png', type:'ensayo', cat:'The Rise Plan', url:'Cuaderno.dc.html'},
+      ],
+      cats:[
+        {n:'01',title:'Cuaderno',cap:'Notas. Ideas. Reflexiones.',img:'images/notebook.png',url:'Cuaderno.dc.html'},
+        {n:'02',title:'Gente que viaja',cap:'Conversaciones que inspiran.',img:'images/boarding-area.png',url:'Cuaderno.dc.html'},
+        {n:'03',title:'The Rise Plan',cap:'Disciplina. Dirección. Destino.',img:'images/mountains.png',url:'Proyectos.dc.html'},
+        {n:'04',title:'Proyectos',cap:'Historias que estoy creando.',img:'images/workspace.png',url:'Proyectos.dc.html'},
+        {n:'05',title:'Ahora',cap:'Lo que estoy pensando. Haciendo.',img:'images/city-window.png',url:'Ahora.dc.html'},
+      ]
+    };
+  }
+  renderVals(){
+    const d = this._defaults();
+    const dests = this.state.dests || d.dests;
+    const origin = this.state.origin || d.origin;
+    const films = (this.state.films || d.films).map(f=>({ ...f, isVideo: f.type==='video', label:(f.cat||'').toUpperCase() }));
+    const cats = this.state.cats || d.cats;
+    const n = dests.length || 1;
+    const i = ((this.state.slide % n)+n)%n;
+    const cur = dests[i];
+    const vw = this.state.vw || 1440;
+    const mobile = vw <= 860;
+    const availW = Math.max(320, vw);
+    const scale = Math.min(1, availW/1440);
+    const stageLeft = Math.max(0, Math.round((availW - 1440*scale)/2));
+    const stageHeight = Math.round(this.state.natH * scale);
+    const pad = x=>String(x).padStart(2,'0');
+
+    const slideLayers = dests.map((dd,idx)=>({
+      src: dd.image,
+      style:{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 40%',
+        opacity: idx===i?1:0, transform:'translateY('+((idx-i)*7)+'px) scale('+(idx===i?1:1.05)+')',
+        transition:'opacity .85s ease, transform 1.3s ease', zIndex:0 }
+    }));
+
+    const pass = { code:cur.flight, from:origin.code, to:cur.code, fromCity:(origin.city||'').toUpperCase(),
+      toCity:(cur.city||'').toUpperCase(), flight:cur.flight, date:cur.date, gate:cur.gate, seat:cur.seat,
+      boarding:cur.boarding, zone:cur.zone };
+
+    const dots = dests.map((dd,idx)=>({
+      onClick:()=>this.setState({slide:idx}),
+      style:{ width: idx===i?'9px':'7px', height: idx===i?'9px':'7px', borderRadius:'50%', cursor:'pointer', padding:0,
+        background: idx===i?'var(--hero-accent,#9db8ec)':'transparent', border:'1px solid rgba(157,184,236,'+(idx===i?'1':'0.55')+')' }
+    }));
+
+    const gal = ['images/project-zaire.png','images/mountains.png','images/film-still.png','images/airplane-wing.png','images/city-window.png','images/coffee.png'];
+    const gtot = gal.length; const gi = ((this.state.gal%gtot)+gtot)%gtot;
+
+    return {
+      mobile, desktop:!mobile,
+      stageTransform:'scale('+scale+')', stageLeft:stageLeft+'px', stageHeight:stageHeight+'px',
+      slideLayers, pass, dots, films, cats,
+      originCode:origin.code, originCity:(origin.city||'').toUpperCase(),
+      destCode:cur.code, destCity:(cur.city||'').toUpperCase(),
+      curCoords:cur.coords, slideCounter:pad(i+1)+' / '+pad(n),
+      next:()=>this.setState(s=>({slide:s.slide+1})),
+      prev:()=>this.setState(s=>({slide:s.slide-1})),
+      galBg:'url('+gal[gi]+') center/cover', galNum:pad(gi+1), galTotal:pad(gtot),
+      galNext:()=>this.setState(s=>({gal:s.gal+1})),
+      galPrev:()=>this.setState(s=>({gal:s.gal-1})),
+    };
+  }
+}
+</script>
+</body>
+</html>

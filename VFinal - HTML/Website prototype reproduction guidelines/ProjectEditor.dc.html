@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</helmet>
+<div style="width:100%;min-width:0;font-family:'Inter',system-ui,sans-serif;color:#1B1D20">
+  <header style="position:sticky;top:0;z-index:20;background:rgba(244,242,239,.92);backdrop-filter:blur(8px);border-bottom:1px solid #e0dcd2;padding:18px 40px;display:flex;align-items:center;justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:16px;min-width:0">
+      <a href="Dashboard-Proyectos.dc.html" style="width:40px;height:40px;border:1px solid #cbc7bc;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:16px;flex:none">←</a>
+      <div style="min-width:0">
+        <div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">{{ eyebrow }}</div>
+        <div style="margin-top:3px;font-family:'Playfair Display',serif;font-size:22px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:460px">{{ titlePreview }}</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="{{ dirtyStyle }}">{{ dirtyLabel }}</span>
+      <a href="{{ viewHref }}" target="_blank" style="height:44px;display:flex;align-items:center;padding:0 18px;border:1px solid #cbc7bc;border-radius:3px;font-size:13.5px">↗ Ver</a>
+      <button onClick="{{ save }}" style="height:44px;padding:0 22px;background:#0D0D0E;border:none;border-radius:3px;color:#F4F2EF;font-size:13.5px;cursor:pointer">{{ saveLabel }}</button>
+    </div>
+  </header>
+
+  <div style="display:flex;gap:2px;padding:0 40px;border-bottom:1px solid #e0dcd2;background:#F4F2EF;position:sticky;top:77px;z-index:15">
+    <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="6"><button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button></sc-for>
+  </div>
+
+  <main style="padding:32px 40px 72px;max-width:1000px">
+    <!-- OVERVIEW -->
+    <sc-if value="{{ tabOverview }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">NOMBRE DEL PROYECTO</label><input value="{{ f.title }}" onInput="{{ setTitle }}" style="height:60px;border:1px solid #cbc7bc;border-radius:5px;padding:0 18px;font-family:'Playfair Display',serif;font-size:28px;background:#fff;outline:none"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SLUG</label><input value="{{ f.slug }}" onInput="{{ setSlug }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-family:'Space Mono',monospace;font-size:13px;background:#fff;outline:none"></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">TIPO</label><input value="{{ f.type }}" onInput="{{ setType }}" placeholder="Documental, Producto…" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">ROL</label><input value="{{ f.role }}" onInput="{{ setRole }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+          <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">CRONOLOGÍA</label><input value="{{ f.timeline }}" onInput="{{ setTimeline }}" placeholder="2025 — presente" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">DESCRIPCIÓN CORTA</label><textarea value="{{ f.shortDescription }}" onInput="{{ setShort }}" style="height:74px;border:1px solid #cbc7bc;border-radius:5px;padding:12px 14px;font-size:14px;background:#fff;outline:none;resize:none"></textarea></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">TAGS (separados por coma)</label><input value="{{ f.tags }}" onInput="{{ setTags }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">STACK / TECNOLOGÍAS (separadas por coma)</label><input value="{{ f.technologies }}" onInput="{{ setTech }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+      </div>
+    </sc-if>
+
+    <!-- CONTENT -->
+    <sc-if value="{{ tabContent }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:20px">
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">DESCRIPCIÓN LARGA</label><textarea value="{{ f.longDescription }}" onInput="{{ setLong }}" style="height:100px;border:1px solid #cbc7bc;border-radius:5px;padding:12px 14px;font-size:14px;background:#fff;outline:none;resize:vertical"></textarea></div>
+        <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-family:'Playfair Display',serif;font-size:20px">Bloques de contenido</div><div style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.12em;color:#a5a29a">{{ blockCount }} BLOQUES</div></div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="4">
+            <div style="border:1px solid #e5e1d7;border-radius:8px;background:#fff;padding:14px 16px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+                <span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:#2F5DAA;background:rgba(47,93,170,.09);border-radius:12px;padding:4px 10px;text-transform:uppercase">{{ b.type }}</span>
+                <div style="display:flex;gap:4px"><button onClick="{{ b.up }}" style="width:28px;height:28px;border:1px solid #e0dcd2;border-radius:4px;background:#F4F2EF;cursor:pointer">↑</button><button onClick="{{ b.down }}" style="width:28px;height:28px;border:1px solid #e0dcd2;border-radius:4px;background:#F4F2EF;cursor:pointer">↓</button><button onClick="{{ b.remove }}" style="width:28px;height:28px;border:1px solid #e8d4d4;border-radius:4px;background:#fbf4f4;color:#a23b3b;cursor:pointer">×</button></div>
+              </div>
+              <textarea value="{{ b.text }}" onInput="{{ b.setText }}" placeholder="{{ b.placeholder }}" style="{{ b.inputStyle }}"></textarea>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ addButtons }}" as="a" hint-placeholder-count="6"><button onClick="{{ a.onClick }}" style="height:38px;padding:0 14px;border:1px dashed #cbc7bc;border-radius:20px;background:transparent;font-size:12.5px;color:#55565a;cursor:pointer">＋ {{ a.label }}</button></sc-for></div>
+      </div>
+    </sc-if>
+
+    <!-- MEDIA -->
+    <sc-if value="{{ tabMedia }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:26px">
+        <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">IMAGEN PRINCIPAL</label>
+          <div style="display:flex;gap:18px;margin-top:12px;align-items:flex-start"><div style="width:340px;height:212px;border-radius:6px;overflow:hidden;background:#15130e;flex:none;border:1px solid #e0dcd2"><img src="{{ f.heroImage }}" alt="" style="width:100%;height:100%;object-fit:cover"></div><button onClick="{{ openPicker }}" style="height:44px;padding:0 18px;border:1px solid #cbc7bc;border-radius:4px;background:#fff;font-size:13.5px;cursor:pointer">Cambiar imagen</button></div>
+        </div>
+        <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">GALERÍA ({{ galleryCount }})</label>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px">
+            <sc-for list="{{ gallery }}" as="g" hint-placeholder-count="3"><div style="position:relative;aspect-ratio:4/3;border-radius:5px;overflow:hidden;background:#15130e;border:1px solid #e0dcd2"><img src="{{ g.url }}" alt="" style="width:100%;height:100%;object-fit:cover"><button onClick="{{ g.remove }}" style="position:absolute;right:6px;top:6px;width:24px;height:24px;border:none;border-radius:50%;background:rgba(13,13,14,.7);color:#fff;cursor:pointer">×</button></div></sc-for>
+            <button onClick="{{ openPickerGallery }}" style="aspect-ratio:4/3;border:1.5px dashed #cbc7bc;border-radius:5px;background:transparent;color:#8a887f;font-size:24px;cursor:pointer">＋</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- LINKS -->
+    <sc-if value="{{ tabLinks }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:720px">
+        <div style="font-family:'Playfair Display',serif;font-size:20px;margin-bottom:4px">Enlaces del proyecto</div>
+        <sc-for list="{{ links }}" as="l" hint-placeholder-count="2">
+          <div style="display:grid;grid-template-columns:1fr 1.4fr 44px;gap:10px;align-items:center">
+            <input value="{{ l.label }}" onInput="{{ l.setLabel }}" placeholder="Etiqueta" style="height:46px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none">
+            <input value="{{ l.url }}" onInput="{{ l.setUrl }}" placeholder="https://…" style="height:46px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-family:'Space Mono',monospace;font-size:12px;background:#fff;outline:none">
+            <button onClick="{{ l.remove }}" style="height:46px;border:1px solid #e8d4d4;border-radius:5px;background:#fbf4f4;color:#a23b3b;cursor:pointer">×</button>
+          </div>
+        </sc-for>
+        <button onClick="{{ addLink }}" style="height:44px;width:fit-content;padding:0 16px;border:1px dashed #cbc7bc;border-radius:20px;background:transparent;font-size:13px;color:#55565a;cursor:pointer">＋ Añadir enlace</button>
+      </div>
+    </sc-if>
+
+    <!-- SEO -->
+    <sc-if value="{{ tabSeo }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:720px">
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SEO · TÍTULO <span style="{{ seoTitleWarn }}">{{ seoTitleHint }}</span></label><input value="{{ f.seoTitle }}" onInput="{{ setSeoTitle }}" style="height:48px;border:1px solid #cbc7bc;border-radius:5px;padding:0 14px;font-size:14px;background:#fff;outline:none"></div>
+        <div style="display:flex;flex-direction:column;gap:8px"><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">SEO · DESCRIPCIÓN <span style="{{ seoDescWarn }}">{{ seoDescHint }}</span></label><textarea value="{{ f.seoDesc }}" onInput="{{ setSeoDesc }}" style="height:88px;border:1px solid #cbc7bc;border-radius:5px;padding:12px 14px;font-size:14px;background:#fff;outline:none;resize:none"></textarea></div>
+        <div style="border:1px solid #e5e1d7;border-radius:8px;background:#fff;padding:18px 20px"><div style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.14em;color:#a5a29a;margin-bottom:12px">VISTA PREVIA EN BUSCADORES</div><div style="font-size:12px;color:#1a7d3a">andyalbarracin.com › proyectos › {{ f.slug }}</div><div style="margin-top:3px;font-size:19px;color:#1a4fb0;line-height:1.2">{{ seoTitlePreview }}</div><div style="margin-top:4px;font-size:13.5px;color:#4d5156;line-height:1.5">{{ seoDescPreview }}</div></div>
+      </div>
+    </sc-if>
+
+    <!-- VISIBILITY -->
+    <sc-if value="{{ tabVis }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:24px;max-width:640px">
+        <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">ESTADO</label><div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"><sc-for list="{{ statusOptions }}" as="o" hint-placeholder-count="5"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></div></div>
+        <div><label style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.14em;color:#9a988f">VISIBILIDAD</label><div style="display:flex;gap:10px;margin-top:12px"><sc-for list="{{ visOptions }}" as="o" hint-placeholder-count="3"><button onClick="{{ o.onClick }}" style="{{ o.style }}">{{ o.label }}</button></sc-for></div><p style="margin:10px 0 0;font-size:12.5px;color:#8a887f;line-height:1.5">{{ visHint }}</p></div>
+        <label style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid #e5e1d7;border-radius:8px;background:#fff;cursor:pointer"><button onClick="{{ toggleSensitive }}" style="{{ sensToggle }}"><span style="{{ sensKnob }}"></span></button><div><div style="font-size:14.5px">Contenido sensible / privado</div><div style="margin-top:2px;font-size:12.5px;color:#8a887f">Si está activo, el proyecto nunca aparece en el sitio público.</div></div></label>
+        <label style="display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid #e5e1d7;border-radius:8px;background:#fff;cursor:pointer"><button onClick="{{ toggleFeatured }}" style="{{ featToggle }}"><span style="{{ featKnob }}"></span></button><div><div style="font-size:14.5px">Destacar en portada</div><div style="margin-top:2px;font-size:12.5px;color:#8a887f">Aparece como proyecto destacado en la home.</div></div></label>
+        <div style="border-top:1px solid #eee9df;padding-top:20px"><button onClick="{{ del }}" style="height:44px;padding:0 18px;border:1px solid #d8b4b4;border-radius:4px;background:#fbf4f4;color:#a23b3b;font-size:13.5px;cursor:pointer">Eliminar proyecto</button></div>
+      </div>
+    </sc-if>
+  </main>
+
+  <sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:60;background:rgba(13,13,14,.55);display:flex;align-items:center;justify-content:center;padding:40px" onClick="{{ closePicker }}">
+      <div style="width:820px;max-height:82vh;background:#F4F2EF;border-radius:10px;overflow:hidden;display:flex;flex-direction:column" onClick="{{ stop }}">
+        <div style="padding:20px 26px;border-bottom:1px solid #e0dcd2;display:flex;align-items:center;justify-content:space-between"><div style="font-family:'Playfair Display',serif;font-size:22px">Biblioteca de Media</div><button onClick="{{ closePicker }}" style="width:36px;height:36px;border:none;background:none;font-size:24px;cursor:pointer;color:#55565a">×</button></div>
+        <div style="padding:22px 26px;overflow:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px"><sc-for list="{{ pickerItems }}" as="m" hint-placeholder-count="8"><button onClick="{{ m.pick }}" style="border:1px solid #e5e1d7;border-radius:7px;overflow:hidden;background:#fff;cursor:pointer;padding:0"><div style="aspect-ratio:4/3;background:#15130e"><img src="{{ m.url }}" alt="" style="width:100%;height:100%;object-fit:cover"></div><div style="padding:8px 10px;font-size:11px;color:#55565a;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ m.filename }}</div></button></sc-for></div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mode&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;edit&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { loaded:false, pr:null, tab:'overview', dirty:false, saved:false, picker:null };
+  blank(){ return { id:'', title:'', slug:'', subtitle:'', shortDescription:'', longDescription:'', type:'Proyecto', status:'draft', visibility:'public', sensitive:false, featured:false, heroImage:'images/workspace.png', gallery:[], tags:[], technologies:[], links:[], role:'', timeline:'', blocks:[{type:'heading',text:'Qué es'},{type:'paragraph',text:''}], seo:{title:'',description:'',ogImage:''} }; }
+  async componentDidMount(){
+    try{ this.db=await import('./data.js'); this.media=this.db.getMediaAssets();
+      let pr; const isNew=(this.props.mode==='new'); const id=new URLSearchParams(location.search).get('id');
+      if(!isNew && id) pr=this.db.getProjectById(id);
+      if(!pr) pr=this.blank();
+      this.setState({loaded:true, pr});
+    }catch(e){ console.error(e); this.setState({loaded:true, pr:this.blank()}); }
+  }
+  up(patch){ this.setState(s=>({ pr:{...s.pr, ...patch}, dirty:true, saved:false })); }
+  upSeo(patch){ this.setState(s=>({ pr:{...s.pr, seo:{...s.pr.seo, ...patch}}, dirty:true, saved:false })); }
+  setBlocks(fn){ this.setState(s=>({ pr:{...s.pr, blocks:fn(s.pr.blocks.slice())}, dirty:true, saved:false })); }
+  setLinks(fn){ this.setState(s=>({ pr:{...s.pr, links:fn((s.pr.links||[]).slice())}, dirty:true, saved:false })); }
+  renderVals(){
+    const s=this.state; const p=s.pr||this.blank();
+    const tabDef=[['overview','Resumen'],['content','Contenido'],['media','Media'],['links','Enlaces'],['seo','SEO'],['vis','Visibilidad']];
+    const tabStyle=(k)=>({height:'50px',padding:'0 18px',border:'none',background:'none',cursor:'pointer',fontFamily:"'Inter',sans-serif",fontSize:'14px',color:s.tab===k?'#1B1D20':'#8a887f',borderBottom:s.tab===k?'2px solid #2F5DAA':'2px solid transparent',fontWeight:s.tab===k?'500':'400'});
+    const tabs=tabDef.map(([k,l])=>({label:l,onClick:()=>this.setState({tab:k}),style:tabStyle(k)}));
+    const phFor=(t)=>({heading:'Encabezado (Qué es, Por qué existe, Stack…)',quote:'Cita',image:'URL de imagen',callout:'Texto destacado',route:'CDG → MEX · metadatos',metric:'Etiqueta | valor',stack:'item, item, item'}[t]||'Escribe el párrafo…');
+    const blocks=(p.blocks||[]).map((b,i)=>({ type:b.type, text:b.text||b.url||(b.items?b.items.join(', '):'')||(b.value?(b.label+' | '+b.value):''), placeholder:phFor(b.type),
+      inputStyle:{width:'100%',minHeight:b.type==='paragraph'?'70px':'46px',border:'1px solid #e5e1d7',borderRadius:'5px',padding:'10px 12px',fontSize:'14px',lineHeight:'1.5',resize:'vertical',outline:'none',fontFamily:b.type==='heading'||b.type==='quote'?"'Playfair Display',serif":"'Inter',sans-serif",background:'#fff'},
+      setText:(e)=>this.setBlocks(a=>{const v=e.target.value; if(b.type==='image')a[i]={...a[i],url:v}; else if(b.type==='stack')a[i]={...a[i],items:v.split(',').map(x=>x.trim()).filter(Boolean)}; else if(b.type==='metric'){const parts=v.split('|');a[i]={...a[i],label:(parts[0]||'').trim(),value:(parts[1]||'').trim()};} else a[i]={...a[i],text:v}; return a;}),
+      up:()=>this.setBlocks(a=>{if(i>0){const t=a[i-1];a[i-1]=a[i];a[i]=t;}return a;}),
+      down:()=>this.setBlocks(a=>{if(i<a.length-1){const t=a[i+1];a[i+1]=a[i];a[i]=t;}return a;}),
+      remove:()=>this.setBlocks(a=>{a.splice(i,1);return a;}) }));
+    const addDef=[['heading','Encabezado'],['paragraph','Párrafo'],['quote','Cita'],['image','Imagen'],['metric','Métrica'],['stack','Stack'],['callout','Destacado'],['route','Ticket']];
+    const addButtons=addDef.map(([t,l])=>({label:l,onClick:()=>this.setBlocks(a=>{a.push(t==='image'?{type:'image',url:'images/mountains.png'}:t==='metric'?{type:'metric',label:'',value:''}:t==='stack'?{type:'stack',items:[]}:{type:t,text:''});return a;})}));
+    const links=(p.links||[]).map((l,i)=>({ label:l.label, url:l.url,
+      setLabel:(e)=>this.setLinks(a=>{a[i]={...a[i],label:e.target.value};return a;}),
+      setUrl:(e)=>this.setLinks(a=>{a[i]={...a[i],url:e.target.value};return a;}),
+      remove:()=>this.setLinks(a=>{a.splice(i,1);return a;}) }));
+    const seg=(active)=>({height:'44px',padding:'0 18px',borderRadius:'4px',cursor:'pointer',fontSize:'13.5px',fontFamily:"'Inter',sans-serif",border:active?'1px solid #1B1D20':'1px solid #cbc7bc',background:active?'#1B1D20':'transparent',color:active?'#F4F2EF':'#55565a'});
+    const statusOptions=[['building','Construyendo'],['active','Activo'],['paused','En pausa'],['archived','Archivado'],['draft','Borrador']].map(([k,l])=>({label:l,onClick:()=>this.up({status:k}),style:seg(p.status===k)}));
+    const visOptions=[['public','Público'],['private','Privado'],['hidden','Oculto']].map(([k,l])=>({label:l,onClick:()=>this.up({visibility:k}),style:seg(p.visibility===k)}));
+    const visHint={public:'Visible en el sitio público (si no es sensible).',private:'Solo con enlace directo.',hidden:'Nunca aparece públicamente.'}[p.visibility];
+    const tog=(on)=>({width:'46px',height:'26px',borderRadius:'20px',border:'none',cursor:'pointer',position:'relative',background:on?'#2F5DAA':'#cdc9bf',flex:'none',padding:0});
+    const knob=(on)=>({position:'absolute',top:'3px',left:on?'23px':'3px',width:'20px',height:'20px',borderRadius:'50%',background:'#fff',transition:'left .15s'});
+    const warn=(bad)=>({fontFamily:"'Space Mono',monospace",fontSize:'9px',letterSpacing:'.06em',marginLeft:'8px',color:bad?'#b07a1e':'#1f8a5b'});
+    const media=(this.media||[]);
+    const pk=(cb)=>media.map(m=>({url:m.url,filename:m.filename,pick:()=>{cb(m.url);this.setState({picker:null});}}));
+    let pickerItems=[]; if(s.picker==='hero') pickerItems=pk(url=>this.up({heroImage:url})); else if(s.picker==='gallery') pickerItems=pk(url=>this.setState(st=>({pr:{...st.pr,gallery:[...(st.pr.gallery||[]),url]},dirty:true})));
+    const gallery=(p.gallery||[]).map((url,i)=>({url,remove:()=>this.setState(st=>{const g=(st.pr.gallery||[]).slice();g.splice(i,1);return {pr:{...st.pr,gallery:g},dirty:true};})}));
+    return {
+      eyebrow:this.props.mode==='new'?'NUEVO PROYECTO':'EDITAR PROYECTO',
+      titlePreview:p.title||'Sin título', viewHref:p.slug?('Proyecto.dc.html?slug='+p.slug):'Proyectos.dc.html',
+      dirtyLabel:s.saved?'✓ Guardado':(s.dirty?'Cambios sin guardar':'Sin cambios'),
+      dirtyStyle:{fontFamily:"'Space Mono',monospace",fontSize:'10px',letterSpacing:'.1em',color:s.saved?'#1f8a5b':(s.dirty?'#b07a1e':'#a5a29a')},
+      saveLabel:s.saved?'✓ Guardado':'Guardar',
+      save:()=>{ if(this.db){ const pr={...p}; if(!pr.id) pr.id='pr'+Date.now(); if(!pr.slug) pr.slug=(pr.title||'proyecto').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); this.db.upsertProject(pr); this.setState({pr,saved:true,dirty:false}); } },
+      tabs, tabOverview:s.tab==='overview', tabContent:s.tab==='content', tabMedia:s.tab==='media', tabLinks:s.tab==='links', tabSeo:s.tab==='seo', tabVis:s.tab==='vis',
+      f:{ title:p.title, slug:p.slug, type:p.type, role:p.role, timeline:p.timeline, shortDescription:p.shortDescription, longDescription:p.longDescription, tags:(p.tags||[]).join(', '), technologies:(p.technologies||[]).join(', '), heroImage:p.heroImage, seoTitle:p.seo.title, seoDesc:p.seo.description },
+      setTitle:(e)=>this.up({title:e.target.value}), setSlug:(e)=>this.up({slug:e.target.value}), setType:(e)=>this.up({type:e.target.value}), setRole:(e)=>this.up({role:e.target.value}), setTimeline:(e)=>this.up({timeline:e.target.value}),
+      setShort:(e)=>this.up({shortDescription:e.target.value}), setLong:(e)=>this.up({longDescription:e.target.value}),
+      setTags:(e)=>this.up({tags:e.target.value.split(',').map(x=>x.trim()).filter(Boolean)}), setTech:(e)=>this.up({technologies:e.target.value.split(',').map(x=>x.trim()).filter(Boolean)}),
+      setSeoTitle:(e)=>this.upSeo({title:e.target.value}), setSeoDesc:(e)=>this.upSeo({description:e.target.value}),
+      blockCount:blocks.length, blocks, addButtons, links, addLink:()=>this.setLinks(a=>{a.push({label:'',url:''});return a;}),
+      galleryCount:gallery.length, gallery, openPicker:()=>this.setState({picker:'hero'}), openPickerGallery:()=>this.setState({picker:'gallery'}),
+      pickerOpen:!!s.picker, pickerItems, closePicker:()=>this.setState({picker:null}), stop:(e)=>e.stopPropagation(),
+      statusOptions, visOptions, visHint,
+      toggleSensitive:()=>this.up({sensitive:!p.sensitive}), sensToggle:tog(p.sensitive), sensKnob:knob(p.sensitive),
+      toggleFeatured:()=>this.up({featured:!p.featured}), featToggle:tog(p.featured), featKnob:knob(p.featured),
+      seoTitleWarn:warn(!p.seo.title), seoTitleHint:p.seo.title?'✓':'· falta', seoDescWarn:warn(!p.seo.description), seoDescHint:p.seo.description?'✓':'· falta',
+      seoTitlePreview:p.seo.title||p.title||'Título del proyecto', seoDescPreview:p.seo.description||p.shortDescription||'Descripción para buscadores…',
+      del:()=>{ if(this.db&&p.id) this.db.deleteProject(p.id); location.href='Dashboard-Proyectos.dc.html'; },
+    };
+  }
+}
+</script>
+</body>
+</html>

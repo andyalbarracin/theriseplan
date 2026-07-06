@@ -1,0 +1,6 @@
+# The app uses unoptimized local images (sharp optional) and does not need these
+# native postinstall builds at runtime. Acknowledge them explicitly so pnpm does
+# not error on ignored build scripts.
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
