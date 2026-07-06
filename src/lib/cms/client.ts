@@ -21,12 +21,13 @@ import * as seed from "./queries";
 import * as local from "./mutations";
 import { getSiteSettings, getHomeSettings, getNavSettings } from "./queries";
 
-/** ¿Escribimos/leemos contra Supabase? Necesita el flag y las credenciales. */
+/** ¿Escribimos/leemos contra Supabase? Se activa con solo tener las credenciales
+    (URL + ANON), salvo que se fuerce "mock" con NEXT_PUBLIC_DATA_SOURCE=mock. */
 function active(): boolean {
   return (
-    process.env.NEXT_PUBLIC_DATA_SOURCE === "supabase" &&
     !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+    process.env.NEXT_PUBLIC_DATA_SOURCE !== "mock"
   );
 }
 

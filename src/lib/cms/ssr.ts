@@ -21,12 +21,14 @@ import { rowToPost, rowToProject, rowToMedia } from "./mappers";
 import { isPublicPost, isPublicProject } from "./visibility";
 import * as seed from "./queries"; // fallback sincronico (contenido de ejemplo)
 
-/** ¿Debemos leer desde Supabase? Necesita el flag y las credenciales. */
+/** ¿Debemos leer desde Supabase? Se activa SOLO con tener las credenciales
+    (URL + ANON), a menos que se fuerce "mock" con NEXT_PUBLIC_DATA_SOURCE=mock.
+    Asi, en produccion basta con configurar las dos variables NEXT_PUBLIC_SUPABASE_*. */
 function supabaseActive(): boolean {
   return (
-    process.env.NEXT_PUBLIC_DATA_SOURCE === "supabase" &&
     !!process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+    process.env.NEXT_PUBLIC_DATA_SOURCE !== "mock"
   );
 }
 
