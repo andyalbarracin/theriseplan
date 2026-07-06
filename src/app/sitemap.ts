@@ -1,9 +1,9 @@
 import type { MetadataRoute } from "next";
-import { getSitemapRoutes } from "@/lib/cms";
+import { getSitemapRoutesSSR } from "@/lib/cms/ssr";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://andyalbarracin.com").replace(/\/$/, "");
-  return getSitemapRoutes().map((r) => ({
+  return (await getSitemapRoutesSSR()).map((r) => ({
     url: r ? `${base}/${r}` : base,
     lastModified: new Date(),
     changeFrequency: "weekly",

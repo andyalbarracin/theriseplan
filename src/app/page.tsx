@@ -1,14 +1,15 @@
 import { HomeClient } from "@/components/public/home/HomeClient";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { getHomeSettings, getPosts, getFeaturedProject } from "@/lib/cms";
+import { getHomeSettings } from "@/lib/cms";
+import { getPostsSSR, getFeaturedProjectSSR } from "@/lib/cms/ssr";
 import { IMAGES } from "@/lib/data/seed";
 import type { FilmItem } from "@/components/public/home/FilmStrip";
 import type { CatItem } from "@/components/public/home/CategoryCards";
 import type { ZaireBlock } from "@/components/public/home/ArchiveBand";
 
-export default function HomePage() {
+export default async function HomePage() {
   const home = getHomeSettings();
-  const posts = getPosts();
+  const posts = await getPostsSSR();
 
   const byId = new Map(posts.map((p) => [p.id, p]));
   const picked = ["p5", "p7", "p1", "p3", "p2"].map((id) => byId.get(id)).filter((p): p is NonNullable<typeof p> => !!p);
@@ -29,7 +30,7 @@ export default function HomePage() {
     url: f.url,
   }));
 
-  const project = getFeaturedProject();
+  const project = await getFeaturedProjectSSR();
   const zaire: ZaireBlock = project
     ? {
         title: project.title.toUpperCase(),

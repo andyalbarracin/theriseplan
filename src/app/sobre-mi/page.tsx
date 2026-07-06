@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { InteriorShell } from "@/components/layout/InteriorShell";
 import { HeroPortrait } from "@/components/public/HeroPortrait";
 
@@ -39,6 +40,14 @@ export default function SobreMiPage() {
               Mi trabajo vive entre la dirección creativa, el documental y el diseño de sistemas — siempre en movimiento.
               Documento lo importante y diseño lo que importa. Creo que las mejores ideas nacen en tránsito, entre un
               lugar y otro.
+            </p>
+            {/* Nota de origen: conecta el archivo del Cuaderno con su punto de partida.
+                El texto completo de aquella bio de 2010 esta en .docs/WORDPRESS_PAGES.md
+                y puede reescribirse desde el dashboard. */}
+            <p style={{ margin: "16px 0 0", fontSize: 15.5, lineHeight: 1.66, color: "#4a4c50", maxWidth: 560 }}>
+              Esto empezó en 2010 como un blog — <em>The Rise Plan</em>. Aquellas notas siguen vivas en el{" "}
+              <Link href="/cuaderno" style={{ color: "#2F5DAA", borderBottom: "1px solid #cbc7bc" }}>Cuaderno</Link>,
+              hoy parte de este archivo en tránsito.
             </p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2px 40px", marginTop: 40, borderTop: "1px solid #d9d5cc", paddingTop: 8 }}>
               {VALUES.map(([n, v]) => (

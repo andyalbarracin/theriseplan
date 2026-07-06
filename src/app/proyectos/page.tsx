@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { InteriorShell } from "@/components/layout/InteriorShell";
 import { ProyectosView } from "@/components/public/proyectos/ProyectosView";
-import { getProjects, getFeaturedProject } from "@/lib/cms";
+import { getProjectsSSR, getFeaturedProjectSSR } from "@/lib/cms/ssr";
 
 export const metadata: Metadata = {
   title: "Proyectos",
   description: "Trabajo seleccionado en dirección creativa, documental y sistemas. Historias construidas con intención.",
 };
 
-export default function ProyectosPage() {
-  const featured = getFeaturedProject();
-  const all = getProjects();
+export default async function ProyectosPage() {
+  const featured = await getFeaturedProjectSSR();
+  const all = await getProjectsSSR();
   const grid = all.filter((p) => !featured || p.id !== featured.id);
 
   return (

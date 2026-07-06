@@ -5,7 +5,8 @@
 
 export type Visibility = "public" | "private" | "hidden";
 export type PostStatus = "draft" | "published" | "archived";
-export type PostType = "cronica" | "ensayo" | "video" | "reflexion" | "proyecto";
+// "archivo" = posts heredados del blog WordPress "The Rise Plan" (cuerpo HTML fiel).
+export type PostType = "cronica" | "ensayo" | "video" | "reflexion" | "proyecto" | "archivo";
 export type ProjectStatus = "active" | "building" | "paused" | "archived" | "draft";
 export type MediaType = "portrait" | "landscape";
 
@@ -24,7 +25,9 @@ export type ContentBlock =
   | { type: "feature"; items: string[] }
   | { type: "metric"; label: string; value: string }
   | { type: "stack"; items: string[] }
-  | { type: "links"; items: { label: string; url: string }[] };
+  | { type: "links"; items: { label: string; url: string }[] }
+  // Bloque de HTML crudo: usado por los posts importados de WordPress (fidelidad 1:1).
+  | { type: "html"; html: string };
 
 export type ContentBlockType = ContentBlock["type"];
 
@@ -78,6 +81,11 @@ export interface Post {
   publishedAt?: string;
   readingTime?: number;
   related?: string[];
+  // ----- Campos de importacion (posts heredados de WordPress) --------------
+  originalHtml?: string;        // cuerpo HTML original tal cual venia del blog
+  tags?: string[];              // categorias + etiquetas del post en WordPress
+  source?: string;              // "native" | "wordpress-theriseplan"
+  legacyWpId?: number;          // id del post en el WordPress viejo (trazabilidad)
 }
 
 /* ----- project ------------------------------------------------------------- */

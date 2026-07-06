@@ -127,3 +127,56 @@ a {
   background: #d2cec3;
   border-radius: 8px;
 }
+
+/* ---------------------------------------------------------------------------
+   Posts importados de WordPress ("The Rise Plan"): el bloque {type:'html'} se
+   renderiza como HTML crudo dentro de .legacy-html. Estas reglas le dan la
+   tipografia editorial del sitio y hacen las imagenes responsive. Editar aqui
+   para ajustar el aspecto de TODO el contenido heredado de una sola vez.
+   --------------------------------------------------------------------------- */
+.legacy-html {
+  font-size: 17px;
+  line-height: 1.75;
+  color: #33352f;
+}
+.legacy-html p {
+  margin: 14px 0;
+}
+.legacy-html h1,
+.legacy-html h2,
+.legacy-html h3 {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  line-height: 1.15;
+  color: #1b1d20;
+  margin: 36px 0 6px;
+}
+.legacy-html a {
+  color: #2f5daa;
+  text-decoration: underline;
+}
+.legacy-html ul,
+.legacy-html ol {
+  margin: 14px 0;
+  padding-left: 24px;
+}
+.legacy-html li {
+  margin: 4px 0;
+}
+.legacy-html blockquote {
+  margin: 30px 0;
+  padding-left: 22px;
+  border-left: 2px solid #2f5daa;
+  font-family: var(--font-serif);
+  font-style: italic;
+}
+/* Imagenes viejas: siempre dentro del ancho, sin deformar. */
+.legacy-html img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin: 8px 0;
+}
+.legacy-html iframe {
+  max-width: 100%;
+}

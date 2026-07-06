@@ -2,15 +2,16 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { InteriorShell } from "@/components/layout/InteriorShell";
 import { ArticleView } from "@/components/public/cuaderno/ArticleView";
-import { getPosts, getPostBySlug, getPostById, isPublicPost } from "@/lib/cms";
+import { isPublicPost } from "@/lib/cms";
+import { getPostsSSR, getPostBySlugSSR, getPostByIdSSR } from "@/lib/cms/ssr";
 
-export function generateStaticParams() {
-  return getPosts().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getPostsSSR()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlugSSR(slug);
   if (!post) return { title: "Entrada no encontrada" };
   return {
     title: post.seo.title || post.title,
@@ -25,14 +26,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlugSSR(slug);
   if (!post) notFound();
 
-  const related = (post.related || [])
-    .map((id) => getPostById(id))
-    .filter((p): p is NonNullable<typeof p> => !!p && isPublicPost(p));
+  const relatedResolved = await Promise.all((post.related || []).map((id) => getPostByIdSSR(id)));
+  const related = relatedResolved.filter((p): p is NonNullable<typeof p> => !!p && isPublicPost(p));
 
-  const all = getPosts();
+  const all = await getPostsSSR();
   const idx = all.findIndex((p) => p.id === post.id);
   const prev = idx > 0 ? all[idx - 1] : null;
   const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;

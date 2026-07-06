@@ -98,6 +98,12 @@ function Block({ block }: { block: ContentBlock }) {
         </div>
       );
 
+    case "html":
+      // Posts importados de WordPress: se renderiza el HTML original tal cual.
+      // La clase "legacy-html" (ver globals.css) le da tipografia editorial a
+      // los <p>, <ul>, <img>, etc. que trae el contenido antiguo.
+      return <div className="legacy-html" dangerouslySetInnerHTML={{ __html: block.html }} />;
+
     case "divider":
       return <hr style={{ margin: "36px 0", border: "none", height: 1, background: "#d9d5cc" }} />;
 
