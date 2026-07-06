@@ -3,8 +3,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Project, ProjectStatus, Visibility } from "@/lib/types";
-import { getProjectById, upsertProject, deleteProject } from "@/lib/cms";
-import { useClientData } from "@/hooks/useClientData";
+import { getProject, saveProject, removeProject } from "@/lib/cms/client";
+import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminButton } from "@/components/admin/ui";
 import { TextField, TextAreaField, SegmentedField, ToggleField, ChipsField, Field } from "@/components/admin/fields";
 import { BlockEditor } from "@/components/admin/BlockEditor";
@@ -50,7 +50,7 @@ const TABS = [
 
 export function ProjectEditor({ mode, id }: { mode: "new" | "edit"; id?: string }) {
   const router = useRouter();
-  const { data: loaded, ready } = useClientData<Project | null>(() => (mode === "edit" && id ? getProjectById(id) : blankProject()));
+  const { data: loaded, ready } = useAsyncData<Project | null>(() => (mode === "edit" && id ? getProject(id) : Promise.resolve(blankProject())));
 
   if (!ready) return <div style={{ padding: 40, fontFamily: "var(--font-mono)", fontSize: 12, color: "#9a988f" }}>Cargando…</div>;
   if (mode === "edit" && !loaded)
@@ -72,17 +72,31 @@ function Editor({ initial, mode, router }: { initial: Project; mode: "new" | "ed
   const dirty = JSON.stringify(pr) !== baseline;
   const patch = (p: Partial<Project>) => setPr((cur) => ({ ...cur, ...p }));
 
-  const save = () => {
-    const saved = upsertProject({ ...pr });
-    setPr(saved);
-    setSavedFlash(true);
-    setTimeout(() => setSavedFlash(false), 2000);
-    if (mode === "new") router.replace(`/dashboard/proyectos/${saved.id}`);
-    router.refresh();
+  const [saving, setSaving] = useState(false);
+  const save = async () => {
+    setSaving(true);
+    try {
+      const saved = await saveProject({ ...pr });
+      setPr(saved);
+      setSavedFlash(true);
+      setTimeout(() => setSavedFlash(false), 2000);
+      if (mode === "new") router.replace(`/dashboard/proyectos/${saved.id}`);
+      router.refresh();
+    } catch (e) {
+      alert("No se pudo guardar: " + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      setSaving(false);
+    }
   };
-  const remove = () => {
-    if (pr.id) deleteProject(pr.id);
-    router.push("/dashboard/proyectos");
+  const remove = async () => {
+    if (!pr.id) return;
+    if (!confirm("¿Eliminar este proyecto? Esta acción no se puede deshacer.")) return;
+    try {
+      await removeProject(pr.id);
+      router.push("/dashboard/proyectos");
+    } catch (e) {
+      alert("No se pudo eliminar: " + (e instanceof Error ? e.message : String(e)));
+    }
   };
 
   const dirtyLabel = savedFlash ? "✓ Guardado" : dirty ? "Cambios sin guardar" : "Sin cambios";
@@ -98,7 +112,7 @@ function Editor({ initial, mode, router }: { initial: Project; mode: "new" | "ed
         <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
           <span style={{ fontSize: 12, color: dirtyColor }}>{dirtyLabel}</span>
           <AdminButton variant="ghost" href={`/proyectos/${pr.slug || ""}`}>↗ Ver</AdminButton>
-          <AdminButton onClick={save}>{savedFlash ? "✓ Guardado" : "Guardar"}</AdminButton>
+          <AdminButton onClick={save}>{saving ? "Guardando…" : savedFlash ? "✓ Guardado" : "Guardar"}</AdminButton>
         </div>
       </header>
 

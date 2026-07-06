@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { InteriorShell } from "@/components/layout/InteriorShell";
 import { CuadernoView } from "@/components/public/cuaderno/CuadernoView";
-import { getHomeSettings } from "@/lib/cms";
-import { getPostsSSR } from "@/lib/cms/ssr";
+import { getPostsSSR, getHomeSettingsSSR } from "@/lib/cms/ssr";
 
 export const metadata: Metadata = {
   title: "Cuaderno",
@@ -12,7 +11,7 @@ export const metadata: Metadata = {
 export default async function CuadernoPage() {
   const posts = await getPostsSSR();
   const categories = Array.from(new Set(posts.map((p) => p.category)));
-  const home = getHomeSettings();
+  const home = await getHomeSettingsSSR();
   const featuredId = home.featuredPosts[0];
   const featured =
     posts.find((p) => p.id === featuredId) || posts.find((p) => p.featured) || posts[0] || null;

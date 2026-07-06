@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { MediaAsset } from "@/lib/types";
-import { getMediaAssets, upsertMedia, deleteMedia } from "@/lib/cms";
+import { listMedia, saveMedia, removeMedia, uploadMedia } from "@/lib/cms/client";
 import { AdminTopbar, AdminButton } from "@/components/admin/ui";
 
 const FILTERS = [
@@ -21,8 +21,8 @@ export default function DashboardMedia() {
   const [saved, setSaved] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const reload = (keep?: string) => {
-    const list = getMediaAssets();
+  const reload = async (keep?: string) => {
+    const list = await listMedia();
     setMedia(list);
     const next = keep ? list.find((m) => m.id === keep) : list[0];
     if (next) {
@@ -30,7 +30,9 @@ export default function DashboardMedia() {
       setSel({ ...next });
     }
   };
-  useEffect(() => reload(), []);
+  useEffect(() => {
+    reload();
+  }, []);
 
   const list = (media ?? [])
     .filter((m) => (filter === "all" ? true : m.type === filter))
@@ -45,25 +47,18 @@ export default function DashboardMedia() {
     setCopied(false);
   };
 
-  const onFiles = (files: FileList | null) => {
+  const [uploading, setUploading] = useState(false);
+  const onFiles = async (files: FileList | null) => {
     if (!files || !files[0]) return;
-    const file = files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-      const asset = upsertMedia({
-        id: "",
-        url: String(reader.result),
-        filename: file.name,
-        alt: "",
-        caption: "",
-        type: "landscape",
-        size: Math.round(file.size / 1024),
-        createdAt: new Date().toISOString(),
-        usedIn: [],
-      });
-      reload(asset.id);
-    };
-    reader.readAsDataURL(file);
+    setUploading(true);
+    try {
+      const asset = await uploadMedia(files[0]); // sube a Storage (o base64 en demo)
+      await reload(asset.id);
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "No se pudo subir el archivo.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -74,7 +69,7 @@ export default function DashboardMedia() {
         actions={
           <>
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar por nombre o alt…" style={{ height: 44, width: 260, border: "1px solid #cbc7bc", borderRadius: 3, padding: "0 14px", fontFamily: "var(--font-sans)", fontSize: 14, outline: "none", background: "#fff" }} />
-            <AdminButton onClick={() => fileRef.current?.click()}>⬆ Subir archivo</AdminButton>
+            <AdminButton onClick={() => fileRef.current?.click()}>{uploading ? "Subiendo…" : "⬆ Subir archivo"}</AdminButton>
             <input ref={fileRef} type="file" accept="image/*" hidden onChange={(e) => onFiles(e.target.files)} />
           </>
         }
@@ -178,8 +173,8 @@ export default function DashboardMedia() {
               </div>
 
               <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
-                <AdminButton onClick={() => { upsertMedia(sel); setSaved(true); setTimeout(() => setSaved(false), 1500); reload(sel.id); }}>{saved ? "✓ Guardado" : "Guardar cambios"}</AdminButton>
-                <AdminButton variant="danger" onClick={() => { deleteMedia(sel.id); reload(); }}>Eliminar</AdminButton>
+                <AdminButton onClick={async () => { await saveMedia(sel); setSaved(true); setTimeout(() => setSaved(false), 1500); await reload(sel.id); }}>{saved ? "✓ Guardado" : "Guardar cambios"}</AdminButton>
+                <AdminButton variant="danger" onClick={async () => { if (confirm("¿Eliminar este archivo?")) { await removeMedia(sel.id); await reload(); } }}>Eliminar</AdminButton>
               </div>
             </div>
           ) : (

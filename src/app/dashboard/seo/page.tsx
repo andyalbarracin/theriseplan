@@ -1,28 +1,29 @@
 "use client";
 import { useEffect, useState } from "react";
-import type { SiteSettings } from "@/lib/types";
-import { getSEOOverview, getSiteSettings, getSitemapRoutes, updateSiteSettings } from "@/lib/cms";
+import type { SiteSettings, SEORow } from "@/lib/types";
+import { getSitemapRoutes } from "@/lib/cms";
+import { getSEOOverviewClient, getSiteSettingsClient, updateSiteSettingsClient } from "@/lib/cms/client";
 import { AdminTopbar, Card, AdminButton } from "@/components/admin/ui";
 import { TextField, TextAreaField } from "@/components/admin/fields";
 
 export default function DashboardSeo() {
   const [site, setSite] = useState<SiteSettings | null>(null);
-  const [rows, setRows] = useState<ReturnType<typeof getSEOOverview>>([]);
+  const [rows, setRows] = useState<SEORow[]>([]);
   const [routes, setRoutes] = useState<string[]>([]);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setSite(getSiteSettings());
-    setRows(getSEOOverview());
+    getSiteSettingsClient().then(setSite);
     setRoutes(getSitemapRoutes());
+    getSEOOverviewClient().then(setRows); // filas por página/artículo desde la base
   }, []);
 
   if (!site) return null;
   const warnings = rows.filter((r) => !r.ok).length;
 
-  const save = () => {
-    updateSiteSettings({ seo: site.seo, defaultOgImage: site.defaultOgImage });
-    setRows(getSEOOverview());
+  const save = async () => {
+    await updateSiteSettingsClient({ seo: site.seo, defaultOgImage: site.defaultOgImage });
+    getSEOOverviewClient().then(setRows);
     setSaved(true);
     setTimeout(() => setSaved(false), 1800);
   };

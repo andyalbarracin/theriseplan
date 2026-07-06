@@ -105,3 +105,81 @@ export function rowToMedia(r: MediaRow): MediaAsset {
     usedIn: arr<string>(r.used_in),
   };
 }
+
+/* =============================================================================
+   MAPPERS INVERSOS (app → fila de Supabase)
+   Usados al GUARDAR desde el dashboard: convierten el objeto de dominio
+   (camelCase) en la fila snake_case que espera la base. Las columnas jsonb se
+   pasan como objetos/arrays JS (supabase-js las serializa solo).
+   ============================================================================= */
+
+/** Post → fila public.posts (para insert/upsert). */
+export function postToRow(p: Post): Record<string, unknown> {
+  return {
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    subtitle: p.subtitle ?? null,
+    excerpt: p.excerpt ?? null,
+    category: p.category ?? null,
+    type: p.type,
+    status: p.status,
+    visibility: p.visibility,
+    featured: p.featured,
+    hero_image: p.heroImage ?? null,
+    gallery: p.gallery ?? [],
+    body_blocks: p.bodyBlocks ?? [],
+    original_html: p.originalHtml ?? null,
+    tags: p.tags ?? [],
+    source: p.source ?? "native",
+    legacy_wp_id: p.legacyWpId ?? null,
+    seo: p.seo ?? {},
+    location: p.location ?? null,
+    published_at: p.publishedAt || null, // date: "" → null
+    reading_time: p.readingTime ?? null,
+    related: p.related ?? [],
+    updated_at: new Date().toISOString(),
+  };
+}
+
+/** Project → fila public.projects (para insert/upsert). */
+export function projectToRow(p: Project): Record<string, unknown> {
+  return {
+    id: p.id,
+    title: p.title,
+    slug: p.slug,
+    subtitle: p.subtitle ?? null,
+    short_description: p.shortDescription ?? null,
+    long_description: p.longDescription ?? null,
+    type: p.type ?? null,
+    status: p.status,
+    visibility: p.visibility,
+    sensitive: p.sensitive,
+    featured: p.featured,
+    hero_image: p.heroImage ?? null,
+    gallery: p.gallery ?? [],
+    tags: p.tags ?? [],
+    technologies: p.technologies ?? [],
+    links: p.links ?? [],
+    role: p.role ?? null,
+    timeline: p.timeline ?? null,
+    blocks: p.blocks ?? [],
+    seo: p.seo ?? {},
+    updated_at: new Date().toISOString(),
+  };
+}
+
+/** MediaAsset → fila public.media_assets (para insert/upsert). */
+export function mediaToRow(m: MediaAsset): Record<string, unknown> {
+  return {
+    id: m.id,
+    url: m.url,
+    filename: m.filename ?? null,
+    alt: m.alt ?? null,
+    caption: m.caption ?? null,
+    type: m.type ?? null,
+    size: m.size ?? null,
+    used_in: m.usedIn ?? [],
+    created_at: m.createdAt || new Date().toISOString(),
+  };
+}

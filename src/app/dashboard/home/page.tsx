@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { HomeSettings, HeroDestination, Theme } from "@/lib/types";
-import { getHomeSettings, getSiteSettings, getMediaAssets, updateHomeSettings, updateSiteSettings } from "@/lib/cms";
+import { getHomeSettingsClient, getSiteSettingsClient, updateHomeSettingsClient, updateSiteSettingsClient, listMedia } from "@/lib/cms/client";
 import { AdminTopbar, Card, AdminButton } from "@/components/admin/ui";
 import { TextField, TextAreaField, SelectField, RangeField, ChipsField, Field } from "@/components/admin/fields";
 
@@ -22,9 +22,9 @@ export default function DashboardHomeEditor() {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    setHome(getHomeSettings());
-    setTheme(getSiteSettings().theme);
-    setMediaOpts(getMediaAssets().map((m) => ({ value: m.url, label: m.filename })));
+    getHomeSettingsClient().then(setHome);
+    getSiteSettingsClient().then((site) => setTheme(site.theme));
+    listMedia().then((list) => setMediaOpts(list.map((m) => ({ value: m.url, label: m.filename }))));
   }, []);
 
   if (!home || !theme) return null;
@@ -39,9 +39,9 @@ export default function DashboardHomeEditor() {
     patch({ heroDestinations: copy });
   };
 
-  const save = () => {
-    updateHomeSettings(home);
-    updateSiteSettings({ theme });
+  const save = async () => {
+    await updateHomeSettingsClient(home);
+    await updateSiteSettingsClient({ theme });
     setSaved(true);
     setTimeout(() => setSaved(false), 2200);
   };

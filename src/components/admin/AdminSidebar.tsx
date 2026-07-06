@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Monogram } from "@/components/layout/Monogram";
+import { createBrowserSupabase } from "@/lib/supabase/client";
 
 const ITEMS: [string, string][] = [
   ["Dashboard", "/dashboard"],
@@ -16,7 +17,16 @@ const ITEMS: [string, string][] = [
 
 export function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const isActive = (url: string) => (url === "/dashboard" ? pathname === url : pathname.startsWith(url));
+
+  // Cierra la sesion de Supabase y vuelve al login (en demo/mock solo redirige).
+  const logout = async () => {
+    const supabase = createBrowserSupabase();
+    if (supabase) await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  };
 
   return (
     <aside
@@ -75,7 +85,7 @@ export function AdminSidebar() {
 
       <div style={{ marginTop: "auto", display: "flex", flexDirection: "column", gap: 4, borderTop: "1px solid rgba(244,242,239,.09)", paddingTop: 16 }}>
         <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", fontSize: 13, color: "#8f8d85" }}>↗ Ver sitio</Link>
-        <Link href="/login" style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", fontSize: 13, color: "#8f8d85" }}>← Cerrar sesión</Link>
+        <button onClick={logout} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", fontSize: 13, color: "#8f8d85", background: "none", border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", textAlign: "left" }}>← Cerrar sesión</button>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px 4px" }}>
           <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#2F5DAA", color: "#F4F2EF", display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-serif)", fontSize: 14 }}>A</div>
           <div style={{ lineHeight: 1.25 }}>

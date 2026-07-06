@@ -1,18 +1,20 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { NavSettings } from "@/lib/types";
-import { getNavSettings, updateNavSettings } from "@/lib/cms";
+import { getNavSettingsClient, updateNavSettingsClient } from "@/lib/cms/client";
 import { AdminTopbar, Card, AdminButton } from "@/components/admin/ui";
 import { ChipsField, ToggleField } from "@/components/admin/fields";
 
 export default function DashboardNavigation() {
   const [nav, setNav] = useState<NavSettings | null>(null);
   const [saved, setSaved] = useState(false);
-  useEffect(() => setNav(getNavSettings()), []);
+  useEffect(() => {
+    getNavSettingsClient().then(setNav);
+  }, []);
   if (!nav) return null;
 
-  const save = () => {
-    updateNavSettings(nav);
+  const save = async () => {
+    await updateNavSettingsClient(nav);
     setSaved(true);
     setTimeout(() => setSaved(false), 1800);
   };

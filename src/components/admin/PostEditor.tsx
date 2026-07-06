@@ -3,8 +3,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Post, PostStatus, PostType, Visibility } from "@/lib/types";
-import { getPostById, upsertPost, deletePost } from "@/lib/cms";
-import { useClientData } from "@/hooks/useClientData";
+import { getPost, savePost, removePost } from "@/lib/cms/client";
+import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminButton } from "@/components/admin/ui";
 import { TextField, TextAreaField, SelectField, SegmentedField, ToggleField, Field } from "@/components/admin/fields";
 import { BlockEditor } from "@/components/admin/BlockEditor";
@@ -43,7 +43,7 @@ const TABS = [
 
 export function PostEditor({ mode, id }: { mode: "new" | "edit"; id?: string }) {
   const router = useRouter();
-  const { data: loaded, ready } = useClientData<Post | null>(() => (mode === "edit" && id ? getPostById(id) : blankPost()));
+  const { data: loaded, ready } = useAsyncData<Post | null>(() => (mode === "edit" && id ? getPost(id) : Promise.resolve(blankPost())));
 
   if (!ready) return <LoadingBar />;
   if (mode === "edit" && !loaded) return <NotFoundNote />;
@@ -60,17 +60,31 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
 
   const patch = (p: Partial<Post>) => setPost((cur) => ({ ...cur, ...p }));
 
-  const save = () => {
-    const saved = upsertPost({ ...post });
-    setPost(saved);
-    setSavedFlash(true);
-    setTimeout(() => setSavedFlash(false), 2000);
-    if (mode === "new") router.replace(`/dashboard/cuaderno/${saved.id}`);
-    router.refresh();
+  const [saving, setSaving] = useState(false);
+  const save = async () => {
+    setSaving(true);
+    try {
+      const saved = await savePost({ ...post });
+      setPost(saved);
+      setSavedFlash(true);
+      setTimeout(() => setSavedFlash(false), 2000);
+      if (mode === "new") router.replace(`/dashboard/cuaderno/${saved.id}`);
+      router.refresh();
+    } catch (e) {
+      alert("No se pudo guardar: " + (e instanceof Error ? e.message : String(e)));
+    } finally {
+      setSaving(false);
+    }
   };
-  const remove = () => {
-    if (post.id) deletePost(post.id);
-    router.push("/dashboard/cuaderno");
+  const remove = async () => {
+    if (!post.id) return;
+    if (!confirm("¿Eliminar este artículo? Esta acción no se puede deshacer.")) return;
+    try {
+      await removePost(post.id);
+      router.push("/dashboard/cuaderno");
+    } catch (e) {
+      alert("No se pudo eliminar: " + (e instanceof Error ? e.message : String(e)));
+    }
   };
 
   const dirtyLabel = savedFlash ? "✓ Guardado" : dirty ? "Cambios sin guardar" : "Sin cambios";
@@ -89,7 +103,7 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
         <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
           <span style={{ fontSize: 12, color: dirtyColor }}>{dirtyLabel}</span>
           <AdminButton variant="ghost" href={`/cuaderno/${post.slug || ""}`}>↗ Ver</AdminButton>
-          <AdminButton onClick={save}>{savedFlash ? "✓ Guardado" : "Guardar"}</AdminButton>
+          <AdminButton onClick={save}>{saving ? "Guardando…" : savedFlash ? "✓ Guardado" : "Guardar"}</AdminButton>
         </div>
       </header>
 

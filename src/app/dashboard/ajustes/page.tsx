@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { SiteSettings } from "@/lib/types";
-import { getSiteSettings, updateSiteSettings } from "@/lib/cms";
+import { getSiteSettingsClient, updateSiteSettingsClient } from "@/lib/cms/client";
 import { AdminTopbar, Card, AdminButton } from "@/components/admin/ui";
 import { TextField, TextAreaField, SelectField, RangeField } from "@/components/admin/fields";
 
@@ -20,12 +20,14 @@ function ColorRow({ label, value, onChange }: { label: string; value: string; on
 export default function DashboardAjustes() {
   const [s, setS] = useState<SiteSettings | null>(null);
   const [saved, setSaved] = useState(false);
-  useEffect(() => setS(getSiteSettings()), []);
+  useEffect(() => {
+    getSiteSettingsClient().then(setS);
+  }, []);
   if (!s) return null;
 
   const setTheme = (patch: Partial<SiteSettings["theme"]>) => setS({ ...s, theme: { ...s.theme, ...patch } });
-  const save = () => {
-    updateSiteSettings(s);
+  const save = async () => {
+    await updateSiteSettingsClient(s);
     setSaved(true);
     setTimeout(() => setSaved(false), 1800);
   };

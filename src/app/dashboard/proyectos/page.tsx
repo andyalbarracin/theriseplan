@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { getProjects } from "@/lib/cms";
-import { useClientData } from "@/hooks/useClientData";
+import { listProjects } from "@/lib/cms/client";
+import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminTopbar, AdminButton, projectBadge } from "@/components/admin/ui";
 
 export default function DashboardProyectos() {
-  const { data } = useClientData(() => getProjects({ includeAll: true }));
+  const { data } = useAsyncData(() => listProjects());
   const [q, setQ] = useState("");
 
   const all = data ?? [];

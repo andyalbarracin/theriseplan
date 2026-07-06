@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { getPosts } from "@/lib/cms";
-import { useClientData } from "@/hooks/useClientData";
+import { listPosts } from "@/lib/cms/client";
+import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminTopbar, Card, AdminButton, Badge, postBadge } from "@/components/admin/ui";
 import { formatDateES } from "@/lib/utils/format";
 
@@ -14,7 +14,7 @@ const FILTERS: { key: string; label: string }[] = [
 ];
 
 export default function DashboardCuaderno() {
-  const { data } = useClientData(() => getPosts({ includeAll: true }));
+  const { data } = useAsyncData(() => listPosts());
   const [status, setStatus] = useState("all");
   const [q, setQ] = useState("");
 

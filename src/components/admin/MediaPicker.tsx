@@ -1,9 +1,12 @@
 "use client";
-import { getMediaAssets } from "@/lib/cms";
+import { listMedia } from "@/lib/cms/client";
+import { useAsyncData } from "@/hooks/useAsyncData";
 
 export function MediaPicker({ open, onClose, onPick }: { open: boolean; onClose: () => void; onPick: (url: string) => void }) {
+  // Se carga la biblioteca al montar (aunque este cerrado); barato y simple.
+  const { data } = useAsyncData(() => listMedia());
   if (!open) return null;
-  const media = getMediaAssets();
+  const media = data ?? [];
   return (
     <div
       onClick={onClose}

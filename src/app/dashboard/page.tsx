@@ -1,16 +1,12 @@
 "use client";
 import Link from "next/link";
-import { getStats, getPosts, getProjects } from "@/lib/cms";
-import { useClientData } from "@/hooks/useClientData";
+import { getDashboardData } from "@/lib/cms/client";
+import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminTopbar, Card, AdminButton, Badge, postBadge, projectBadge } from "@/components/admin/ui";
 import { formatDateES } from "@/lib/utils/format";
 
 export default function DashboardHome() {
-  const { data } = useClientData(() => ({
-    stats: getStats(),
-    posts: getPosts({ includeAll: true }),
-    projects: getProjects({ includeAll: true }),
-  }));
+  const { data } = useAsyncData(() => getDashboardData());
 
   const st = data?.stats;
   const v = (x?: number) => (x == null ? "—" : String(x));

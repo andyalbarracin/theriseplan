@@ -1,14 +1,13 @@
 import { HomeClient } from "@/components/public/home/HomeClient";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { getHomeSettings } from "@/lib/cms";
-import { getPostsSSR, getFeaturedProjectSSR } from "@/lib/cms/ssr";
+import { getPostsSSR, getFeaturedProjectSSR, getHomeSettingsSSR } from "@/lib/cms/ssr";
 import { IMAGES } from "@/lib/data/seed";
 import type { FilmItem } from "@/components/public/home/FilmStrip";
 import type { CatItem } from "@/components/public/home/CategoryCards";
 import type { ZaireBlock } from "@/components/public/home/ArchiveBand";
 
 export default async function HomePage() {
-  const home = getHomeSettings();
+  const home = await getHomeSettingsSSR();
   const posts = await getPostsSSR();
 
   const byId = new Map(posts.map((p) => [p.id, p]));

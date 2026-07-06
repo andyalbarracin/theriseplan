@@ -16,7 +16,7 @@
                 consulte Supabase y, en el `catch`, devuelva la version seed.
    ============================================================================= */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { Post, Project, MediaAsset } from "@/lib/types";
+import type { Post, Project, MediaAsset, HomeSettings } from "@/lib/types";
 import { rowToPost, rowToProject, rowToMedia } from "./mappers";
 import { isPublicPost, isPublicProject } from "./visibility";
 import * as seed from "./queries"; // fallback sincronico (contenido de ejemplo)
@@ -128,6 +128,23 @@ export async function getMediaAssetsSSR(): Promise<MediaAsset[]> {
     return data.map(rowToMedia);
   } catch {
     return seed.getMediaAssets();
+  }
+}
+
+/* ----- settings (home) -----------------------------------------------------
+   La configuracion de Home se guarda en home_settings.data (jsonb). Si no hay
+   fila todavia, se usa el seed. Se hace merge con el seed para tolerar campos
+   nuevos agregados despues. */
+export async function getHomeSettingsSSR(): Promise<HomeSettings> {
+  const client = db();
+  const fallback = seed.getHomeSettings();
+  if (!client) return fallback;
+  try {
+    const { data, error } = await client.from("home_settings").select("data").eq("id", "default").maybeSingle();
+    if (error) throw error;
+    return data?.data ? { ...fallback, ...(data.data as HomeSettings) } : fallback;
+  } catch {
+    return fallback;
   }
 }
 
