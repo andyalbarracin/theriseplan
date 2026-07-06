@@ -58,10 +58,13 @@ map) are ported to match the prototype pixel-for-pixel.
 
 ### Supabase-ready
 
-`src/lib/supabase/{client,server,schema}.ts` + `supabase/migrations/0001_init.sql`
-(tables `profiles, posts, projects, media_assets, *_settings` with RLS: public read
-of published/public rows, authenticated write). Nothing is required to run — replace
-the bodies of the `cms` query/mutation functions with Supabase calls when ready.
+`src/lib/supabase/{client,server,schema}.ts` + the SQL in `.docs/database/`
+(`0001_schema.sql` + `0002_import_theriseplan.sql`) — tables `profiles, posts,
+projects, media_assets, *_settings` with RLS: public read of published/public rows,
+authenticated write. Nothing is required to run — replace the bodies of the `cms`
+query/mutation functions with Supabase calls when ready. The 73 legacy posts of the
+old WordPress blog *The Rise Plan* are imported as `type: 'archivo'` (see
+`.docs/SQL_SCHEMA.md`).
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
@@ -90,7 +93,8 @@ src/
     supabase/*             # client/server/schema
     utils/*
   hooks/                   # useViewport, useClientData
-public/images/*            # curated dummy assets
-supabase/migrations/*      # schema draft
+public/images/post_images/ # imported WordPress images (flat, safe names)
+public/images/post_files/  # imported WordPress documents (pdf/doc/xls)
 tests/                     # Playwright smoke tests
+.docs/                     # private docs + database SQL + migration scripts (gitignored)
 ```

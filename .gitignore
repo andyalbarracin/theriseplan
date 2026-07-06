@@ -36,6 +36,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
+# private project documentation (manifest, roadmap, sql, scripts, wordpress backup)
+/.docs/
+
 # editor
 .vscode/*
 !.vscode/extensions.json
