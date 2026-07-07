@@ -21,7 +21,7 @@ export function ArticleView({
     .map((s) => (s === post.type ? s.toUpperCase() : s));
 
   return (
-    <main data-screen-label="Artículo" style={{ position: "relative", padding: "44px 56px 40px" }}>
+    <main data-screen-label="Artículo" style={{ position: "relative", padding: "clamp(28px,4vw,44px) clamp(18px,5vw,56px) 40px" }}>
       <Link href="/cuaderno" style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".16em", color: "#6b6c66" }}>
         ← CUADERNO
       </Link>
@@ -35,8 +35,8 @@ export function ArticleView({
             </span>
           ))}
         </div>
-        <h1 style={{ margin: "22px 0 0", fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 56, lineHeight: 1.06, letterSpacing: "-.015em", color: "#1A1C1F" }}>{post.title}</h1>
-        {post.subtitle && <p style={{ margin: "16px 0 0", fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: 21, lineHeight: 1.45, color: "#55565a" }}>{post.subtitle}</p>}
+        <h1 style={{ margin: "22px 0 0", fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: "clamp(32px,6vw,56px)", lineHeight: 1.06, letterSpacing: "-.015em", color: "#1A1C1F" }}>{post.title}</h1>
+        {post.subtitle && <p style={{ margin: "16px 0 0", fontFamily: "var(--font-serif)", fontStyle: "italic", fontSize: "clamp(17px,3vw,21px)", lineHeight: 1.45, color: "#55565a" }}>{post.subtitle}</p>}
       </div>
 
       {/* hero */}
@@ -56,45 +56,49 @@ export function ArticleView({
         <ContentBlocks blocks={post.bodyBlocks} />
       </article>
 
-      {/* related + nav */}
-      <div style={{ maxWidth: COLUMN, margin: "0 auto", marginTop: 48 }}>
-        {related.length > 0 && (
-          <>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".2em", color: "#9a988f", borderTop: "1px solid #d9d5cc", paddingTop: 26 }}>SEGUIR LEYENDO</div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24, marginTop: 18 }}>
-              {related.map((r) => (
-                <Link key={r.id} href={`/cuaderno/${r.slug}`} className="hcard" style={{ display: "flex", flexDirection: "column" }}>
-                  <div style={{ position: "relative", width: "100%", aspectRatio: "3/2", overflow: "hidden", background: "#15130e", borderRadius: 2 }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={r.heroImage} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                  </div>
-                  <div style={{ marginTop: 12, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#a5a29a" }}>{r.category.toUpperCase()}</div>
-                  <h3 style={{ margin: "6px 0 0", fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 22, lineHeight: 1.15, color: "#1B1D20" }}>{r.title}</h3>
-                </Link>
-              ))}
-            </div>
-          </>
-        )}
+      {/* seguir leyendo (relacionados) — cards estilo home, responsivas.
+          El grid auto-fill acomoda 3-4 en desktop y 1 en celular solo. */}
+      {related.length > 0 && (
+        <div style={{ maxWidth: 1040, margin: "0 auto", marginTop: 56 }}>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: ".2em", color: "#9a988f", borderTop: "1px solid #d9d5cc", paddingTop: 26 }}>SEGUIR LEYENDO</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 22, marginTop: 20 }}>
+            {related.map((r) => (
+              <Link key={r.id} href={`/cuaderno/${r.slug}`} className="hcard" style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ position: "relative", width: "100%", aspectRatio: "3/2", overflow: "hidden", background: "#15130e", borderRadius: 2 }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={r.heroImage} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                </div>
+                <div style={{ marginTop: 12, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#a5a29a" }}>{r.category.toUpperCase()}</div>
+                <h3 style={{ margin: "6px 0 0", fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 19, lineHeight: 1.18, color: "#1B1D20" }}>{r.title}</h3>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 20, marginTop: 48, paddingTop: 26, borderTop: "1px solid #d9d5cc", flexWrap: "wrap" }}>
+      {/* navegación anterior / siguiente — compacta y sin superponerse.
+          auto-fit: 2 columnas en desktop, 1 apilada en celular. Títulos a una
+          sola línea con "…" para que no crezcan feo. */}
+      {(prev || next) && (
+        <nav style={{ maxWidth: COLUMN, margin: "0 auto", marginTop: 48, paddingTop: 22, borderTop: "1px solid #d9d5cc", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 18 }}>
           <div style={{ minWidth: 0 }}>
             {prev && (
-              <Link href={`/cuaderno/${prev.slug}`}>
+              <Link href={`/cuaderno/${prev.slug}`} style={{ display: "block" }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".16em", color: "#9a988f" }}>← ANTERIOR</div>
-                <div style={{ marginTop: 6, fontFamily: "var(--font-serif)", fontSize: 18, color: "#1B1D20" }}>{prev.title}</div>
+                <div style={{ marginTop: 5, fontFamily: "var(--font-serif)", fontSize: "clamp(14px,2.4vw,16px)", lineHeight: 1.3, color: "#1B1D20", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{prev.title}</div>
               </Link>
             )}
           </div>
           <div style={{ minWidth: 0, textAlign: "right" }}>
             {next && (
-              <Link href={`/cuaderno/${next.slug}`}>
+              <Link href={`/cuaderno/${next.slug}`} style={{ display: "block" }}>
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".16em", color: "#9a988f" }}>SIGUIENTE →</div>
-                <div style={{ marginTop: 6, fontFamily: "var(--font-serif)", fontSize: 18, color: "#1B1D20" }}>{next.title}</div>
+                <div style={{ marginTop: 5, fontFamily: "var(--font-serif)", fontSize: "clamp(14px,2.4vw,16px)", lineHeight: 1.3, color: "#1B1D20", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{next.title}</div>
               </Link>
             )}
           </div>
-        </div>
-      </div>
+        </nav>
+      )}
     </main>
   );
 }

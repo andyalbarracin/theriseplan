@@ -1,11 +1,17 @@
-"use client";
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 /**
- * Faithful port of responsive-fit.js: a fixed `width`px canvas scaled DOWN with
- * CSS `zoom = min(1, vw/width)` so the whole design fits any viewport width (no
- * horizontal scroll), never scaled above 1. `zoom` (not transform) so layout
- * reflows and fixed overlays stay pinned to the real viewport.
+ * Contenedor de las páginas interiores.
+ *
+ * ANTES: escalaba un lienzo fijo de 1440px con `zoom` para que "entrara" en la
+ * pantalla — en celulares eso achicaba el texto hasta hacerlo ilegible.
+ *
+ * AHORA: es FLUIDO y responsivo. El fondo (papel) ocupa el 100% del ancho
+ * (sin bandas en blanco a los lados) y el contenido se centra con un ancho
+ * máximo legible. Las vistas internas reflowean solo (usan `clamp()` y grids
+ * responsivos), así el texto se mantiene grande y legible en cualquier pantalla.
+ *
+ * `width` = ancho máximo del contenido (por defecto 1440).
  */
 export function FitCanvas({
   width = 1440,
@@ -16,49 +22,29 @@ export function FitCanvas({
   children: ReactNode;
   style?: CSSProperties;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const fit = () => {
-      const avail = document.documentElement.clientWidth || window.innerWidth;
-      const z = Math.min(1, avail / width);
-      el.style.setProperty("zoom", String(z));
-    };
-    fit();
-    window.addEventListener("resize", fit, { passive: true });
-    window.addEventListener("orientationchange", fit);
-    // DC-style re-fit window while async content settles / fonts load.
-    let tries = 0;
-    const iv = window.setInterval(() => {
-      fit();
-      if (++tries > 10) window.clearInterval(iv);
-    }, 150);
-    return () => {
-      window.removeEventListener("resize", fit);
-      window.removeEventListener("orientationchange", fit);
-      window.clearInterval(iv);
-    };
-  }, [width]);
-
   return (
     <div
-      ref={ref}
-      data-fit-width={width}
       style={{
-        width,
-        margin: "0 auto",
-        position: "relative",
+        width: "100%",
         background: "var(--color-paper)",
-        overflow: "hidden",
+        overflowX: "hidden",
         fontFamily: "var(--font-sans)",
         color: "var(--color-ink)",
         WebkitFontSmoothing: "antialiased",
-        ...style,
       }}
     >
-      {children}
+      <div
+        data-fit-width={width}
+        style={{
+          width: "100%",
+          maxWidth: width,
+          margin: "0 auto",
+          position: "relative",
+          ...style,
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
