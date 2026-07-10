@@ -47,6 +47,7 @@ export function HomeClient({
   const cur = dests[i];
   const fade = home.heroFade;
   const heroHref = cur.url; // si el destino viene de un post, el ticket entra ahí
+  const heroPostTitle = cur.postTitle; // nombre del post que muestra el slider
 
   const pass = {
     code: cur.flight,
@@ -174,9 +175,22 @@ export function HomeClient({
           <span style={{ display: "block", width: 70, height: 1, background: "#a9c2f0", marginTop: 8, transform: "rotate(-3deg)" }} />
         </p>
 
-        <div style={{ position: "absolute", left: 352, top: 648, width: 170, height: 210, transform: "rotate(-4deg)", background: "linear-gradient(150deg,#efece4,#e2ded3)", boxShadow: "0 8px 20px -8px rgba(0,0,0,.18)", opacity: 0.85, zIndex: 3 }}>
-          <div style={{ position: "absolute", inset: 14, background: "repeating-linear-gradient(0deg,rgba(120,116,108,.16) 0 1px,transparent 1px 9px)" }} />
-        </div>
+        {/* Hoja de libreta: muestra el nombre del post del slider y enlaza a él.
+            Ubicada abajo-derecha, por debajo del "Viajar ahí!" del ticket. */}
+        {heroPostTitle ? (
+          <Link href={heroHref ?? "#"} style={{ position: "absolute", left: 862, top: 806, width: 220, minHeight: 152, transform: "rotate(-4deg)", background: "linear-gradient(150deg,#f5f2eb,#e7e3d8)", boxShadow: "0 18px 34px -12px rgba(0,0,0,.34)", zIndex: 6, textDecoration: "none", display: "block", padding: "18px 20px 20px", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg,rgba(120,116,108,.13) 0 1px,transparent 1px 11px)", pointerEvents: "none" }} />
+            <div style={{ position: "relative" }}>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: ".22em", color: "#a09e95" }}>AHORA EN EL HERO</div>
+              <div style={{ marginTop: 8, fontFamily: "var(--font-hand)", fontSize: 22, lineHeight: 1.12, color: "#2F5DAA", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{heroPostTitle}</div>
+              <div style={{ marginTop: 10, fontSize: 11, color: "#55565a", display: "inline-flex", alignItems: "center", gap: 6 }}>Leer nota <span style={{ fontSize: 13 }}>&#8594;</span></div>
+            </div>
+          </Link>
+        ) : (
+          <div style={{ position: "absolute", left: 862, top: 806, width: 200, height: 150, transform: "rotate(-4deg)", background: "linear-gradient(150deg,#efece4,#e2ded3)", boxShadow: "0 14px 26px -10px rgba(0,0,0,.24)", zIndex: 6 }}>
+            <div style={{ position: "absolute", inset: 14, background: "repeating-linear-gradient(0deg,rgba(120,116,108,.16) 0 1px,transparent 1px 9px)" }} />
+          </div>
+        )}
 
         <BoardingPass pass={pass} slideCounter={slideCounter} onPrev={prev} onNext={next} href={heroHref} />
 

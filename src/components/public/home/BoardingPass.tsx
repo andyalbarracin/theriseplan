@@ -110,11 +110,11 @@ export function BoardingPass({
       </div>
       {href ? (
         <Link href={href} title="Ver nota" style={{ width: 56, background: "#0D0D0E", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", cursor: "pointer" }}>
-          <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 12, letterSpacing: ".34em", color: "#f4f2ef" }}>PRIORITY</span>
+          <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 11, letterSpacing: ".18em", color: "#f4f2ef", whiteSpace: "nowrap" }}>Viajar ahí!</span>
         </Link>
       ) : (
         <div style={{ width: 56, background: "#0D0D0E", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 12, letterSpacing: ".34em", color: "#f4f2ef" }}>PRIORITY</span>
+          <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 11, letterSpacing: ".18em", color: "#f4f2ef", whiteSpace: "nowrap" }}>Viajar ahí!</span>
         </div>
       )}
     </div>

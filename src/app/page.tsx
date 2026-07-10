@@ -36,6 +36,7 @@ export default async function HomePage() {
       boarding: t.boarding || base.boarding || "",
       zone: t.zone || base.zone || "",
       url: `/cuaderno/${p.slug}`,
+      postTitle: p.title,
     };
   });
   const home2 = heroFromPosts.length ? { ...home, heroDestinations: heroFromPosts } : home;

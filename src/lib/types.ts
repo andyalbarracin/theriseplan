@@ -166,7 +166,8 @@ export interface HeroDestination {
   zone: string;
   image: string;
   coords: string;
-  url?: string; // si el destino viene de un post, adónde entra el ticket
+  url?: string;       // si el destino viene de un post, adónde entra el ticket
+  postTitle?: string; // título del post (se muestra en la hoja de libreta del hero)
 }
 
 export interface HeroFade {
