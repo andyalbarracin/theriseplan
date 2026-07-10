@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import type { SiteSettings } from "@/lib/types";
 import { getSiteSettingsClient, updateSiteSettingsClient } from "@/lib/cms/client";
 import { AdminTopbar, Card, AdminButton } from "@/components/admin/ui";
-import { TextField, TextAreaField, SelectField, RangeField } from "@/components/admin/fields";
+import { TextField, TextAreaField, SelectField, RangeField, ChipsField } from "@/components/admin/fields";
 
 function ColorRow({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -45,6 +45,17 @@ export default function DashboardAjustes() {
             <TextField label="WORDMARK" value={s.wordmark} onChange={(v) => setS({ ...s, wordmark: v })} />
             <SelectField label="IDIOMA" value={s.language} onChange={(v) => setS({ ...s, language: v })} options={[{ value: "es", label: "Español" }, { value: "en", label: "English" }]} />
             <TextField label="EMAIL DE CONTACTO" value={s.contactEmail} onChange={(v) => setS({ ...s, contactEmail: v })} mono />
+          </div>
+        </Card>
+
+        {/* Taxonomía: categorías (The Rise Plan, Gente que viaja…) y etiquetas.
+            Se usan en el editor de posts y en los filtros del sitio/dashboard. */}
+        <Card>
+          <div style={cardTitle}>Taxonomía</div>
+          <p style={{ margin: "0 0 16px", fontSize: 13, color: "#8a887f" }}>Categorías principales y etiquetas (subcategorías) que vas a poder asignar a cada artículo.</p>
+          <div style={{ display: "grid", gap: 20 }}>
+            <ChipsField label="CATEGORÍAS" values={s.taxonomy?.categories ?? []} onChange={(v) => setS({ ...s, taxonomy: { categories: v, tags: s.taxonomy?.tags ?? [] } })} hint="Ej: The Rise Plan, Gente que viaja — separadas por coma" />
+            <ChipsField label="ETIQUETAS" values={s.taxonomy?.tags ?? []} onChange={(v) => setS({ ...s, taxonomy: { categories: s.taxonomy?.categories ?? [], tags: v } })} hint="Ej: video, crónica, viaje — separadas por coma" />
           </div>
         </Card>
 

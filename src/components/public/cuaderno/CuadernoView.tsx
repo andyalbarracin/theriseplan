@@ -165,8 +165,10 @@ export function CuadernoView({
                 <h3 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: "clamp(22px,4vw,30px)", lineHeight: 1.15, color: "#1B1D20" }}>{p.title}</h3>
                 {p.excerpt && <p style={{ margin: "10px 0 0", fontSize: 14.5, lineHeight: 1.6, color: "#55565a", maxWidth: 620 }}>{p.excerpt}</p>}
                 <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
-                  <span style={{ fontSize: 10, letterSpacing: ".12em", color: "#6b6c66", border: "1px solid #d2cec3", borderRadius: 16, padding: "5px 11px" }}>{p.category.toUpperCase()}</span>
-                  <span style={{ fontSize: 10, letterSpacing: ".12em", color: "#6b6c66", border: "1px solid #d2cec3", borderRadius: 16, padding: "5px 11px" }}>{p.type.toUpperCase()}</span>
+                  <span style={{ fontSize: 10, letterSpacing: ".12em", color: "#1B1D20", border: "1px solid #cbc7bc", borderRadius: 16, padding: "5px 11px", background: "#efece4" }}>{p.category.toUpperCase()}</span>
+                  {(p.tags ?? []).slice(0, 3).map((t) => (
+                    <span key={t} style={{ fontSize: 10, letterSpacing: ".12em", color: "#6b6c66", border: "1px solid #d2cec3", borderRadius: 16, padding: "5px 11px" }}>{t.toUpperCase()}</span>
+                  ))}
                 </div>
               </div>
               {!mobile && <span style={{ fontSize: 19, color: "#1B1D20", justifySelf: "end" }}>&#8594;</span>}

@@ -16,6 +16,7 @@ const FILTERS: { key: string; label: string }[] = [
 export default function DashboardCuaderno() {
   const { data } = useAsyncData(() => listPosts());
   const [status, setStatus] = useState("all");
+  const [category, setCategory] = useState("all");
   const [q, setQ] = useState("");
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(20);
@@ -23,12 +24,14 @@ export default function DashboardCuaderno() {
   const posts = data ?? [];
   const pub = posts.filter((p) => p.status === "published").length;
   const drafts = posts.filter((p) => p.status === "draft").length;
+  const cats = Array.from(new Set(posts.map((p) => p.category).filter(Boolean)));
 
   const filtered = posts
     .filter((p) => (status === "all" ? true : p.status === status))
+    .filter((p) => (category === "all" ? true : p.category === category))
     .filter((p) => {
       const s = q.trim().toLowerCase();
-      return !s || (p.title + " " + p.category).toLowerCase().includes(s);
+      return !s || (p.title + " " + p.category + " " + (p.tags ?? []).join(" ")).toLowerCase().includes(s);
     });
 
   // Paginación
@@ -37,6 +40,7 @@ export default function DashboardCuaderno() {
   const paged = filtered.slice((current - 1) * pageSize, current * pageSize);
   // Al cambiar filtros/tamaño, volver a la página 1.
   const setStatusR = (s: string) => { setStatus(s); setPage(1); };
+  const setCategoryR = (c: string) => { setCategory(c); setPage(1); };
   const setQR = (s: string) => { setQ(s); setPage(1); };
   const setSizeR = (n: number) => { setPageSize(n); setPage(1); };
 
@@ -64,6 +68,16 @@ export default function DashboardCuaderno() {
               </button>
             );
           })}
+          {/* filtro por categoría */}
+          {cats.length > 0 && (
+            <label style={{ display: "inline-flex", alignItems: "center", gap: 8, marginLeft: 8, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#9a988f" }}>
+              CATEGORÍA
+              <select value={category} onChange={(e) => setCategoryR(e.target.value)} style={{ height: 34, border: "1px solid #cbc7bc", borderRadius: 6, background: "#fff", padding: "0 8px", fontFamily: "var(--font-sans)", fontSize: 13, color: "#1B1D20", cursor: "pointer" }}>
+                <option value="all">Todas</option>
+                {cats.map((c) => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </label>
+          )}
           {/* selector de cuántos mostrar por página */}
           <label style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#9a988f" }}>
             MOSTRAR
@@ -77,7 +91,7 @@ export default function DashboardCuaderno() {
           <div style={{ display: "grid", gridTemplateColumns: "72px 1fr 130px 120px 110px 60px", gap: 20, alignItems: "center", padding: "16px 26px", borderBottom: "1px solid #eee9df", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#9a988f" }}>
             <span></span>
             <span>TÍTULO</span>
-            <span>TIPO</span>
+            <span>ETIQUETAS</span>
             <span>ESTADO</span>
             <span>FECHA</span>
             <span></span>
@@ -95,7 +109,7 @@ export default function DashboardCuaderno() {
                   </div>
                   <div style={{ marginTop: 4, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".1em", color: "#a5a29a" }}>{p.category.toUpperCase()}</div>
                 </div>
-                <span style={{ fontSize: 13, color: "#55565a", textTransform: "capitalize" }}>{p.type}</span>
+                <span style={{ fontSize: 12.5, color: "#55565a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{(p.tags ?? []).slice(0, 2).join(", ") || "—"}</span>
                 <Badge {...b} />
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#8a887f" }}>{p.publishedAt ? formatDateES(p.publishedAt) : "—"}</span>
                 <span style={{ fontSize: 18, color: "#1B1D20", justifySelf: "end" }}>→</span>

@@ -16,7 +16,7 @@ export default async function HomePage() {
   const films: FilmItem[] = source.map((p) => ({
     title: p.title,
     img: p.heroImage,
-    isVideo: p.type === "video",
+    isVideo: (p.tags ?? []).includes("video") || p.type === "video",
     label: (p.category || "").toUpperCase(),
     url: `/cuaderno/${p.slug}`,
   }));

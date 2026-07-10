@@ -1,12 +1,12 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import type { Post, PostStatus, PostType, Visibility } from "@/lib/types";
-import { getPost, savePost, removePost } from "@/lib/cms/client";
+import type { Post, PostStatus, Visibility } from "@/lib/types";
+import { getPost, savePost, removePost, getSiteSettingsClient } from "@/lib/cms/client";
 import { useAsyncData } from "@/hooks/useAsyncData";
 import { AdminButton } from "@/components/admin/ui";
-import { TextField, TextAreaField, SelectField, SegmentedField, ToggleField, Field } from "@/components/admin/fields";
+import { TextField, TextAreaField, SelectField, SegmentedField, ToggleField, Field, ChipsField } from "@/components/admin/fields";
 import { BlockEditor } from "@/components/admin/BlockEditor";
 import { MediaPicker } from "@/components/admin/MediaPicker";
 
@@ -17,7 +17,7 @@ function blankPost(): Post {
     slug: "",
     subtitle: "",
     excerpt: "",
-    category: "Reflexiones",
+    category: "",
     type: "cronica",
     status: "draft",
     visibility: "public",
@@ -55,6 +55,13 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
   const [tab, setTab] = useState<(typeof TABS)[number][0]>("content");
   const [savedFlash, setSavedFlash] = useState(false);
   const [picker, setPicker] = useState<null | "hero" | "gallery">(null);
+  // Categorías y etiquetas administradas desde Configuración → Taxonomía.
+  const [taxonomy, setTaxonomy] = useState<{ categories: string[]; tags: string[] }>({ categories: [], tags: [] });
+  useEffect(() => {
+    getSiteSettingsClient().then((s) => {
+      if (s.taxonomy) setTaxonomy({ categories: s.taxonomy.categories ?? [], tags: s.taxonomy.tags ?? [] });
+    });
+  }, []);
   const baseline = useMemo(() => JSON.stringify(initial), [initial]);
   const dirty = JSON.stringify(post) !== baseline;
 
@@ -183,18 +190,22 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
 
         {tab === "meta" && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22, maxWidth: 720 }}>
-            <TextField label="CATEGORÍA" value={post.category} onChange={(v) => patch({ category: v })} />
-            <SelectField label="TIPO" value={post.type} onChange={(v) => patch({ type: v as PostType })} options={[
-              { value: "cronica", label: "Crónica" },
-              { value: "ensayo", label: "Ensayo" },
-              { value: "video", label: "Video" },
-              { value: "reflexion", label: "Reflexión" },
-              { value: "proyecto", label: "Proyecto" },
-            ]} />
+            {/* Categoría: se elige de la lista administrada (Config → Taxonomía).
+                Si la categoría actual no está en la lista, igual se muestra. */}
+            <SelectField
+              label="CATEGORÍA"
+              value={post.category}
+              onChange={(v) => patch({ category: v })}
+              options={categoryOptions(taxonomy.categories, post.category)}
+            />
             <TextField label="FECHA DE PUBLICACIÓN" value={post.publishedAt ?? ""} onChange={(v) => patch({ publishedAt: v })} mono placeholder="2026-05-04" />
             <TextField label="TIEMPO DE LECTURA (MIN)" value={String(post.readingTime ?? "")} onChange={(v) => patch({ readingTime: parseInt(v) || 0 })} />
             <div style={{ gridColumn: "1 / -1" }}>
               <TextField label="UBICACIÓN (OPCIONAL)" value={post.location?.name ?? ""} onChange={(v) => patch({ location: v ? { ...(post.location ?? { name: v }), name: v } : null })} placeholder="Ciudad, País" />
+            </div>
+            {/* Etiquetas (subcategorías): texto libre + sugeridas en Config. */}
+            <div style={{ gridColumn: "1 / -1" }}>
+              <ChipsField label="ETIQUETAS" values={post.tags ?? []} onChange={(v) => patch({ tags: v })} hint={taxonomy.tags.length ? `Sugeridas: ${taxonomy.tags.join(", ")}` : "Separadas por coma"} />
             </div>
           </div>
         )}
@@ -249,6 +260,16 @@ export function SeoTab({ title, description, fallbackTitle, fallbackDesc, slug, 
       </div>
     </div>
   );
+}
+
+/** Opciones del select de categoría: las administradas + la actual (por si no
+    está en la lista) + un aviso si todavía no hay ninguna. */
+function categoryOptions(categories: string[], current: string): { value: string; label: string }[] {
+  const set = new Set(categories);
+  if (current) set.add(current);
+  const opts = Array.from(set).map((c) => ({ value: c, label: c }));
+  if (!opts.length) opts.push({ value: "", label: "(creá categorías en Ajustes → Taxonomía)" });
+  return opts;
 }
 
 function LoadingBar() {

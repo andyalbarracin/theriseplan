@@ -223,9 +223,16 @@ export interface SocialLink {
   visible: boolean;
 }
 
+/** Taxonomía administrable desde Configuración (guardada en site_settings.data). */
+export interface Taxonomy {
+  categories: string[];
+  tags: string[];
+}
+
 export interface SiteSettings {
   siteName: string;
   domain: string;
+  taxonomy?: Taxonomy;
   monogram: string;
   wordmark: string;
   logoUrl: string;
