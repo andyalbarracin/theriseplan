@@ -1,6 +1,6 @@
 import { HomeClient } from "@/components/public/home/HomeClient";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { getPostsSSR, getFeaturedProjectSSR, getHomeSettingsSSR } from "@/lib/cms/ssr";
+import { getPostsSSR, getFeaturedProjectsSSR, getHomeSettingsSSR } from "@/lib/cms/ssr";
 import { IMAGES } from "@/lib/data/seed";
 import type { HeroDestination } from "@/lib/types";
 import type { FilmItem } from "@/components/public/home/FilmStrip";
@@ -59,33 +59,32 @@ export default async function HomePage() {
     url: f.url,
   }));
 
-  const project = await getFeaturedProjectSSR();
-  const zaire: ZaireBlock = project
-    ? {
+  // Proyectos destacados (hasta 3) → slider en la escena final de la home.
+  const featuredProjects = await getFeaturedProjectsSSR(3);
+  const zaireList: ZaireBlock[] = featuredProjects.length
+    ? featuredProjects.map((project) => ({
         title: project.title.toUpperCase(),
         tags: project.tags.map((t) => t.toUpperCase()),
         description: project.shortDescription,
         href: `/proyectos/${project.slug}`,
-      }
-    : {
-        title: "ZAIRE",
-        tags: ["DOCUMENTAL", "ÁFRICA", "HISTORIA REAL"],
-        description: "Un viaje a lo profundo de África Central para contar historias de resiliencia, naturaleza y humanidad.",
-        href: "/proyectos/zaire",
-      };
+      }))
+    : [
+        {
+          title: "ZAIRE",
+          tags: ["DOCUMENTAL", "ÁFRICA", "HISTORIA REAL"],
+          description: "Un viaje a lo profundo de África Central para contar historias de resiliencia, naturaleza y humanidad.",
+          href: "/proyectos/zaire",
+        },
+      ];
 
-  const gallery = [
-    IMAGES.projectZaire,
-    IMAGES.travelMountain,
-    IMAGES.filmStill,
-    IMAGES.airplaneWing,
-    IMAGES.cityWindow,
-    IMAGES.coffee,
-  ];
+  // Carrusel de "archivo visual" (decorativo). Editable desde Ajustes → Home
+  // (home.visualArchiveImages); si está vacío usa un set de ejemplo.
+  const galleryDefault = [IMAGES.projectZaire, IMAGES.travelMountain, IMAGES.filmStill, IMAGES.airplaneWing, IMAGES.cityWindow, IMAGES.coffee];
+  const gallery = home.visualArchiveImages?.length ? home.visualArchiveImages : galleryDefault;
 
   return (
     <>
-      <HomeClient home={home2} films={films} cats={cats} zaire={zaire} gallery={gallery} />
+      <HomeClient home={home2} films={films} cats={cats} zaireList={zaireList} gallery={gallery} />
       <SiteFooter />
     </>
   );

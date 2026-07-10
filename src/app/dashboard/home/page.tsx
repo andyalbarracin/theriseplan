@@ -223,6 +223,14 @@ export default function DashboardHomeEditor() {
         </Card>
 
         {/* FEATURED + NEWSLETTER */}
+        {/* Carrusel decorativo "archivo visual" (la escena final, junto a
+            Proyectos destacados). Editá las imágenes acá. */}
+        <Card>
+          <div style={cardTitle}>Archivo visual (carrusel)</div>
+          <p style={{ margin: "0 0 16px", fontSize: 13, color: "#8a887f" }}>Imágenes del carrusel decorativo del final de la home. Pegá rutas (ej. /images/mountains.png), separadas por coma.</p>
+          <ChipsField label="IMÁGENES DEL CARRUSEL" values={home.visualArchiveImages ?? []} onChange={(v) => patch({ visualArchiveImages: v })} hint="Rutas separadas por coma" />
+        </Card>
+
         <Card>
           <div style={cardTitle}>Destacados y newsletter</div>
           <div style={{ display: "grid", gap: 18 }}>

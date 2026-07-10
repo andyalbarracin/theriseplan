@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { FilmStrip, type FilmItem } from "./FilmStrip";
 import { GalleryCarousel } from "./GalleryCarousel";
@@ -17,6 +18,10 @@ export function ArchiveBand({
   onGalPrev,
   onGalNext,
   zaire,
+  projCounter,
+  showProjNav,
+  onProjPrev,
+  onProjNext,
 }: {
   films: FilmItem[];
   galBg: string;
@@ -25,6 +30,10 @@ export function ArchiveBand({
   onGalPrev: () => void;
   onGalNext: () => void;
   zaire: ZaireBlock;
+  projCounter?: string;
+  showProjNav?: boolean;
+  onProjPrev?: () => void;
+  onProjNext?: () => void;
 }) {
   return (
     <section data-screen-label="Archivo visual · Zaire" style={{ position: "relative", height: 872, marginTop: 104 }}>
@@ -115,8 +124,19 @@ export function ArchiveBand({
         </p>
       </div>
 
-      {/* ZAIRE block */}
-      <div style={{ position: "absolute", left: 470, top: 494, width: 352 }}>
+      {/* PROYECTOS DESTACADOS — mini-slider (título/tags/descr del proyecto actual) */}
+      <div style={{ position: "absolute", left: 470, top: 470, width: 352 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".2em", color: "#9a988f" }}>
+            PROYECTOS DESTACADOS{showProjNav && projCounter ? ` · ${projCounter}` : ""}
+          </span>
+          {showProjNav && (
+            <div style={{ display: "flex", gap: 8 }}>
+              <button onClick={onProjPrev} aria-label="Proyecto anterior" style={projBtn}>&#8249;</button>
+              <button onClick={onProjNext} aria-label="Proyecto siguiente" style={projBtn}>&#8250;</button>
+            </div>
+          )}
+        </div>
         <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 52, letterSpacing: ".06em", color: "#1B1D20" }}>{zaire.title}</h2>
         <div style={{ display: "flex", gap: 10, margin: "20px 0 0" }}>
           {zaire.tags.map((t) => (
@@ -125,11 +145,7 @@ export function ArchiveBand({
             </span>
           ))}
         </div>
-        <p style={{ margin: "22px 0 0", fontSize: 14.5, lineHeight: 1.62, color: "#4a4c50" }}>
-          Documental en desarrollo.
-          <br />
-          {zaire.description}
-        </p>
+        <p style={{ margin: "22px 0 0", fontSize: 14.5, lineHeight: 1.62, color: "#4a4c50" }}>{zaire.description}</p>
         <Link href={zaire.href} style={{ display: "inline-flex", alignItems: "center", gap: 16, marginTop: 26, fontSize: 14.5, color: "#1B1D20", borderBottom: "1px solid #1B1D20", paddingBottom: 5 }}>
           Ver proyecto <span style={{ fontSize: 16 }}>&#8594;</span>
         </Link>
@@ -139,3 +155,19 @@ export function ArchiveBand({
     </section>
   );
 }
+
+const projBtn: CSSProperties = {
+  width: 30,
+  height: 30,
+  borderRadius: "50%",
+  border: "1px solid #cfcabd",
+  background: "#fff",
+  color: "#1B1D20",
+  fontSize: 15,
+  lineHeight: 1,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: 0,
+};

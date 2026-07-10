@@ -18,17 +18,27 @@ export function HomeClient({
   home,
   films,
   cats,
-  zaire,
+  zaireList,
   gallery,
 }: {
   home: HomeSettings;
   films: FilmItem[];
   cats: CatItem[];
-  zaire: ZaireBlock;
+  zaireList: ZaireBlock[];
   gallery: string[];
 }) {
   const [slide, setSlide] = useState(0);
   const [gal, setGal] = useState(2);
+
+  // Slider de PROYECTOS DESTACADOS (bloque final antes del footer).
+  const [proj, setProj] = useState(0);
+  const pn = zaireList.length || 1;
+  const pIdx = ((proj % pn) + pn) % pn;
+  const zaire = zaireList[pIdx] ?? zaireList[0];
+  const projPrev = () => setProj((p) => p - 1);
+  const projNext = () => setProj((p) => p + 1);
+  const projCounter = `${pad(pIdx + 1)} / ${pad(pn)}`;
+  const showProjNav = pn > 1;
 
   const dests = home.heroDestinations;
   const origin = home.heroOrigin;
@@ -190,6 +200,10 @@ export function HomeClient({
         onGalPrev={() => setGal((g) => g - 1)}
         onGalNext={() => setGal((g) => g + 1)}
         zaire={zaire}
+        projCounter={projCounter}
+        showProjNav={showProjNav}
+        onProjPrev={projPrev}
+        onProjNext={projNext}
       />
     </>
   );
@@ -324,13 +338,24 @@ export function HomeClient({
               <button onClick={() => setGal((g) => g + 1)} aria-label="Siguiente" style={miniGal(true)}>&#8594;</button>
             </div>
           </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".2em", color: "#a5a29a" }}>
+              PROYECTOS DESTACADOS{showProjNav ? ` · ${projCounter}` : ""}
+            </span>
+            {showProjNav && (
+              <div style={{ display: "flex", gap: 8 }}>
+                <button onClick={projPrev} aria-label="Proyecto anterior" style={miniBtn(false)}>&#8249;</button>
+                <button onClick={projNext} aria-label="Proyecto siguiente" style={miniBtn(true)}>&#8250;</button>
+              </div>
+            )}
+          </div>
           <h2 style={{ margin: 0, fontFamily: "var(--font-serif)", fontWeight: 500, fontSize: 44, letterSpacing: ".05em", color: "#1B1D20" }}>{zaire.title}</h2>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "16px 0 0" }}>
             {zaire.tags.map((t) => (
               <span key={t} style={{ fontSize: 10, letterSpacing: ".14em", color: "#6b6c66", border: "1px solid #cbc7bc", borderRadius: 20, padding: "6px 13px" }}>{t}</span>
             ))}
           </div>
-          <p style={{ margin: "18px 0 0", fontSize: 14.5, lineHeight: 1.62, color: "#4a4c50" }}>Documental en desarrollo. {zaire.description}</p>
+          <p style={{ margin: "18px 0 0", fontSize: 14.5, lineHeight: 1.62, color: "#4a4c50" }}>{zaire.description}</p>
           <Link href={zaire.href} style={{ display: "inline-flex", alignItems: "center", gap: 14, marginTop: 22, fontSize: 14.5, color: "#1B1D20", borderBottom: "1px solid #1B1D20", paddingBottom: 5 }}>
             Ver proyecto <span style={{ fontSize: 16 }}>&#8594;</span>
           </Link>

@@ -125,6 +125,15 @@ export async function getFeaturedProjectSSR(): Promise<Project | null> {
   return projects.find((p) => p.featured) ?? null;
 }
 
+/** Proyectos destacados para el slider de la home (hasta `limit`). Si no hay
+    ninguno marcado "Destacar en portada", cae al primero disponible. */
+export async function getFeaturedProjectsSSR(limit = 3): Promise<Project[]> {
+  const projects = await getProjectsSSR();
+  const featured = projects.filter((p) => p.featured);
+  const list = featured.length ? featured : projects.slice(0, 1);
+  return list.slice(0, limit);
+}
+
 /* ----- media --------------------------------------------------------------- */
 export async function getMediaAssetsSSR(): Promise<MediaAsset[]> {
   const client = db();
