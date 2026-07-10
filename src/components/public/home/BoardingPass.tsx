@@ -1,18 +1,23 @@
 import type { CSSProperties } from "react";
+import Link from "next/link";
 import type { BoardingPassFields } from "@/lib/types";
 
 /** Desktop boarding-pass ticket (BUE → destino), interactive via prev/next.
-    Ported 1:1 from Homepage.dc.html. */
+    Ported 1:1 from Homepage.dc.html.
+    `href` (opcional): si el destino viene de un post, el código de vuelo y la
+    franja PRIORITY se vuelven un enlace al post — sin cambiar nada visual. */
 export function BoardingPass({
   pass,
   slideCounter,
   onPrev,
   onNext,
+  href,
 }: {
   pass: BoardingPassFields;
   slideCounter: string;
   onPrev: () => void;
   onNext: () => void;
+  href?: string;
 }) {
   return (
     <div
@@ -42,7 +47,11 @@ export function BoardingPass({
         />
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
           <div>
-            <div style={{ fontSize: 26, fontWeight: 600, letterSpacing: ".02em", color: "#1B1D20" }}>{pass.code}</div>
+            {href ? (
+              <Link href={href} title="Ver nota" style={{ fontSize: 26, fontWeight: 600, letterSpacing: ".02em", color: "#1B1D20", textDecoration: "none", cursor: "pointer" }}>{pass.code}</Link>
+            ) : (
+              <div style={{ fontSize: 26, fontWeight: 600, letterSpacing: ".02em", color: "#1B1D20" }}>{pass.code}</div>
+            )}
             <div style={{ fontSize: 10, letterSpacing: ".22em", color: "#8a887f", marginTop: 3 }}>BOARDING PASS</div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 26, fontWeight: 600, color: "#1B1D20" }}>
@@ -99,9 +108,15 @@ export function BoardingPass({
         <div style={{ fontSize: 8, letterSpacing: ".16em", color: "#a09e95", marginTop: 14 }}>DESTINO</div>
         <div style={{ fontSize: 13, fontWeight: 600, marginTop: 3, fontFamily: "var(--font-mono)" }}>{slideCounter}</div>
       </div>
-      <div style={{ width: 56, background: "#0D0D0E", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 12, letterSpacing: ".34em", color: "#f4f2ef" }}>PRIORITY</span>
-      </div>
+      {href ? (
+        <Link href={href} title="Ver nota" style={{ width: 56, background: "#0D0D0E", display: "flex", alignItems: "center", justifyContent: "center", textDecoration: "none", cursor: "pointer" }}>
+          <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 12, letterSpacing: ".34em", color: "#f4f2ef" }}>PRIORITY</span>
+        </Link>
+      ) : (
+        <div style={{ width: 56, background: "#0D0D0E", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <span style={{ writingMode: "vertical-rl", transform: "rotate(180deg)", fontSize: 12, letterSpacing: ".34em", color: "#f4f2ef" }}>PRIORITY</span>
+        </div>
+      )}
     </div>
   );
 }

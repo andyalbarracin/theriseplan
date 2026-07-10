@@ -62,6 +62,8 @@ export function rowToPost(r: PostRow): Post {
     tags: arr<string>(r.tags),
     source: str(r.source) || undefined,
     legacyWpId: typeof r.legacy_wp_id === "number" ? r.legacy_wp_id : undefined,
+    heroFeatured: bool(r.hero_featured),
+    heroCode: str(r.hero_code) || undefined,
   };
 }
 
@@ -138,6 +140,8 @@ export function postToRow(p: Post): Record<string, unknown> {
     published_at: p.publishedAt || null, // date: "" → null
     reading_time: p.readingTime ?? null,
     related: p.related ?? [],
+    hero_featured: p.heroFeatured ?? false,
+    hero_code: p.heroCode ?? null,
     updated_at: new Date().toISOString(),
   };
 }

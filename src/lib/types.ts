@@ -86,6 +86,9 @@ export interface Post {
   tags?: string[];              // categorias + etiquetas del post en WordPress
   source?: string;              // "native" | "wordpress-theriseplan"
   legacyWpId?: number;          // id del post en el WordPress viejo (trazabilidad)
+  // ----- Hero: mostrar el post en el slider de portada ---------------------
+  heroFeatured?: boolean;       // si aparece en el Hero de la home
+  heroCode?: string;            // codigo/destino que muestra el ticket (ej. "MEX")
 }
 
 /* ----- project ------------------------------------------------------------- */
@@ -150,6 +153,7 @@ export interface HeroDestination {
   zone: string;
   image: string;
   coords: string;
+  url?: string; // si el destino viene de un post, adónde entra el ticket
 }
 
 export interface HeroFade {

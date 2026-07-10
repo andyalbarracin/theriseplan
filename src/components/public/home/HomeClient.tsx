@@ -36,6 +36,7 @@ export function HomeClient({
   const i = ((slide % n) + n) % n;
   const cur = dests[i];
   const fade = home.heroFade;
+  const heroHref = cur.url; // si el destino viene de un post, el ticket entra ahí
 
   const pass = {
     code: cur.flight,
@@ -167,7 +168,7 @@ export function HomeClient({
           <div style={{ position: "absolute", inset: 14, background: "repeating-linear-gradient(0deg,rgba(120,116,108,.16) 0 1px,transparent 1px 9px)" }} />
         </div>
 
-        <BoardingPass pass={pass} slideCounter={slideCounter} onPrev={prev} onNext={next} />
+        <BoardingPass pass={pass} slideCounter={slideCounter} onPrev={prev} onNext={next} href={heroHref} />
 
         <div style={{ position: "absolute", left: 1150, top: 770, zIndex: 5 }}>
           <Seal />
@@ -222,7 +223,11 @@ export function HomeClient({
           {/* mini boarding pass */}
           <div style={{ background: "linear-gradient(160deg,#faf8f3,#eeebe2)", borderRadius: 6, boxShadow: "0 20px 40px -20px rgba(12,11,8,.7)", padding: "16px 18px", display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ fontSize: 18, fontWeight: 700, color: "#1B1D20" }}>{pass.code}</div>
+              {heroHref ? (
+                <Link href={heroHref} style={{ fontSize: 18, fontWeight: 700, color: "#1B1D20", textDecoration: "none" }}>{pass.code}</Link>
+              ) : (
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#1B1D20" }}>{pass.code}</div>
+              )}
               <div style={{ fontSize: 9, letterSpacing: ".2em", color: "#8a887f" }}>BOARDING PASS</div>
             </div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>

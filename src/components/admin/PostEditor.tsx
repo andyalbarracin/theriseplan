@@ -225,6 +225,13 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
               { value: "hidden", label: "Oculto" },
             ]} />
             <ToggleField label="Destacar en portada" checked={post.featured} onChange={(v) => patch({ featured: v })} hint="Aparece en los módulos destacados de la home." />
+            {/* Hero: el post aparece en el slider de portada y el ticket enlaza a él. */}
+            <div style={{ borderTop: "1px solid #e5e1d7", paddingTop: 22, display: "grid", gap: 18 }}>
+              <ToggleField label="Mostrar en el Hero de la home" checked={!!post.heroFeatured} onChange={(v) => patch({ heroFeatured: v })} hint="El post entra al slider de portada; su imagen destacada aparece en el hero y el ticket (boarding pass) enlaza a este post." />
+              {post.heroFeatured && (
+                <TextField label="CÓDIGO DE DESTINO (TICKET)" value={post.heroCode ?? ""} onChange={(v) => patch({ heroCode: v.toUpperCase() })} mono placeholder="Ej: BKK, MEX, CDG" />
+              )}
+            </div>
             <div style={{ borderTop: "1px solid #e5e1d7", paddingTop: 22 }}>
               <AdminButton variant="danger" onClick={remove}>Eliminar artículo</AdminButton>
             </div>
