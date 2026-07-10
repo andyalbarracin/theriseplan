@@ -3,6 +3,8 @@ import { InteriorShell } from "@/components/layout/InteriorShell";
 import { CuadernoView } from "@/components/public/cuaderno/CuadernoView";
 import { getPostsSSR, getHomeSettingsSSR } from "@/lib/cms/ssr";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Cuaderno",
   description: "Notas, ideas y reflexiones desde el camino. Un archivo personal, no lineal, en constante movimiento.",

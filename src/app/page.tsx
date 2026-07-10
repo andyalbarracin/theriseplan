@@ -7,6 +7,9 @@ import type { FilmItem } from "@/components/public/home/FilmStrip";
 import type { CatItem } from "@/components/public/home/CategoryCards";
 import type { ZaireBlock } from "@/components/public/home/ArchiveBand";
 
+// Render dinámico: refleja los cambios del dashboard al instante (sin redeploy).
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const home = await getHomeSettingsSSR();
   const posts = await getPostsSSR();
@@ -20,12 +23,18 @@ export default async function HomePage() {
   const tmpl = home.heroDestinations;
   const heroFromPosts: HeroDestination[] = heroPosts.map((p, idx) => {
     const base = (tmpl.length ? tmpl[idx % tmpl.length] : undefined) ?? ({} as HeroDestination);
+    const t = p.heroTicket ?? {}; // campos del ticket elegidos en el post
     return {
       ...base,
       image: p.heroImage || base.image || "",
       code: (p.heroCode || base.code || "").toUpperCase(),
-      city: p.location?.city || p.location?.name || base.city || "",
-      flight: p.heroCode || base.flight || "",
+      city: t.destCity || p.location?.city || p.location?.name || base.city || "",
+      flight: t.flight || p.heroCode || base.flight || "",
+      date: t.date || base.date || "",
+      gate: t.gate || base.gate || "",
+      seat: t.seat || base.seat || "",
+      boarding: t.boarding || base.boarding || "",
+      zone: t.zone || base.zone || "",
       url: `/cuaderno/${p.slug}`,
     };
   });

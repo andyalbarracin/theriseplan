@@ -66,6 +66,9 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
   const dirty = JSON.stringify(post) !== baseline;
 
   const patch = (p: Partial<Post>) => setPost((cur) => ({ ...cur, ...p }));
+  // Actualiza un campo del ticket del Hero (objeto heroTicket).
+  const patchTicket = (t: Partial<NonNullable<Post["heroTicket"]>>) =>
+    setPost((cur) => ({ ...cur, heroTicket: { ...(cur.heroTicket ?? {}), ...t } }));
 
   const [saving, setSaving] = useState(false);
   // Guarda el post. Si se pasa `status`, además cambia el estado (publicar / pasar
@@ -229,7 +232,19 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
             <div style={{ borderTop: "1px solid #e5e1d7", paddingTop: 22, display: "grid", gap: 18 }}>
               <ToggleField label="Mostrar en el Hero de la home" checked={!!post.heroFeatured} onChange={(v) => patch({ heroFeatured: v })} hint="El post entra al slider de portada; su imagen destacada aparece en el hero y el ticket (boarding pass) enlaza a este post." />
               {post.heroFeatured && (
-                <TextField label="CÓDIGO DE DESTINO (TICKET)" value={post.heroCode ?? ""} onChange={(v) => patch({ heroCode: v.toUpperCase() })} mono placeholder="Ej: BKK, MEX, CDG" />
+                <div style={{ display: "grid", gap: 14 }}>
+                  <TextField label="CÓDIGO DE DESTINO (TICKET)" value={post.heroCode ?? ""} onChange={(v) => patch({ heroCode: v.toUpperCase() })} mono placeholder="Ej: BKK, MEX, CDG" />
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#9a988f" }}>DETALLES DEL TICKET · opcionales — si los dejás vacíos se usa un ejemplo</div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                    <TextField label="CIUDAD DESTINO" value={post.heroTicket?.destCity ?? ""} onChange={(v) => patchTicket({ destCity: v })} placeholder="Ej: Bangkok" />
+                    <TextField label="VUELO" value={post.heroTicket?.flight ?? ""} onChange={(v) => patchTicket({ flight: v })} mono placeholder="Ej: TG 465" />
+                    <TextField label="FECHA" value={post.heroTicket?.date ?? ""} onChange={(v) => patchTicket({ date: v })} mono placeholder="Ej: MAY 28" />
+                    <TextField label="GATE" value={post.heroTicket?.gate ?? ""} onChange={(v) => patchTicket({ gate: v })} mono placeholder="Ej: A16" />
+                    <TextField label="ASIENTO" value={post.heroTicket?.seat ?? ""} onChange={(v) => patchTicket({ seat: v })} mono placeholder="Ej: 24A" />
+                    <TextField label="BOARDING" value={post.heroTicket?.boarding ?? ""} onChange={(v) => patchTicket({ boarding: v })} mono placeholder="Ej: 18:40" />
+                    <TextField label="ZONA" value={post.heroTicket?.zone ?? ""} onChange={(v) => patchTicket({ zone: v })} mono placeholder="Ej: 1" />
+                  </div>
+                </div>
               )}
             </div>
             <div style={{ borderTop: "1px solid #e5e1d7", paddingTop: 22 }}>

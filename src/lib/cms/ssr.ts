@@ -40,7 +40,12 @@ function db(): SupabaseClient | null {
     _client = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL as string,
       process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string,
-      { auth: { persistSession: false } }
+      {
+        auth: { persistSession: false },
+        // Sin caché: cada lectura trae el estado ACTUAL de la base (así los
+        // cambios del dashboard se ven en el sitio sin esperar un redeploy).
+        global: { fetch: (input, init) => fetch(input, { ...init, cache: "no-store" }) },
+      }
     );
   }
   return _client;

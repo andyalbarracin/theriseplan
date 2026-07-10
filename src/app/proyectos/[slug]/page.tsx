@@ -4,6 +4,8 @@ import { InteriorShell } from "@/components/layout/InteriorShell";
 import { ProjectView } from "@/components/public/proyectos/ProjectView";
 import { getProjectsSSR, getProjectBySlugSSR } from "@/lib/cms/ssr";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   return (await getProjectsSSR()).map((p) => ({ slug: p.slug }));
 }

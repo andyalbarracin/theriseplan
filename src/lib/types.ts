@@ -89,6 +89,19 @@ export interface Post {
   // ----- Hero: mostrar el post en el slider de portada ---------------------
   heroFeatured?: boolean;       // si aparece en el Hero de la home
   heroCode?: string;            // codigo/destino que muestra el ticket (ej. "MEX")
+  heroTicket?: HeroTicket;      // resto de campos del ticket (opcionales, con fallback)
+}
+
+/** Campos opcionales del ticket (boarding pass) por post. Los que se dejan
+    vacíos usan un ejemplo/fallback al renderizar el Hero. */
+export interface HeroTicket {
+  destCity?: string;
+  flight?: string;
+  date?: string;
+  gate?: string;
+  seat?: string;
+  boarding?: string;
+  zone?: string;
 }
 
 /* ----- project ------------------------------------------------------------- */

@@ -64,6 +64,7 @@ export function rowToPost(r: PostRow): Post {
     legacyWpId: typeof r.legacy_wp_id === "number" ? r.legacy_wp_id : undefined,
     heroFeatured: bool(r.hero_featured),
     heroCode: str(r.hero_code) || undefined,
+    heroTicket: (r.hero_ticket && typeof r.hero_ticket === "object" ? r.hero_ticket : undefined) as Post["heroTicket"],
   };
 }
 
@@ -142,6 +143,7 @@ export function postToRow(p: Post): Record<string, unknown> {
     related: p.related ?? [],
     hero_featured: p.heroFeatured ?? false,
     hero_code: p.heroCode ?? null,
+    hero_ticket: p.heroTicket ?? {},
     updated_at: new Date().toISOString(),
   };
 }

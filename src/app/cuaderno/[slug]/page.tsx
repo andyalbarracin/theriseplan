@@ -5,6 +5,8 @@ import { ArticleView } from "@/components/public/cuaderno/ArticleView";
 import { isPublicPost } from "@/lib/cms";
 import { getPostsSSR, getPostBySlugSSR, getPostByIdSSR } from "@/lib/cms/ssr";
 
+export const dynamic = "force-dynamic";
+
 export async function generateStaticParams() {
   return (await getPostsSSR()).map((p) => ({ slug: p.slug }));
 }
