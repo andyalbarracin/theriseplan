@@ -1,9 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ContentBlock } from "@/lib/types";
 import { MediaPicker } from "./MediaPicker";
 
 const NEW_BLOCK: Record<string, () => ContentBlock> = {
+  html: () => ({ type: "html", html: "" }),
   paragraph: () => ({ type: "paragraph", text: "" }),
   heading: () => ({ type: "heading", text: "" }),
   quote: () => ({ type: "quote", text: "", cite: "" }),
@@ -18,6 +19,7 @@ const NEW_BLOCK: Record<string, () => ContentBlock> = {
 };
 
 const ADD_LABELS: Record<string, string> = {
+  html: "Texto enriquecido",
   paragraph: "Párrafo",
   heading: "Encabezado",
   quote: "Cita",
@@ -82,6 +84,8 @@ export function BlockEditor({ blocks, onChange, kinds }: { blocks: ContentBlock[
 
 function BlockInputs({ block, onUpdate, onPick }: { block: ContentBlock; onUpdate: (patch: Record<string, unknown>) => void; onPick: () => void }) {
   switch (block.type) {
+    case "html":
+      return <HtmlBlockEditor html={block.html} onChange={(html) => onUpdate({ html })} />;
     case "paragraph":
     case "callout":
       return <textarea value={block.text} onChange={(e) => onUpdate({ text: e.target.value })} placeholder="Escribe el texto…" style={{ ...inputStyle, minHeight: 80, resize: "vertical", lineHeight: 1.5 }} />;
@@ -134,4 +138,119 @@ function BlockInputs({ block, onUpdate, onPick }: { block: ContentBlock; onUpdat
     default:
       return <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#9a988f" }}>Bloque «{block.type}»</div>;
   }
+}
+
+/* =============================================================================
+   Editor de texto enriquecido (bloque "html") — estilo WordPress clásico.
+   Dos modos:
+     • VISUAL: escribís con formato (negrita, listas, títulos, links, cita) en un
+       área editable. La barra usa comandos del navegador (execCommand).
+     • HTML: ves y editás el HTML puro en un área de texto monoespaciada.
+   El contenido siempre queda guardado como HTML en el bloque, así el post se
+   ve igual en el sitio (clase .legacy-html).
+   ============================================================================= */
+const TOOLBAR: { cmd: string; arg?: string; label: string; title: string }[] = [
+  { cmd: "bold", label: "B", title: "Negrita" },
+  { cmd: "italic", label: "I", title: "Cursiva" },
+  { cmd: "formatBlock", arg: "H2", label: "H2", title: "Encabezado" },
+  { cmd: "formatBlock", arg: "BLOCKQUOTE", label: "❝", title: "Cita" },
+  { cmd: "insertUnorderedList", label: "•", title: "Lista con viñetas" },
+  { cmd: "insertOrderedList", label: "1.", title: "Lista numerada" },
+  { cmd: "removeFormat", label: "⌫", title: "Quitar formato" },
+];
+
+function HtmlBlockEditor({ html, onChange }: { html: string; onChange: (html: string) => void }) {
+  const [mode, setMode] = useState<"visual" | "html">("visual");
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Carga el HTML en el área visual al montar y cada vez que se vuelve a "visual".
+  // No se re-inyecta mientras se tipea (para no perder el cursor).
+  useEffect(() => {
+    if (mode === "visual" && ref.current && ref.current.innerHTML !== html) {
+      ref.current.innerHTML = html || "";
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mode]);
+
+  const syncFromDom = () => {
+    if (ref.current) onChange(ref.current.innerHTML);
+  };
+  const exec = (cmd: string, arg?: string) => {
+    ref.current?.focus();
+    document.execCommand(cmd, false, arg);
+    syncFromDom();
+  };
+  const addLink = () => {
+    const url = window.prompt("URL del enlace:", "https://");
+    if (url) exec("createLink", url);
+  };
+
+  const tab = (m: "visual" | "html", label: string) => (
+    <button
+      onClick={() => setMode(m)}
+      style={{
+        fontSize: 12,
+        fontFamily: "var(--font-mono)",
+        letterSpacing: ".08em",
+        padding: "6px 12px",
+        border: "1px solid #cbc7bc",
+        borderBottom: mode === m ? "1px solid #faf8f3" : "1px solid #cbc7bc",
+        borderRadius: "5px 5px 0 0",
+        background: mode === m ? "#fff" : "#efece4",
+        color: mode === m ? "#1B1D20" : "#8a887f",
+        cursor: "pointer",
+        marginBottom: -1,
+      }}
+    >
+      {label}
+    </button>
+  );
+
+  return (
+    <div>
+      {/* pestañas Visual / HTML */}
+      <div style={{ display: "flex", gap: 4, borderBottom: "1px solid #cbc7bc" }}>
+        {tab("visual", "VISUAL")}
+        {tab("html", "HTML")}
+      </div>
+
+      {mode === "visual" ? (
+        <>
+          {/* barra de formato */}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, padding: "8px 0", borderBottom: "1px solid #eee5d9" }}>
+            {TOOLBAR.map((t) => (
+              <button
+                key={t.label}
+                title={t.title}
+                onMouseDown={(e) => e.preventDefault() /* no perder la selección */}
+                onClick={() => exec(t.cmd, t.arg)}
+                style={{ minWidth: 32, height: 30, border: "1px solid #cbc7bc", borderRadius: 4, background: "#fff", cursor: "pointer", fontSize: 13, color: "#33352f", fontWeight: t.label === "B" ? 700 : 400, fontStyle: t.label === "I" ? "italic" : "normal" }}
+              >
+                {t.label}
+              </button>
+            ))}
+            <button title="Enlace" onMouseDown={(e) => e.preventDefault()} onClick={addLink} style={{ minWidth: 32, height: 30, border: "1px solid #cbc7bc", borderRadius: 4, background: "#fff", cursor: "pointer", fontSize: 13, color: "#33352f" }}>🔗</button>
+          </div>
+          {/* área editable con el mismo estilo que el sitio (.legacy-html) */}
+          <div
+            ref={ref}
+            className="legacy-html"
+            contentEditable
+            suppressContentEditableWarning
+            onInput={syncFromDom}
+            onBlur={syncFromDom}
+            style={{ minHeight: 260, background: "#fff", border: "1px solid #cbc7bc", borderTop: "none", borderRadius: "0 0 4px 4px", padding: "16px 18px", outline: "none", fontSize: 16 }}
+          />
+        </>
+      ) : (
+        <textarea
+          value={html}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="<p>HTML del artículo…</p>"
+          spellCheck={false}
+          style={{ width: "100%", minHeight: 300, background: "#fff", border: "1px solid #cbc7bc", borderTop: "none", borderRadius: "0 0 4px 4px", padding: "16px 18px", outline: "none", fontFamily: "var(--font-mono)", fontSize: 13, lineHeight: 1.6, resize: "vertical", color: "#33352f" }}
+        />
+      )}
+    </div>
+  );
 }

@@ -3,11 +3,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { listProjects } from "@/lib/cms/client";
 import { useAsyncData } from "@/hooks/useAsyncData";
-import { AdminTopbar, AdminButton, projectBadge } from "@/components/admin/ui";
+import { AdminTopbar, AdminButton, projectBadge, DashPageBtn } from "@/components/admin/ui";
 
 export default function DashboardProyectos() {
   const { data } = useAsyncData(() => listProjects());
   const [q, setQ] = useState("");
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
 
   const all = data ?? [];
   const pub = all.filter((p) => p.visibility === "public" && !p.sensitive && p.status !== "draft").length;
@@ -17,6 +19,13 @@ export default function DashboardProyectos() {
     return !s || (p.title + " " + p.type + " " + p.tags.join(" ")).toLowerCase().includes(s);
   });
 
+  // Paginación
+  const pageCount = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const current = Math.min(page, pageCount);
+  const paged = filtered.slice((current - 1) * pageSize, current * pageSize);
+  const setQR = (s: string) => { setQ(s); setPage(1); };
+  const setSizeR = (n: number) => { setPageSize(n); setPage(1); };
+
   return (
     <>
       <AdminTopbar
@@ -24,15 +33,21 @@ export default function DashboardProyectos() {
         eyebrow={`${all.length} PROYECTOS · ${pub} PÚBLICOS · ${hidden} PRIVADOS`}
         actions={
           <>
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Buscar…" style={{ height: 44, width: 220, border: "1px solid #cbc7bc", borderRadius: 3, padding: "0 14px", fontFamily: "var(--font-sans)", fontSize: 14, outline: "none", background: "#fff" }} />
+            <input value={q} onChange={(e) => setQR(e.target.value)} placeholder="Buscar…" style={{ height: 44, width: 220, border: "1px solid #cbc7bc", borderRadius: 3, padding: "0 14px", fontFamily: "var(--font-sans)", fontSize: 14, outline: "none", background: "#fff" }} />
+            <label style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#9a988f" }}>
+              MOSTRAR
+              <select value={pageSize} onChange={(e) => setSizeR(Number(e.target.value))} style={{ height: 34, border: "1px solid #cbc7bc", borderRadius: 6, background: "#fff", padding: "0 8px", fontFamily: "var(--font-sans)", fontSize: 13, color: "#1B1D20", cursor: "pointer" }}>
+                {[10, 20, 50, 100].map((n) => <option key={n} value={n}>{n}</option>)}
+              </select>
+            </label>
             <AdminButton href="/dashboard/proyectos/new">＋ Nuevo proyecto</AdminButton>
           </>
         }
       />
 
       <main style={{ padding: "28px clamp(20px,4vw,40px) 56px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 22 }}>
-          {filtered.map((pr) => {
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 22 }}>
+          {paged.map((pr) => {
             const b = projectBadge(pr);
             const isPrivate = pr.visibility !== "public" || pr.sensitive;
             return (
@@ -55,7 +70,23 @@ export default function DashboardProyectos() {
             );
           })}
         </div>
-        {filtered.length === 0 && <p style={{ padding: "40px 0", fontSize: 14, color: "#8a887f" }}>Sin resultados.</p>}
+        {paged.length === 0 && <p style={{ padding: "40px 0", fontSize: 14, color: "#8a887f" }}>Sin resultados.</p>}
+
+        {/* paginación */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, marginTop: 24, flexWrap: "wrap" }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "#9a988f" }}>
+            {filtered.length} RESULTADO{filtered.length === 1 ? "" : "S"} · PÁGINA {current} DE {pageCount}
+          </span>
+          {pageCount > 1 && (
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <DashPageBtn label="‹" disabled={current <= 1} onClick={() => setPage(current - 1)} />
+              {Array.from({ length: pageCount }, (_, i) => i + 1).map((n) => (
+                <DashPageBtn key={n} label={String(n)} active={n === current} onClick={() => setPage(n)} />
+              ))}
+              <DashPageBtn label="›" disabled={current >= pageCount} onClick={() => setPage(current + 1)} />
+            </div>
+          )}
+        </div>
       </main>
     </>
   );

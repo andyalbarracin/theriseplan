@@ -94,6 +94,31 @@ export function Eyebrow({ children, style }: { children: ReactNode; style?: CSSP
   return <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".16em", color: "#9a988f", ...style }}>{children}</div>;
 }
 
+/* Botón de paginación reutilizable en las listas del dashboard. */
+export function DashPageBtn({ label, active, disabled, onClick }: { label: string; active?: boolean; disabled?: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        minWidth: 36,
+        height: 36,
+        padding: "0 12px",
+        borderRadius: 6,
+        cursor: disabled ? "default" : "pointer",
+        fontFamily: "var(--font-sans)",
+        fontSize: 13,
+        color: disabled ? "#c0bdb4" : active ? "#F4F2EF" : "#1B1D20",
+        background: active ? "#1B1D20" : "#fff",
+        border: active ? "1px solid #1B1D20" : "1px solid #cbc7bc",
+        opacity: disabled ? 0.5 : 1,
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
 /* status → badge colors, shared by lists + editors */
 export function postBadge(status: string): { label: string; color: string; bg: string } {
   const map: Record<string, [string, string, string]> = {

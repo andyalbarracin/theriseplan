@@ -24,7 +24,7 @@ function blankPost(): Post {
     featured: false,
     heroImage: "/images/notebook.png",
     gallery: [],
-    bodyBlocks: [{ type: "paragraph", text: "" }],
+    bodyBlocks: [{ type: "html", html: "" }],
     readingTime: 4,
     publishedAt: "",
     location: null,
@@ -61,10 +61,13 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
   const patch = (p: Partial<Post>) => setPost((cur) => ({ ...cur, ...p }));
 
   const [saving, setSaving] = useState(false);
-  const save = async () => {
+  // Guarda el post. Si se pasa `status`, además cambia el estado (publicar / pasar
+  // a borrador). Sin argumento, guarda manteniendo el estado actual.
+  const save = async (status?: PostStatus) => {
     setSaving(true);
     try {
-      const saved = await savePost({ ...post });
+      const toSave = status ? { ...post, status } : { ...post };
+      const saved = await savePost(toSave);
       setPost(saved);
       setSavedFlash(true);
       setTimeout(() => setSavedFlash(false), 2000);
@@ -100,10 +103,26 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
           </Link>
           <div style={{ marginTop: 4, fontFamily: "var(--font-serif)", fontSize: 22, color: "#1B1D20", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 420 }}>{post.title || "Sin título"}</div>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 12, color: dirtyColor }}>{dirtyLabel}</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 12, color: dirtyColor }}>{savedFlash ? "✓ Guardado" : dirtyLabel}</span>
+          {/* estado actual (chip) */}
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".12em", padding: "4px 10px", borderRadius: 20, border: "1px solid #d2cec3", color: post.status === "published" ? "#1f8a5b" : "#8a887f", background: "#fff" }}>
+            {post.status === "published" ? "PUBLICADO" : post.status === "archived" ? "ARCHIVADO" : "BORRADOR"}
+          </span>
           <AdminButton variant="ghost" href={`/cuaderno/${post.slug || ""}`}>↗ Ver</AdminButton>
-          <AdminButton onClick={save}>{saving ? "Guardando…" : savedFlash ? "✓ Guardado" : "Guardar"}</AdminButton>
+          {/* Flujo tipo WordPress: publicado → Guardar cambios + Pasar a borrador;
+              si no → Guardar borrador + Publicar. */}
+          {post.status === "published" ? (
+            <>
+              <AdminButton variant="ghost" onClick={() => save("draft")}>Pasar a borrador</AdminButton>
+              <AdminButton onClick={() => save()}>{saving ? "Guardando…" : "Guardar cambios"}</AdminButton>
+            </>
+          ) : (
+            <>
+              <AdminButton variant="ghost" onClick={() => save("draft")}>{saving ? "…" : "Guardar borrador"}</AdminButton>
+              <AdminButton onClick={() => save("published")}>{saving ? "Publicando…" : "Publicar"}</AdminButton>
+            </>
+          )}
         </div>
       </header>
 
@@ -131,7 +150,7 @@ function Editor({ initial, mode, router }: { initial: Post; mode: "new" | "edit"
                 <div style={{ fontFamily: "var(--font-serif)", fontSize: 20, color: "#1B1D20" }}>Cuerpo del artículo</div>
                 <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: ".14em", color: "#9a988f" }}>{post.bodyBlocks.length} BLOQUES</span>
               </div>
-              <BlockEditor blocks={post.bodyBlocks} onChange={(b) => patch({ bodyBlocks: b })} kinds={["paragraph", "heading", "quote", "image", "callout", "route", "handwritten"]} />
+              <BlockEditor blocks={post.bodyBlocks} onChange={(b) => patch({ bodyBlocks: b })} kinds={["html", "paragraph", "heading", "quote", "image", "callout", "route", "handwritten"]} />
             </div>
           </div>
         )}
