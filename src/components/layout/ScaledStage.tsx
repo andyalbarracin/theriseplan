@@ -2,10 +2,12 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * Faithful port of the homepage's desktop scaling (Homepage.dc.html):
- * a fixed `width`px stage is measured for its natural height and scaled with
- * `transform: scale(min(1, vw/width))`, centered horizontally. Below
- * `breakpoint`, the purpose-built `mobile` layout renders instead.
+ * Escenario del home (desktop). Un lienzo fijo de `width`px se mide y se escala
+ * con `transform: scale(vw/width)` para SIEMPRE llenar el ancho disponible:
+ *   - en pantallas más angostas que `width` se achica para entrar,
+ *   - en pantallas MÁS ANCHAS crece para ocupar el 100% (sin bandas blancas).
+ * El diseño se mantiene idéntico (misma composición), solo cambia de tamaño.
+ * Debajo de `breakpoint` se usa el layout mobile propio (que sí reflowea).
  */
 export function ScaledStage({
   children,
@@ -60,7 +62,8 @@ export function ScaledStage({
   }
 
   const availW = Math.max(320, vw);
-  const scale = Math.min(1, availW / width);
+  // Sin tope en 1: el lienzo crece para llenar pantallas anchas (no más bandas).
+  const scale = availW / width;
   const stageLeft = Math.max(0, Math.round((availW - width * scale) / 2));
   const stageHeight = Math.round(natH * scale);
 
