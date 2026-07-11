@@ -40,4 +40,23 @@ export const SITE_SETTINGS: SiteSettings = {
     "Archivo personal de un director creativo que construye, viaja y crea en movimiento.",
     IMAGES.airportHero
   ),
+  about: {
+    eyebrow: "04 / SOBRE MÍ",
+    title: "Sobre mí",
+    tagline: "creo, viajo, construyo.",
+    portraitImage: IMAGES.heroPortrait,
+    portraitCaption: "RETRATO · BUE",
+    lead: "Soy Andy Albarracín, director creativo. Construyo ideas, viajo y creo sistemas con intención.",
+    body: "Mi trabajo vive entre la dirección creativa, el documental y el diseño de sistemas — siempre en movimiento. Documento lo importante y diseño lo que importa. Creo que las mejores ideas nacen en tránsito, entre un lugar y otro.",
+    originNote: "Esto empezó en 2010 como un blog — The Rise Plan. Aquellas notas siguen vivas en el Cuaderno, hoy parte de este archivo en tránsito.",
+    values: [
+      { title: "Claridad sobre el ruido.", body: "Menos ruido, más señal. Priorizo lo esencial." },
+      { title: "Movimiento sobre destino.", body: "El camino importa más que la meta." },
+      { title: "Detalles sobre decoración.", body: "Lo que importa está en los detalles, no en el adorno." },
+      { title: "Humano, no llamativo.", body: "Diseño para personas, no para impresionar." },
+    ],
+    quote: { text: "No se trata de llegar primero,\nsino de ver más en el camino.", cite: "ANDY ALBARRACÍN" },
+    featuredPostIds: [],
+    featuredProjectIds: [],
+  },
 };

@@ -249,10 +249,33 @@ export interface Taxonomy {
   tags: string[];
 }
 
+/** Un ítem del acordeón de valores de la página "Sobre mí". */
+export interface AboutValue {
+  title: string;
+  body: string; // detalle que se despliega en el acordeón (opcional)
+}
+
+/** Configuración editable de la página "Sobre mí" (en site_settings.data.about). */
+export interface AboutSettings {
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  portraitImage: string;
+  portraitCaption: string;
+  lead: string;          // frase grande de intro
+  body: string;          // párrafo
+  originNote: string;    // nota de origen (2010 · The Rise Plan)
+  values: AboutValue[];  // acordeón de valores (una columna)
+  quote: { text: string; cite: string };
+  featuredPostIds: string[];    // widget: posts destacados
+  featuredProjectIds: string[]; // widget: proyectos destacados
+}
+
 export interface SiteSettings {
   siteName: string;
   domain: string;
   taxonomy?: Taxonomy;
+  about?: AboutSettings;
   monogram: string;
   wordmark: string;
   logoUrl: string;

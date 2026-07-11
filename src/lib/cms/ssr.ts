@@ -16,7 +16,7 @@
                 consulte Supabase y, en el `catch`, devuelva la version seed.
    ============================================================================= */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import type { Post, Project, MediaAsset, HomeSettings } from "@/lib/types";
+import type { Post, Project, MediaAsset, HomeSettings, SiteSettings } from "@/lib/types";
 import { rowToPost, rowToProject, rowToMedia } from "./mappers";
 import { isPublicPost, isPublicProject } from "./visibility";
 import * as seed from "./queries"; // fallback sincronico (contenido de ejemplo)
@@ -159,6 +159,22 @@ export async function getHomeSettingsSSR(): Promise<HomeSettings> {
     const { data, error } = await client.from("home_settings").select("data").eq("id", "default").maybeSingle();
     if (error) throw error;
     return data?.data ? { ...fallback, ...(data.data as HomeSettings) } : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+/* ----- settings (site → about) ---------------------------------------------
+   Lee site_settings.data (incluye el objeto `about` de la página Sobre mí),
+   mergeado con el seed para tolerar campos nuevos. */
+export async function getSiteSettingsSSR(): Promise<SiteSettings> {
+  const client = db();
+  const fallback = seed.getSiteSettings();
+  if (!client) return fallback;
+  try {
+    const { data, error } = await client.from("site_settings").select("data").eq("id", "default").maybeSingle();
+    if (error) throw error;
+    return data?.data ? { ...fallback, ...(data.data as SiteSettings) } : fallback;
   } catch {
     return fallback;
   }

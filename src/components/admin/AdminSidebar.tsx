@@ -10,6 +10,7 @@ const ITEMS: [string, string][] = [
   ["Proyectos", "/dashboard/proyectos"],
   ["Media", "/dashboard/media"],
   ["Inicio · Home", "/dashboard/home"],
+  ["Sobre mí", "/dashboard/sobre-mi"],
   ["SEO", "/dashboard/seo"],
   ["Navegación", "/dashboard/navigation"],
   ["Ajustes", "/dashboard/ajustes"],
