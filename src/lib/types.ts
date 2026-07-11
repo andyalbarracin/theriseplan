@@ -1,6 +1,6 @@
 /* =============================================================================
    andyalbarracin.com — CMS domain types
-   TypeScript port of the JSDoc typedefs in the Claude Design prototype's data.js.
+   TypeScript port of the JSDoc typedefs in the approved design prototype's data.js.
    ============================================================================= */
 
 export type Visibility = "public" | "private" | "hidden";
@@ -233,6 +233,8 @@ export interface HomeSettings {
   visualArchiveImages: string[];
   quote: { text: string; cite: string };
   newsletter: { heading: string; note: string };
+  heroNote?: string;   // nota manuscrita del hero ("No todo viaje merece una foto…")
+  sealImage?: string;  // sello: imagen propia opcional (si vacío, usa el sello por defecto)
 }
 
 export interface SocialLink {

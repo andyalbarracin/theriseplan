@@ -3,7 +3,7 @@
 Personal archive of a creative director — editorial + airport/travel/boarding-pass
 visual language. A production **Next.js (App Router) + React + TypeScript** app with
 a full **CMS-ready dashboard**, built as a faithful implementation of the approved
-Claude Design prototype (`VFinal - HTML/`).
+design prototype (`VFinal - HTML/`).
 
 ## Stack
 
@@ -77,7 +77,7 @@ NEXT_PUBLIC_SITE_URL=https://andyalbarracin.com
 
 - **Auth**: `/login` is real UI; the dashboard is an **open mock** for now (Supabase auth is scaffolded, not enforced). Gate it via `middleware.ts` + `createServerSupabase()` when going live.
 - Images live in `public/images/` (reused from the design export). `next.config.ts` uses `images.unoptimized` (all assets are local + pre-sized).
-- `VFinal - HTML/` is the original Claude Design export, kept for reference and excluded from the build.
+- `VFinal - HTML/` is the original design export, kept for reference and excluded from the build.
 
 ## Structure
 

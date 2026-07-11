@@ -48,6 +48,7 @@ export function HomeClient({
   const fade = home.heroFade;
   const heroHref = cur.url; // si el destino viene de un post, el ticket entra ahí
   const heroPostTitle = cur.postTitle; // nombre del post que muestra el slider
+  const heroNoteLines = (home.heroNote ?? "").split("\n"); // nota manuscrita (editable)
 
   const pass = {
     code: cur.flight,
@@ -165,13 +166,12 @@ export function HomeClient({
         />
 
         <p style={{ position: "absolute", left: 66, top: 700, margin: 0, fontFamily: "var(--font-hand)", fontSize: 23, lineHeight: 1.5, color: "#a9c2f0", textShadow: "0 2px 16px rgba(8,7,4,.5)", zIndex: 5 }}>
-          No todo viaje
-          <br />
-          merece una foto.
-          <br />
-          Algunos solo
-          <br />
-          ordenan la cabeza.
+          {heroNoteLines.map((ln, i) => (
+            <span key={i}>
+              {ln}
+              {i < heroNoteLines.length - 1 && <br />}
+            </span>
+          ))}
           <span style={{ display: "block", width: 70, height: 1, background: "#a9c2f0", marginTop: 8, transform: "rotate(-3deg)" }} />
         </p>
 
@@ -181,8 +181,7 @@ export function HomeClient({
           <Link href={heroHref ?? "#"} style={{ position: "absolute", left: 862, top: 806, width: 220, minHeight: 152, transform: "rotate(-4deg)", background: "linear-gradient(150deg,#f5f2eb,#e7e3d8)", boxShadow: "0 18px 34px -12px rgba(0,0,0,.34)", zIndex: 6, textDecoration: "none", display: "block", padding: "18px 20px 20px", overflow: "hidden" }}>
             <div style={{ position: "absolute", inset: 0, background: "repeating-linear-gradient(0deg,rgba(120,116,108,.13) 0 1px,transparent 1px 11px)", pointerEvents: "none" }} />
             <div style={{ position: "relative" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontSize: 8, letterSpacing: ".22em", color: "#a09e95" }}>AHORA EN EL HERO</div>
-              <div style={{ marginTop: 8, fontFamily: "var(--font-hand)", fontSize: 22, lineHeight: 1.12, color: "#2F5DAA", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{heroPostTitle}</div>
+              <div style={{ marginTop: 4, fontFamily: "var(--font-hand)", fontSize: 22, lineHeight: 1.12, color: "#2F5DAA", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{heroPostTitle}</div>
               <div style={{ marginTop: 10, fontSize: 11, color: "#55565a", display: "inline-flex", alignItems: "center", gap: 6 }}>Leer nota <span style={{ fontSize: 13 }}>&#8594;</span></div>
             </div>
           </Link>
@@ -195,7 +194,7 @@ export function HomeClient({
         <BoardingPass pass={pass} slideCounter={slideCounter} onPrev={prev} onNext={next} href={heroHref} />
 
         <div style={{ position: "absolute", left: 1150, top: 770, zIndex: 5 }}>
-          <Seal />
+          <Seal image={home.sealImage} />
         </div>
 
         <div style={{ position: "absolute", left: 1150, top: 1020, display: "flex", alignItems: "center", gap: 12, zIndex: 5 }}>
@@ -214,6 +213,7 @@ export function HomeClient({
         onGalPrev={() => setGal((g) => g - 1)}
         onGalNext={() => setGal((g) => g + 1)}
         zaire={zaire}
+        quote={home.quote}
         projCounter={projCounter}
         showProjNav={showProjNav}
         onProjPrev={projPrev}
@@ -290,7 +290,7 @@ export function HomeClient({
                 <button key={idx} onClick={d.onClick} aria-label="Destino" style={{ width: d.active ? 9 : 7, height: d.active ? 9 : 7, borderRadius: "50%", cursor: "pointer", padding: 0, background: d.active ? "var(--hero-accent,#9db8ec)" : "transparent", border: `1px solid rgba(157,184,236,${d.active ? "1" : "0.55"})` }} />
               ))}
             </div>
-            <p style={{ margin: 0, fontFamily: "var(--font-hand)", fontSize: 17, color: "#a9c2f0" }}>No todo viaje merece una foto.</p>
+            <p style={{ margin: 0, fontFamily: "var(--font-hand)", fontSize: 17, color: "#a9c2f0" }}>{(home.heroNote ?? "").replace(/\n/g, " ")}</p>
           </div>
         </div>
       </section>
@@ -339,7 +339,7 @@ export function HomeClient({
 
         <div style={{ padding: "0 20px", marginTop: 40 }}>
           <p style={{ margin: "0 0 20px", fontFamily: "var(--font-hand)", fontSize: 21, lineHeight: 1.5, color: "var(--accent,#2F5DAA)" }}>
-            Ver el mundo, acercarse a los demás, encontrarse y sentir. Ese es el propósito de la vida. <span style={{ fontSize: 16 }}>— Walter Mitty.</span>
+            {home.quote.text} {home.quote.cite && <span style={{ fontSize: 16 }}>— {home.quote.cite}.</span>}
           </p>
           <div style={{ position: "relative", width: "100%", aspectRatio: "16/10", overflow: "hidden", borderRadius: 4, background: "#12140f", marginBottom: 22 }}>
             <div style={{ position: "absolute", inset: 0, background: galBg, transition: "background .5s ease" }} />

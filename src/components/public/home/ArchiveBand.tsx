@@ -18,6 +18,7 @@ export function ArchiveBand({
   onGalPrev,
   onGalNext,
   zaire,
+  quote,
   projCounter,
   showProjNav,
   onProjPrev,
@@ -30,6 +31,7 @@ export function ArchiveBand({
   onGalPrev: () => void;
   onGalNext: () => void;
   zaire: ZaireBlock;
+  quote: { text: string; cite: string };
   projCounter?: string;
   showProjNav?: boolean;
   onProjPrev?: () => void;
@@ -94,19 +96,15 @@ export function ArchiveBand({
         <span style={{ position: "absolute", right: 36, top: 24, fontSize: 22, color: "#1B1D20", transform: "rotate(-8deg)" }}>&#9992;</span>
       </div>
 
-      {/* Walter Mitty quote */}
+      {/* Cita (editable desde Ajustes → Home) */}
       <div style={{ position: "absolute", left: 588, top: 22, width: 392, fontFamily: "var(--font-hand)", fontSize: 21, lineHeight: 1.5, color: "var(--accent,#2F5DAA)" }}>
-        <p style={{ margin: 0 }}>
-          Ver el mundo, afrontar peligros,
-          <br />
-          traspasar muros, acercarse a los demás,
-          <br />
-          encontrarse y sentir.
-          <br />
-          Ese es el propósito de la vida.
-        </p>
-        <div style={{ width: 64, height: 1, background: "var(--accent,#2F5DAA)", margin: "4px 0 0 84px" }} />
-        <p style={{ margin: "10px 0 0", textAlign: "right", fontSize: 20 }}>— Walter Mitty.</p>
+        <p style={{ margin: 0 }}>{quote.text}</p>
+        {quote.cite && (
+          <>
+            <div style={{ width: 64, height: 1, background: "var(--accent,#2F5DAA)", margin: "4px 0 0 84px" }} />
+            <p style={{ margin: "10px 0 0", textAlign: "right", fontSize: 20 }}>— {quote.cite}.</p>
+          </>
+        )}
       </div>
 
       {/* polaroid */}

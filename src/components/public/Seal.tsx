@@ -1,13 +1,26 @@
-/** Circular "AA · IDEAS EN TRÁNSITO" wax-stamp seal (port from Homepage.dc.html). */
+/** Sello circular "AA · IDEAS EN TRÁNSITO" (generado). Si se pasa `image`, se
+    muestra esa imagen (subida desde el dashboard) en lugar del sello por defecto. */
 export function Seal({
   color = "var(--accent)",
   size = 132,
   id = "seal-cir",
+  image,
 }: {
   color?: string;
   size?: number;
   id?: string;
+  image?: string;
 }) {
+  if (image) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={image}
+        alt="Sello"
+        style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", opacity: 0.95 }}
+      />
+    );
+  }
   return (
     <div
       style={{

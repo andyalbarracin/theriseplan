@@ -4,6 +4,7 @@ import type { HomeSettings, HeroDestination, Theme } from "@/lib/types";
 import { getHomeSettingsClient, getSiteSettingsClient, updateHomeSettingsClient, updateSiteSettingsClient, listMedia } from "@/lib/cms/client";
 import { AdminTopbar, Card, AdminButton } from "@/components/admin/ui";
 import { TextField, TextAreaField, SelectField, RangeField, ChipsField, Field } from "@/components/admin/fields";
+import { ImageField, ImageListField } from "@/components/admin/ImageField";
 
 const cardTitle = { fontFamily: "var(--font-serif)", fontSize: 22, color: "#1B1D20", marginBottom: 4 } as const;
 const cardHint = { margin: "0 0 18px", fontSize: 13, color: "#8a887f" } as const;
@@ -83,12 +84,28 @@ export default function DashboardHomeEditor() {
           </div>
         </Card>
 
+        {/* HERO TEXTS (nota manuscrita, cita, sello) */}
+        <Card>
+          <div style={cardTitle}>Textos y sello del hero</div>
+          <p style={cardHint}>Textos manuscritos y el sello decorativo de la portada.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+            <TextAreaField label="NOTA MANUSCRITA (HERO)" value={home.heroNote ?? ""} onChange={(v) => patch({ heroNote: v })} rows={4} />
+            <div style={{ maxWidth: 220 }}>
+              <ImageField label="SELLO (IMAGEN OPCIONAL)" value={home.sealImage ?? ""} onChange={(v) => patch({ sealImage: v })} aspect="1/1" clearable hint="Vacío = sello por defecto (AA)." />
+            </div>
+            <TextAreaField label="CITA / FRASE" value={home.quote.text} onChange={(v) => patch({ quote: { ...home.quote, text: v } })} rows={3} />
+            <TextField label="AUTOR DE LA CITA" value={home.quote.cite} onChange={(v) => patch({ quote: { ...home.quote, cite: v } })} />
+          </div>
+        </Card>
+
         {/* PORTRAIT */}
         <Card>
           <div style={cardTitle}>Retrato (HeroPortrait)</div>
           <p style={cardHint}>Tratamiento artístico configurable del retrato.</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
-            <SelectField label="IMAGEN DEL RETRATO" value={home.heroPortraitImage} onChange={(v) => patch({ heroPortraitImage: v })} options={mediaOpts} />
+            <div style={{ gridColumn: "1 / -1", maxWidth: 260 }}>
+              <ImageField label="IMAGEN DEL RETRATO" value={home.heroPortraitImage} onChange={(v) => patch({ heroPortraitImage: v })} aspect="3/4" />
+            </div>
             <SelectField label="BLEND MODE" value={home.heroPortraitTreatment.blendMode} onChange={(v) => patch({ heroPortraitTreatment: { ...home.heroPortraitTreatment, blendMode: v } })} options={["normal", "luminosity", "screen", "multiply", "soft-light", "overlay"].map((o) => ({ value: o, label: o }))} />
             <SelectField label="MÁSCARA" value={home.heroPortraitTreatment.mask} onChange={(v) => patch({ heroPortraitTreatment: { ...home.heroPortraitTreatment, mask: v } })} options={["none", "left", "right", "bottom", "radial"].map((o) => ({ value: o, label: o }))} />
             <TextField label="POSICIÓN" value={home.heroPortraitTreatment.position} onChange={(v) => patch({ heroPortraitTreatment: { ...home.heroPortraitTreatment, position: v } })} />
@@ -142,15 +159,7 @@ export default function DashboardHomeEditor() {
                   </div>
                 </div>
                 <div style={{ padding: "14px 16px", display: "grid", gridTemplateColumns: "180px 1fr", gap: 16 }}>
-                  <div>
-                    <div style={{ position: "relative", width: "100%", aspectRatio: "16/11", borderRadius: 4, overflow: "hidden", background: "#15130e" }}>
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={d.image} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-                    </div>
-                    <div style={{ marginTop: 10 }}>
-                      <SelectField label="IMAGEN DE FONDO" value={d.image} onChange={(v) => setDest(i, { image: v })} options={mediaOpts} />
-                    </div>
-                  </div>
+                  <ImageField label="IMAGEN DE FONDO" value={d.image} onChange={(v) => setDest(i, { image: v })} aspect="16/11" />
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(120px,1fr))", gap: 12 }}>
                     {(["code", "city", "flight", "date", "gate", "seat", "boarding", "zone"] as const).map((k) => (
                       <Field key={k} label={k.toUpperCase()} style={k === "city" ? { gridColumn: "span 2" } : undefined}>
@@ -227,8 +236,7 @@ export default function DashboardHomeEditor() {
             Proyectos destacados). Editá las imágenes acá. */}
         <Card>
           <div style={cardTitle}>Archivo visual (carrusel)</div>
-          <p style={{ margin: "0 0 16px", fontSize: 13, color: "#8a887f" }}>Imágenes del carrusel decorativo del final de la home. Pegá rutas (ej. /images/mountains.png), separadas por coma.</p>
-          <ChipsField label="IMÁGENES DEL CARRUSEL" values={home.visualArchiveImages ?? []} onChange={(v) => patch({ visualArchiveImages: v })} hint="Rutas separadas por coma" />
+          <ImageListField label="IMÁGENES DEL CARRUSEL" values={home.visualArchiveImages ?? []} onChange={(v) => patch({ visualArchiveImages: v })} hint="Carrusel decorativo del final de la home. Elegí o subí imágenes; arrastrá el × para quitar." />
         </Card>
 
         <Card>

@@ -60,4 +60,6 @@ export const HOME_SETTINGS: HomeSettings = {
     heading: "RECIBE NOTAS DESDE EL CAMINO",
     note: "No spam. Solo ideas, viajes y proyectos.",
   },
+  heroNote: "No todo viaje\nmerece una foto.\nAlgunos solo\nordenan la cabeza.",
+  sealImage: "",
 };

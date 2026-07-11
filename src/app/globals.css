@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* =============================================================================
-   Design tokens — extracted from the Claude Design prototype (data.js `theme`
+   Design tokens — extracted from the approved design prototype (data.js `theme`
    + inline styles). Exposed both as Tailwind theme vars (utilities like
    `bg-paper`, `text-ink`, `font-serif`) and as the raw custom-property names the
    ported inline styles reference (`--font-serif`, `--accent`, `--h-scale`, …).
